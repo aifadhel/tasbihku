@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0e1b15">
+    <meta name="description" content="TasbihKu — Aplikasi dzikir digital dengan panduan dzikir pagi, petang, dan wirid ba'da shalat berdasarkan hadits sahih.">
+    <title>TasbihKu</title>
+    
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Add some extra styles for our new Editor UI directly embedded here or we can just rely on inline/existing ones -->
+    <style>
+        .editor-page-card {
+            background: var(--md-sys-color-surface-container);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .editor-page-card input, .editor-page-card textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: none;
+            color: var(--md-sys-color-on-background);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-family: inherit;
+        }
+        .editor-page-card textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .editor-page-card .card-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Stacking Toast Container -->
+    <div id="stacking-toast-container"></div>
+
+    <div id="app">
+        
+        <!-- DASHBOARD PAGE -->
+        <div id="page-dashboard" class="page active">
+            <div class="top-bar">
+                <div class="flex-col" style="flex-grow: 1;">
+                    <span class="text-sub body-small">Assalamu'alaikum</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <input type="text" id="username-input" value="SaudaraKu" placeholder="Nama Anda" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+                <div class="mode-switcher" id="app-mode-switcher" style="margin-right: 8px;">
+                    <button class="mode-btn active" id="mode-tasbih-btn" onclick="switchAppMode('tasbih')" aria-label="Mode Tasbih">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zm0 14a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zm7-7a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zM5 9a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3z"/></svg>
+                    </button>
+                    <button class="mode-btn" id="mode-habit-btn" onclick="switchAppMode('habit')" aria-label="Mode Kebiasaan">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                    </button>
+                </div>
+                <button class="btn btn-icon" onclick="showPage('page-menu')" aria-label="Buka menu dzikir">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
+                </button>
+            </div>
+
+            <!-- Install Prompt Area -->
+            <div id="install-prompt">
+                <span class="label-large" style="display:block; margin-bottom:8px;">Install Aplikasi</span>
+                <p class="body-medium" style="margin-bottom:12px;">Pasang TasbihKu agar bisa digunakan offline.</p>
+                <button class="btn btn-filled label-medium" id="btn-install" style="height: 36px;">Install Sekarang</button>
+            </div>
+
+            <!-- TASBIH DASHBOARD VIEW -->
+            <div id="tasbih-dashboard-view" style="display: flex; flex-direction: column; flex-grow: 1;">
+                <!-- Streak Badge (Tasbih mode only) -->
+                <div id="streak-badge" class="streak-badge" style="display: none; justify-content: center; margin-bottom: 8px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 2px;"><path d="M12 18c-3.1 0-5-1.9-5-4.5C7 10.9 9.3 7 12 3c2.7 4 5 7.9 5 10.5 0 2.6-1.9 4.5-5 4.5z"/></svg>
+                    <span id="streak-count">0</span> Hari
+                </div>
+
+                <div class="text-center" style="margin-top: 0; flex-grow: 1; display: flex; flex-direction: column;">
+                    
+                    <!-- DASHBOARD MODE SWITCHER -->
+                    <div class="segmented-fab-container" id="dashboard-mode-switcher" style="margin-bottom: 16px;">
+                      <button class="segment-btn active" data-mode="counting" onclick="switchDashboardMode('counting')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <span class="segment-label">Counting</span>
+                      </button>
+                      <button class="segment-btn" data-mode="stopwatch" onclick="switchDashboardMode('stopwatch')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                          <path d="M12 2v2M12 20v2M2 12h2M20 12h2" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span class="segment-label">Stopwatch</span>
+                      </button>
+                      <button class="segment-btn" data-mode="timer" onclick="switchDashboardMode('timer')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                          <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                        </svg>
+                        <span class="segment-label">Timer</span>
+                      </button>
+                    </div>
+
+                    <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <span class="text-sub" id="dashboard-mode-title">Hitungan Bebas</span>
+                        
+                        <!-- COUNTING DISPLAY -->
+                        <div id="counting-display-area" style="display: block;">
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
+                                <div id="free-counter" class="display-large" style="cursor: pointer;" onclick="promptManualCount()" aria-label="Edit Hitungan">0</div>
+                            </div>
+                            <div class="body-medium" style="text-align: center; margin-top: 4px; color: var(--md-sys-color-on-surface-variant); cursor: pointer;" onclick="promptTargetLimit()">
+                                Target: <span id="free-target-display" class="title-small">0</span>
+                            </div>
+                        </div>
+                        
+                        <!-- STOPWATCH DISPLAY -->
+                        <div id="stopwatch-display-area" style="display: none;">
+                            <div id="stopwatch-counter" class="display-medium stopwatch-display" style="margin: 32px 0;">00:00.00</div>
+                        </div>
+                        
+                        <!-- TIMER DISPLAY -->
+                        <div id="timer-display-area" style="display: none;">
+                            <div id="timer-counter" class="display-medium timer-display" style="margin: 16px 0; cursor: pointer; transition: opacity 0.2s;" onclick="promptCustomTimer()" aria-label="Tap untuk ubah waktu">00:00:00</div>
+                            <div id="timer-setup-area" style="margin-bottom: 24px;">
+                                <div class="preset-buttons">
+                                    <button class="btn btn-text" onclick="setTimerPreset(60)">1m</button>
+                                    <button class="btn btn-text" onclick="setTimerPreset(300)">5m</button>
+                                    <button class="btn btn-text" onclick="setTimerPreset(600)">10m</button>
+                                    <button class="btn btn-text" onclick="setTimerPreset(1800)">30m</button>
+                                </div>
+                                <div class="body-small" style="color: var(--md-sys-color-outline); margin-top: 12px; text-align: center;">Tap angka waktu di atas untuk mengatur custom timer.</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="fab-container">
+                        <div class="fab-ripple-bg" id="dashboard-fab-ripple"></div>
+                        <button class="btn fab-large" id="dashboard-main-btn" onclick="handleDashboardMainBtn()" aria-label="Tap">
+                            <span id="dashboard-main-emoji" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;" aria-hidden="true">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>
+                            </span>
+                            <span id="dashboard-main-label" style="font-weight: 800; letter-spacing: 1px;">TAP</span>
+                        </button>
+                    </div>
+
+                    <div class="gap-2" style="justify-content: center; margin-top: 30px; margin-bottom: 20px;">
+                        <button class="btn btn-text" style="color: var(--md-sys-color-error);" id="dashboard-reset-btn" onclick="handleDashboardReset()" aria-label="Reset">
+                            <span style="margin-right: 8px;" aria-hidden="true">↺</span> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- QUOTE CARD -->
+                <div class="card mt-auto quote-toggle-wrapper" id="quote-card" onclick="toggleQuote()">
+                    <div id="quote-content" class="quote-box">
+                        "Maka ingatlah kepada-Ku, Aku pun akan ingat kepadamu."<br>
+                        <span class="label-medium" style="opacity: 0.8; margin-top: 8px; display: block;">— QS. Al-Baqarah: 152</span>
+                    </div>
+                    <div id="quote-collapsed-msg" style="display: none; align-items: center; justify-content: center; gap: 8px; padding: 4px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color: var(--md-sys-color-tertiary);"><path d="M9 21.5L11.5 15L18 12.5L11.5 10L9 3.5L6.5 10L0 12.5L6.5 15L9 21.5zm8.5-12.5L19 6L23.5 4.5L19 3L17.5 1.5L16 3L11.5 4.5L16 6L17.5 9z"/></svg>
+                        <span class="label-medium" style="opacity: 0.8;">Mutiara Hikmah</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HABIT DASHBOARD VIEW -->
+            <div id="habit-dashboard-view" style="display: none; flex-direction: column; flex-grow: 1;">
+                <!-- Habit progress card -->
+                <div class="card mt-2" style="padding: 16px; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="label-large">Kemajuan Hari Ini</span>
+                        <span id="habit-today-progress-ratio" class="label-medium" style="color: var(--md-sys-color-primary);">0 / 0</span>
+                    </div>
+                    <div class="progress-track" style="margin: 8px 0 0 0; height: 8px;">
+                        <div id="habit-today-progress-bar" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Habit Filter Container -->
+                <div id="habit-filter-container" style="display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;">
+                    <!-- JS will populate filter chips here -->
+                </div>
+
+                <!-- Habits List Container -->
+                <div id="habit-list-container" style="flex-grow: 1; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                    <!-- JS will populate habits here -->
+                </div>
+
+                <!-- Add Habit Button -->
+                <div style="margin-top: auto; margin-bottom: 20px; display: flex; justify-content: center; width: 100%;">
+                    <button class="btn btn-filled" onclick="openHabitModal('new')" style="max-width: 250px;">
+                        <span style="margin-right: 8px;">+</span> Tambah Kebiasaan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- MENU PAGE -->
+        <div id="page-menu" class="page">
+            <div class="top-bar">
+                <button class="btn btn-icon" onclick="goBack('page-dashboard')" aria-label="Kembali ke dashboard">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z"/></svg>
+                </button>
+                <h2 class="headline-large" id="menu-page-title">Pilih Dzikir</h2>
+                <div class="top-bar-spacer"></div>
+            </div>
+
+            <div id="menu-tasbih-sections">
+                <!-- Bagian Wirid -->
+                <span class="label-large text-sub" style="margin-bottom: 12px; display: block;">Wirid Harian</span>
+                
+                <!-- Guided Dzikir Pagi -->
+                <div class="dzikir-row">
+                    <button class="btn btn-list-item" onclick="startPlayer('pagi')" style="flex: 1; margin:0;">
+                        <div class="dzikir-row-content">
+                            <span class="dzikir-row-title">☀️ Dzikir Pagi</span>
+                            <span class="dzikir-row-desc">Dzikir pagi hari berdasarkan hadits sahih</span>
+                        </div>
+                    </button>
+                    <button class="btn btn-icon-edit" onclick="openEditor('pagi')" aria-label="Edit Dzikir Pagi">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Guided Dzikir Petang -->
+                <div class="dzikir-row">
+                    <button class="btn btn-list-item" onclick="startPlayer('petang')" style="flex: 1; margin:0;">
+                        <div class="dzikir-row-content">
+                            <span class="dzikir-row-title">🌙 Dzikir Petang</span>
+                            <span class="dzikir-row-desc">Dzikir sore hari berdasarkan hadits sahih</span>
+                        </div>
+                    </button>
+                    <button class="btn btn-icon-edit" onclick="openEditor('petang')" aria-label="Edit Dzikir Petang">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Wirid Shalat -->
+                <div class="dzikir-row">
+                    <button class="btn btn-list-item" onclick="startPlayer('wirid')" style="flex: 1; margin:0;">
+                        <div class="dzikir-row-content">
+                            <span class="dzikir-row-title">Wirid Ba'da Shalat</span>
+                            <span class="dzikir-row-desc">Tasbih, Tahmid, Takbir (33x) + Tahlil</span>
+                        </div>
+                    </button>
+                    <button class="btn btn-icon-edit" onclick="openEditor('wirid')" aria-label="Edit Wirid Shalat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    </button>
+                </div>
+
+                <!-- Bagian Custom -->
+                <div style="height: 24px;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span class="label-large text-sub">Custom Dzikir</span>
+                    <button class="btn btn-text" onclick="openEditor('new')">+ Buat Baru</button>
+                </div>
+
+                <div id="custom-list-container">
+                    <!-- Javascript will populate this -->
+                </div>
+            </div>
+
+            <!-- Bagian Pengaturan -->
+            <div style="height: 24px;"></div>
+            <span class="label-large text-sub" style="margin-bottom: 12px; display: block;">Pengaturan</span>
+
+            <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="wakelock-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">Layar Tetap Nyala</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Cegah HP tidur saat dzikir</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-wakelock" onchange="toggleWakeLock(this.checked)" aria-labelledby="wakelock-label">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default; margin-top: 8px;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="oled-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">Mode Hemat OLED</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Tema hitam pekat (#000000)</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-oled" onchange="toggleOledMode(this.checked)" aria-labelledby="oled-label">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="menu-item-sound" class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default; margin-top: 8px;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="sound-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">Suara Tasbih</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Efek suara ketukan mekanis</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-sound" onchange="toggleSoundMode(this.checked)" aria-labelledby="sound-label">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <span id="sound-device-hint" style="display: none; font-size: 0.8rem; color: var(--md-sys-color-outline); margin-top: -4px; margin-bottom: 8px; padding: 6px 16px; background: rgba(140,214,181,0.06); border-radius: 8px; border-left: 3px solid var(--md-sys-color-primary);"></span>
+
+            <div id="vibration-setting-row" class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default; margin-top: 8px;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="vibration-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">Getaran (Haptic)</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Getar halus pada setiap tap</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-vibration" onchange="toggleVibrationMode(this.checked)" aria-labelledby="vibration-label">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div id="vibration-interval-row" class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default; margin-top: 8px;">
+                <div style="display: flex; flex-direction: column;">
+                    <span id="vibration-interval-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">Interval Getar</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Getar lebih kuat setiap kelipatan</span>
+                </div>
+                <select id="select-vibration-interval" onchange="window.updateVibrationInterval(this.value)" style="background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 8px 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem; text-align-last: right;">
+                    <option value="0">Mati (Off)</option>
+                    <option value="33">Setiap 33</option>
+                    <option value="99">Setiap 99</option>
+                    <option value="100">Setiap 100</option>
+                </select>
+            </div>
+
+            <div id="menu-item-arabic-size" class="btn-list-item" style="display: flex; flex-direction: column; cursor: default; margin-top: 8px; height: auto;">
+                <div style="display: flex; justify-content: space-between; width: 100%;">
+                    <span style="font-weight: 800; color: var(--md-sys-color-on-background);">Ukuran Teks Arab</span>
+                    <span id="arabic-size-label" style="font-weight: 700; color: var(--md-sys-color-primary);">2.5rem</span>
+                </div>
+                <input type="range" id="slider-arabic-size" min="1.5" max="4.5" step="0.1" value="2.5" style="margin: 12px 0 0 0;" oninput="updateArabicFontSize(this.value)">
+                <span class="body-small" style="opacity: 0.6; margin-top: 8px;">Sesuaikan kenyamanan membaca teks Arab</span>
+            </div>
+
+            <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;" onclick="showPage('page-stats')">
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 800; color: var(--md-sys-color-on-background);">Statistik & Riwayat</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Lihat grafik aktivitas harian Anda</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" opacity="0.6"><path d="M10 20h4V4h-4v16zm-6 0h4v-8H4v8zM16 9v11h4V9h-4z"/></svg>
+            </div>
+
+            <!-- Dzikir Reminders Section -->
+            <div id="menu-tasbih-reminders">
+                <div style="height: 24px;"></div>
+                <span class="label-large text-sub" style="margin-bottom: 12px; display: block;">Pengingat Dzikir</span>
+
+                <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default; margin-top: 8px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span id="pagi-reminder-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">☀️ Dzikir Pagi</span>
+                        <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Ingatkan dzikir pagi hari</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <input type="time" id="input-pagi-reminder-time" style="width: 100px; display: none; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 8px 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; box-sizing: border-box;" onchange="updatePagiReminderTime(this.value)">
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-pagi-reminder" onchange="togglePagiReminder(this.checked)" aria-labelledby="pagi-reminder-label">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; cursor: default; margin-top: 8px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span id="petang-reminder-label" style="font-weight: 800; color: var(--md-sys-color-on-background);">🌙 Dzikir Petang</span>
+                        <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Ingatkan dzikir petang hari</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <input type="time" id="input-petang-reminder-time" style="width: 100px; display: none; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 8px 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; box-sizing: border-box;" onchange="updatePetangReminderTime(this.value)">
+                        <label class="switch">
+                            <input type="checkbox" id="toggle-petang-reminder" onchange="togglePetangReminder(this.checked)" aria-labelledby="petang-reminder-label">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management Section -->
+            <div style="height: 24px;"></div>
+            <span class="label-large text-sub" style="margin-bottom: 12px; display: block;">Manajemen Data</span>
+            
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-list-item" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: auto; min-height: 80px;" onclick="exportData()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--md-sys-color-primary)" style="margin-bottom: 8px;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    <span class="label-medium">Backup</span>
+                </button>
+                
+                <button class="btn btn-list-item" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: auto; min-height: 80px;" onclick="triggerImport()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--md-sys-color-primary)" style="margin-bottom: 8px;"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                    <span class="label-medium">Restore</span>
+                </button>
+                <input type="file" id="import-file" style="display:none" accept=".json">
+            </div>
+            
+             <div class="footer-watermark">
+                 <span id="app-version">tasbihku</span><br>
+                 Made with ❤️ by Fadhel A
+             </div>
+        </div>
+
+
+        <!-- UNIFIED PLAYER PAGE -->
+        <div id="page-player" class="page">
+            <div class="top-bar">
+                <button class="btn btn-icon" onclick="goBack('page-menu')" aria-label="Kembali ke menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z"/></svg>
+                </button>
+                <span id="player-title" class="title-medium" style="flex-grow: 1; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding: 0 10px;">Dzikir</span>
+                <button class="btn btn-icon" style="background:transparent; color: var(--md-sys-color-primary);" onclick="toggleStealthMode()" aria-label="Mode Privasi (Sembunyikan Teks)">
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78 3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/></svg>
+                </button>
+                <button class="btn btn-icon" style="background:transparent; color: var(--md-sys-color-primary);" onclick="toggleFullscreen()" aria-label="Layar Penuh">
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                </button>
+                <button class="btn btn-icon" style="background:transparent; color: var(--md-sys-color-error);" onclick="confirmResetPlayer()" aria-label="Ulangi dzikir dari awal">
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35Z"/></svg>
+                </button>
+            </div>
+
+            <div class="text-center" style="margin-top: 10px; display: flex; flex-direction: column; flex-grow: 1;">
+                
+                <!-- Reading Info -->
+                <div style="margin-bottom: 10px;">
+                    <span id="player-reading-info" class="label-medium">1 / 1</span>
+                </div>
+                
+                <div class="progress-track">
+                    <div id="player-progress" class="progress-fill"></div>
+                </div>
+                
+                <!-- Text Container (Arabic, Latin, Translation) -->
+                <div id="player-text-container" style="min-height: 160px; display: flex; flex-direction: column; justify-content: center; margin: 16px 0;">
+                    <div id="player-arabic" class="arabic-text" style="font-family: 'Amiri Quran', 'Amiri', serif;"></div>
+                    <div id="player-latin" class="text-sub" style="margin-top: 12px; font-size: 1rem; font-weight: 500;"></div>
+                    <div id="player-translation" class="text-sub" style="margin-top: 12px; font-size: 0.9rem; font-style: italic; border-left: 3px solid var(--md-sys-color-tertiary); padding-left: 12px; text-align: left;"></div>
+                </div>
+                
+                <!-- Counter -->
+                <div id="player-counter" class="display-medium">0</div>
+                <div id="player-target-display" class="label-medium">Target: 1x</div>
+                
+                <!-- Controls -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin: 16px 0;">
+                    <!-- Undo Button -->
+                    <button id="player-undo-btn" class="btn" style="width: 60px; height: 60px; border-radius: 50%; background: var(--md-sys-color-surface-variant); color: var(--md-sys-color-on-surface-variant); display: flex; justify-content: center; align-items: center;" onclick="playerUndo()" aria-label="Undo hitungan terakhir">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/></svg>
+                    </button>
+                    
+                    <!-- Main Tap Button -->
+                    <div class="fab-container">
+                        <div class="fab-ripple-bg"></div>
+                        <button id="player-main-btn" class="btn fab-large" onclick="incrementPlayer()" aria-label="Tap untuk menambah hitungan dzikir">
+                            <span class="fab-emoji" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>
+                            </span>
+                            <span class="fab-label">TAP</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Reference -->
+                <div id="player-reference" class="text-sub" style="font-size: 0.75rem; opacity: 0.6; margin-top: 16px;"></div>
+            </div>
+        </div>
+
+        <!-- UNIFIED EDITOR PAGE -->
+        <div id="page-editor" class="page">
+            <div class="top-bar">
+                <button class="btn btn-icon" onclick="goBack('page-menu')" aria-label="Kembali ke menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z"/></svg>
+                </button>
+                <h2 class="title-medium" id="editor-page-title">Edit Dzikir</h2>
+                <!-- Restore Default info button for guided -->
+                <button class="btn btn-icon" id="editor-btn-restore" style="display:none; color: var(--md-sys-color-error);" onclick="confirmRestoreGuided()" aria-label="Kembalikan ke setelan default">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+                </button>
+                <div style="width: 48px;" id="editor-spacer"></div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <label class="label-large" style="margin-left: 8px; display: block; margin-bottom: 8px;">Nama Dzikir (Sesi)</label>
+                <input type="text" id="editor-input-name" placeholder="Contoh: Istighfar Harian" autocomplete="off" style="width: 100%; background: var(--md-sys-color-surface-container); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; margin-bottom: 24px; font-family: inherit; font-size: 1rem;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 8px;">
+                    <span class="label-large text-sub">Daftar Bacaan (Halaman)</span>
+                    <div>
+                        <button class="btn btn-text" onclick="window.showLibraryModal()" style="margin-right: 8px;">Pustaka</button>
+                        <button class="btn btn-text" onclick="addEditorPage()">+ Tambah</button>
+                    </div>
+                </div>
+
+                <div id="editor-pages-container">
+                    <!-- Pages will be rendered here -->
+                </div>
+
+                <div style="margin-top: 40px; margin-bottom: 40px;">
+                    <button class="btn btn-filled" onclick="saveEditorSession()" style="width: 100%;">Simpan Dzikir</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS PAGE -->
+        <div id="page-stats" class="page">
+            <div class="top-bar">
+                <button class="btn btn-icon" onclick="goBack('page-menu')" aria-label="Kembali ke menu">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z"/></svg>
+                </button>
+                <h2 class="title-medium">Statistik Aktivitas</h2>
+                <div class="top-bar-spacer"></div>
+            </div>
+
+            <div class="card mt-2">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <span class="label-large">Riwayat 90 Hari</span>
+                    <span id="total-days-active" class="label-medium" style="color: var(--md-sys-color-primary);">0 Hari Aktif</span>
+                </div>
+                <div id="activity-heatmap" class="heatmap-container">
+                    <!-- JS will generate tiles -->
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; font-size: 0.7rem; opacity: 0.5;">
+                    <span>Kurang</span>
+                    <div style="width: 10px; height: 10px; background: var(--md-sys-color-surface-container-high); border-radius: 2px;"></div>
+                    <div style="width: 10px; height: 10px; background: var(--md-sys-color-primary); opacity: 0.5; border-radius: 2px;"></div>
+                    <div style="width: 10px; height: 10px; background: var(--md-sys-color-primary); border-radius: 2px;"></div>
+                    <span>Lebih</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="label-large" style="display: block; margin-bottom: 12px;">Pencapaian</span>
+                <div id="stats-summary" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="flex-col" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px;">
+                        <span class="body-small" style="opacity: 0.6;">Total Sesi</span>
+                        <span id="stat-total-sessions" class="title-large">0</span>
+                    </div>
+                    <div class="flex-col" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px;">
+                        <span class="body-small" style="opacity: 0.6;">Streak Saat Ini</span>
+                        <span id="stat-current-streak" class="title-large" style="color: #ff9a56;">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CUSTOM MODAL COMPONENT -->
+    <div id="modal-overlay" class="m3-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-message">
+        <div class="modal-box">
+            <h3 class="modal-title" id="modal-title">Konfirmasi</h3>
+            <p class="modal-text" id="modal-message">Apakah Anda yakin?</p>
+            <div class="modal-actions">
+                <button class="btn btn-text" onclick="closeModal()">Batal</button>
+                <button class="btn btn-filled" id="modal-btn-yes" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);">Ya</button>
+            </div>
+        </div>
+    </div>
+    <!-- NUMBER INPUT MODAL -->
+    <div id="number-input-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box" style="max-width: 320px; width: 90%;">
+            <h3 class="modal-title" id="number-input-title" style="text-align: center; font-size: 1.1rem; margin-bottom: 8px;">Input Angka</h3>
+            <p id="number-input-desc" class="body-small" style="text-align: center; opacity: 0.7; margin-bottom: 16px; display: none;"></p>
+            <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+                <input type="number" id="number-input-value" style="width: 100%; text-align: center; font-size: 1.5rem; padding: 12px 8px; margin-bottom: 0; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); border-radius: 8px;">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-text" onclick="closeNumberInputModal()">Batal</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="applyNumberInputModal()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TIME INPUT MODAL -->
+    <div id="time-input-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <h3 class="modal-title" style="text-align: center;">Atur Waktu Timer</h3>
+            <div style="display: flex; gap: 12px; justify-content: center; margin-top: 16px; margin-bottom: 24px;">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <input type="number" id="time-input-m" min="0" max="999" value="05" style="width: 80px; text-align: center; font-size: 1.5rem; padding: 12px 8px; margin-bottom: 0;">
+                    <span class="label-medium" style="opacity: 0.6; margin-top: 8px;">Menit</span>
+                </div>
+                <span style="font-size: 2rem; font-weight: bold; margin-top: 6px; color: var(--md-sys-color-outline);">:</span>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <input type="number" id="time-input-s" min="0" max="59" value="00" style="width: 80px; text-align: center; font-size: 1.5rem; padding: 12px 8px; margin-bottom: 0;">
+                    <span class="label-medium" style="opacity: 0.6; margin-top: 8px;">Detik</span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-text" onclick="closeTimeInputModal()">Batal</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="applyTimeInputModal()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HABIT CREATION / EDIT MODAL -->
+    <div id="habit-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <h3 class="modal-title" id="habit-modal-title">Tambah Kebiasaan</h3>
+            
+            <div class="habit-preset-container">
+                <button type="button" class="preset-btn" data-preset="tilawah">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Tilawah
+                </button>
+                <button type="button" class="preset-btn" data-preset="dhuha">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
+                    Dhuha
+                </button>
+                <button type="button" class="preset-btn" data-preset="sedekah">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="8" ry="3"></ellipse><path d="M4 6v4c0 1.66 3.58 3 8 3s8-1.34 8-3V6"></path><path d="M4 10v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4"></path><path d="M4 14v4c0 1.66 3.58 3 8 3s8-1.34 8-3v-4"></path></svg>
+                    Sedekah
+                </button>
+                <button type="button" class="preset-btn" data-preset="tahajjud">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                    Tahajjud
+                </button>
+            </div>
+            
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Nama Kebiasaan</label>
+            <input type="text" id="habit-input-name" placeholder="Contoh: Baca Al-Qur'an 1 Lembar" autocomplete="off" style="margin-bottom: 16px;">
+            
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Deskripsi (Opsional)</label>
+            <textarea id="habit-input-desc" placeholder="Contoh: Dilakukan setelah shalat fardhu" style="margin-bottom: 16px;"></textarea>
+ 
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Label / Kategori (Opsional)</label>
+            <input type="text" id="habit-input-tags" placeholder="Contoh: Ibadah, Kesehatan (pisahkan dengan koma)" autocomplete="off" style="margin-bottom: 16px;">
+ 
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Bagian Rutinitas</label>
+            <select id="habit-input-routine">
+                <option value="anytime">Bebas (Kapan saja)</option>
+                <option value="pagi">☀️ Pagi</option>
+                <option value="siang">☀️ Siang</option>
+                <option value="sore">🌅 Sore</option>
+                <option value="malam">🌙 Malam</option>
+            </select>
+
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Hubungkan dengan Dzikir (Staking)</label>
+            <select id="habit-input-linked-dzikir">
+                <option value="">Tidak ada link (Manual)</option>
+                <option value="guided-pagi">☀️ Sesi Dzikir Pagi</option>
+                <option value="guided-petang">🌙 Sesi Dzikir Petang</option>
+                <option value="guided-wirid">📿 Sesi Wirid Ba'da Shalat</option>
+            </select>
+ 
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; flex-direction: column;">
+                    <span class="label-medium" style="color: var(--md-sys-color-on-background);">Target Angka / Kuantitatif</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 2px;">Gunakan target angka (bukan sekadar ya/tidak)</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="habit-input-numerical" onchange="toggleHabitNumericalFields(this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+ 
+            <div id="habit-numerical-fields-container" style="display: none; gap: 12px; margin-bottom: 16px;">
+                <div style="flex: 1;">
+                    <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;">Nilai Target</label>
+                    <input type="number" id="habit-input-target-val" min="1" value="100" style="margin-bottom: 0;">
+                </div>
+                <div style="flex: 1;">
+                    <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;">Satuan Target</label>
+                    <input type="text" id="habit-input-target-unit" value="kali" placeholder="Contoh: kali, lembar" style="margin-bottom: 0;">
+                </div>
+            </div>
+            
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Jadwal Kebiasaan</label>
+            <select id="habit-schedule-type" onchange="toggleScheduleDaysView(this.value)">
+                <option value="daily">Setiap Hari</option>
+                <option value="specific">Hari Tertentu</option>
+                <option value="weekly">Frekuensi Mingguan</option>
+                <option value="interval">Siklus Interval (X Hari)</option>
+            </select>
+
+            <div id="habit-schedule-days-container" style="display: none; flex-direction: column; margin-bottom: 16px;">
+                <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;">Pilih Hari</label>
+                <div style="display: flex; justify-content: space-between; gap: 6px;">
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="1" style="display: none;">
+                        <div class="day-chk-bubble">Sen</div>
+                    </label>
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="2" style="display: none;">
+                        <div class="day-chk-bubble">Sel</div>
+                    </label>
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="3" style="display: none;">
+                        <div class="day-chk-bubble">Rab</div>
+                    </label>
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="4" style="display: none;">
+                        <div class="day-chk-bubble">Kam</div>
+                    </label>
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="5" style="display: none;">
+                        <div class="day-chk-bubble">Jum</div>
+                    </label>
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="6" style="display: none;">
+                        <div class="day-chk-bubble">Sab</div>
+                    </label>
+                    <label class="day-checkbox-label" style="flex: 1; text-align: center;">
+                        <input type="checkbox" class="habit-day-chk" value="0" style="display: none;">
+                        <div class="day-chk-bubble">Min</div>
+                    </label>
+                </div>
+            </div>
+
+            <div id="habit-schedule-weekly-container" style="display: none; flex-direction: column; margin-bottom: 16px;">
+                <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;">Target Per Minggu</label>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <input type="range" id="habit-input-weekly-target" min="1" max="6" value="3" style="margin: 0; flex-grow: 1;" oninput="document.getElementById('weekly-target-label').innerText = this.value + ' Kali'">
+                    <span id="weekly-target-label" style="font-weight: 700; color: var(--md-sys-color-primary); min-width: 50px; text-align: right;">3 Kali</span>
+                </div>
+            </div>
+
+            <div id="habit-schedule-interval-container" style="display: none; flex-direction: column; margin-bottom: 16px;">
+                <div style="display: flex; gap: 12px; margin-bottom: 8px;">
+                    <div style="flex: 1;">
+                        <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;">Ulangi Setiap (Hari)</label>
+                        <input type="number" id="habit-input-interval-days" min="2" max="365" value="2" style="width: 100%; margin-bottom: 0; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;">Mulai (Anchor)</label>
+                        <input type="date" id="habit-input-anchor-date" style="width: 100%; margin-bottom: 0; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem;">
+                    </div>
+                </div>
+            </div>
+
+            <div id="habit-reminder-container" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; flex-direction: column;">
+                    <span class="label-medium" style="color: var(--md-sys-color-on-background);">Pengingat Harian</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 2px;">Kirim notifikasi untuk kebiasaan ini</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="time" id="habit-input-reminder-time" value="08:00" style="display: none; width: 90px; text-align: center; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 8px 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0;">
+                    <label class="switch">
+                        <input type="checkbox" id="habit-input-reminder-enabled">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Pilih Warna</label>
+            <div id="habit-color-picker" style="display: flex; gap: 12px; margin-bottom: 24px; justify-content: center;">
+                <div class="color-picker-dot active" data-color="#8cd6b5" style="background-color: #8cd6b5; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s;"></div>
+                <div class="color-picker-dot" data-color="#00897b" style="background-color: #00897b; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s;"></div>
+                <div class="color-picker-dot" data-color="#dcc48c" style="background-color: #dcc48c; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s;"></div>
+                <div class="color-picker-dot" data-color="#ff8a65" style="background-color: #ff8a65; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s;"></div>
+                <div class="color-picker-dot" data-color="#4fc3f7" style="background-color: #4fc3f7; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s;"></div>
+            </div>
+            
+            <div class="modal-actions" style="justify-content: space-between; display: flex;">
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-text" id="habit-btn-delete" style="color: var(--md-sys-color-error); display: none; padding: 8px 0;" onclick="deleteHabitFromModal()">Hapus</button>
+                    <button class="btn btn-text" id="habit-btn-archive" style="color: var(--md-sys-color-tertiary); display: none; padding: 8px 0;" onclick="archiveHabitFromModal()">Arsipkan</button>
+                </div>
+                <div style="display: flex; gap: 8px; margin-left: auto;">
+                    <button class="btn btn-text" onclick="closeHabitModal()">Batal</button>
+                    <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="saveHabitFromModal()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HABIT DETAIL MODAL (Full-Screen / Dashboard Overlay) -->
+    <div id="habit-detail-modal" class="habit-detail-overlay" role="dialog" aria-modal="true">
+        <div class="habit-detail-container">
+            <!-- Header (Sticky App Bar) -->
+            <div class="habit-detail-header">
+                <div class="habit-detail-header-left">
+                    <button class="btn btn-icon" onclick="closeHabitDetailModal()" aria-label="Kembali" style="background: transparent; color: var(--md-sys-color-on-surface);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                    </button>
+                    <div>
+                        <h3 class="modal-title" id="habit-detail-title" style="margin: 0; font-size: 1.1rem; line-height: 1.2; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Nama Kebiasaan</h3>
+                        <p id="habit-detail-desc" class="text-sub body-small" style="margin: 2px 0 0 0; opacity: 0.7; max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Deskripsi kebiasaan</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button class="btn btn-icon" id="habit-detail-csv-btn" style="width: 40px; height: 40px; background: transparent; color: var(--md-sys-color-tertiary);" aria-label="Ekspor CSV">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                    </button>
+                    <button class="btn btn-icon" id="habit-detail-edit-btn" style="width: 40px; height: 40px; background: transparent; color: var(--md-sys-color-primary);" aria-label="Edit Kebiasaan">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Body -->
+            <div class="habit-detail-body">
+                <div class="habit-detail-grid">
+                    <!-- Left Column (Info, Stats, and Calendar) -->
+                    <div>
+                        <!-- Stats Grid -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                            <div class="flex-col" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px;">
+                                <span class="body-small" style="opacity: 0.6;">Streak Saat Ini</span>
+                                <span id="habit-detail-streak" class="title-large" style="color: #ff9a56;">0 Hari</span>
+                            </div>
+                            <div class="flex-col" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px;">
+                                <span class="body-small" style="opacity: 0.6;">Streak Terbaik</span>
+                                <span id="habit-detail-best-streak" class="title-large" style="color: var(--md-sys-color-primary);">0 Hari</span>
+                            </div>
+                            <div class="flex-col" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px;">
+                                <span class="body-small" style="opacity: 0.6;">Total Penyelesaian</span>
+                                <span id="habit-detail-completions" class="title-large">0</span>
+                            </div>
+                            <div class="flex-col" style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px;">
+                                <span class="body-small" style="opacity: 0.6;">Skor Konsistensi</span>
+                                <span id="habit-detail-rate" class="title-large" style="color: var(--md-sys-color-tertiary);">0%</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Monthly Calendar Picker -->
+                        <label class="label-large" style="display: block; margin-bottom: 8px;">Kalender Penyelesaian</label>
+                        <div class="calendar-picker-wrapper" style="margin-bottom: 20px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: var(--shape-corner-md); border: 1px solid var(--md-sys-color-outline-variant);">
+                            <div class="calendar-picker-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                <button class="btn btn-icon" style="width: 32px; height: 32px; min-width: 32px; background: var(--md-sys-color-surface-container-high);" onclick="navigateCalendarMonth(-1)" aria-label="Bulan Sebelumnya">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                                </button>
+                                <span id="calendar-picker-month-year" style="font-weight: 700; font-size: 0.95rem;">Juni 2026</span>
+                                <button class="btn btn-icon" style="width: 32px; height: 32px; min-width: 32px; background: var(--md-sys-color-surface-container-high);" onclick="navigateCalendarMonth(1)" aria-label="Bulan Berikutnya">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                                </button>
+                            </div>
+                            <div class="calendar-picker-days-header" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: bold; opacity: 0.6; margin-bottom: 8px;">
+                                <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                            </div>
+                            <div id="calendar-picker-grid" class="calendar-picker-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center;">
+                                <!-- JS will render calendar days -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column (Heatmap, Charts, Trends) -->
+                    <div>
+                        <!-- Riwayat 90 Hari -->
+                        <label class="label-large" style="display: block; margin-bottom: 8px;">Riwayat 90 Hari</label>
+                        <div id="habit-detail-heatmap" class="habit-chart-container" style="margin-bottom: 20px;">
+                            <!-- JS will populate mini heatmap tiles -->
+                        </div>
+
+                        <!-- Frequency Bar Chart -->
+                        <label class="label-large" style="display: block; margin-bottom: 8px;">Frekuensi Mingguan</label>
+                        <div id="habit-detail-frequency-chart" class="habit-chart-container" style="margin-bottom: 20px;">
+                            <!-- JS will render SVG bar chart -->
+                        </div>
+
+                        <!-- Day of Week Distribution Chart -->
+                        <label class="label-large" style="display: block; margin-bottom: 8px;">Distribusi Hari</label>
+                        <div id="habit-detail-dow-chart" class="habit-chart-container" style="margin-bottom: 20px;">
+                            <!-- JS will render SVG day of week bar chart -->
+                        </div>
+
+                        <!-- Score Trend Sparkline -->
+                        <label class="label-large" style="display: block; margin-bottom: 8px;">Tren Konsistensi</label>
+                        <div id="habit-detail-score-trend-container" class="habit-chart-container" style="margin-bottom: 24px;">
+                            <canvas id="habit-detail-score-trend"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HABIT LOG DETAIL MODAL -->
+    <div id="habit-log-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box" style="max-width: 360px; width: 90%;">
+            <h3 class="modal-title" id="habit-log-modal-title" style="text-align: center; margin-bottom: 16px;">Catatan Kebiasaan</h3>
+            
+            <div id="habit-log-numerical-section" style="display: none; margin-bottom: 16px;">
+                <label class="label-large" style="display: block; margin-bottom: 8px;" id="habit-log-value-label">Nilai yang Dicapai</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="number" id="habit-log-value" min="0" value="0" style="flex-grow: 1; margin-bottom: 0; text-align: center; font-size: 1.25rem; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; font-family: inherit; box-sizing: border-box;">
+                    <span id="habit-log-unit" style="font-weight: 600; opacity: 0.8; font-size: 1rem; min-width: 50px;">kali</span>
+                </div>
+            </div>
+            
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Catatan Harian</label>
+            <textarea id="habit-log-note" placeholder="Tulis catatan kecil untuk hari ini..." style="margin-bottom: 24px; min-height: 80px; width: 100%; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; resize: vertical;"></textarea>
+            
+            <div class="modal-actions" style="display: flex; gap: 12px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
+                <button class="btn btn-text" onclick="closeHabitLogModal()">Batal</button>
+                <div style="flex-grow: 1;"></div>
+                <button class="btn btn-text" style="color: var(--md-sys-color-error);" onclick="skipHabitLogFromModal()">Lewati</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="saveHabitLogFromModal()">Simpan</button>
+            </div>
+        </div>
+    </div>
+    <!-- AZKAR LIBRARY MODAL -->
+    <div id="library-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box" style="max-width: 400px; width: 90%; max-height: 80vh; display: flex; flex-direction: column;">
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 16px;">Pustaka Azkar</h3>
+            <button class="btn btn-filled" style="width: 100%; margin-bottom: 16px; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container);" onclick="window.openCustomAzkarModal()">+ Buat Azkar Baru</button>
+            <input type="text" id="library-search-input" placeholder="Cari dzikir..." style="width: 100%; margin-bottom: 12px; padding: 10px 12px; border-radius: 8px; border: none; background: rgba(0, 0, 0, 0.2); color: var(--md-sys-color-on-background); font-family: inherit; font-size: 0.95rem; box-sizing: border-box;" oninput="window.filterLibrary(this.value)">
+            <div id="library-list" style="overflow-y: auto; flex-grow: 1; padding-right: 4px; display: flex; flex-direction: column; gap: 8px;">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="modal-actions" style="margin-top: 16px;">
+                <button class="btn btn-text" style="width: 100%;" onclick="window.closeLibraryModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CUSTOM AZKAR BUILDER MODAL -->
+    <div id="custom-azkar-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
+        <div class="modal-box" style="max-width: 400px; width: 90%;">
+            <h3 class="modal-title" style="text-align: center; margin-bottom: 16px;">Buat Azkar Baru</h3>
+            
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Nama Azkar</label>
+            <input type="text" id="custom-azkar-name" placeholder="Contoh: Salawat Nabi" autocomplete="off" style="width: 100%; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-family: inherit;">
+            
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Teks Arab (Opsional)</label>
+            <textarea id="custom-azkar-arabic" dir="rtl" placeholder="Teks Arab..." style="width: 100%; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-family: 'Amiri', serif; font-size: 1.2rem; resize: vertical; min-height: 60px;"></textarea>
+
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Teks Latin (Opsional)</label>
+            <textarea id="custom-azkar-latin" placeholder="Teks Latin..." style="width: 100%; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-family: inherit; resize: vertical; min-height: 60px;"></textarea>
+
+            <label class="label-large" style="display: block; margin-bottom: 8px;">Target Default</label>
+            <input type="number" id="custom-azkar-target" value="33" min="1" style="width: 100%; background: rgba(0,0,0,0.2); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; margin-bottom: 24px; font-family: inherit;">
+
+            <div class="modal-actions">
+                <button class="btn btn-text" onclick="window.closeCustomAzkarModal()">Batal</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="window.saveCustomAzkar()">Simpan</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
