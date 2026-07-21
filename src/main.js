@@ -362,13 +362,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (versionEl) {
         versionEl.textContent = `tasbihku-v${APP_VERSION}`;
     }
+    const aboutVersionEl = document.getElementById('about-app-version');
+    if (aboutVersionEl) {
+        aboutVersionEl.textContent = `TasbihKu v${APP_VERSION}`;
+    }
 });
 
-// --- Hash-based Navigation Router ---
+// --- Hash & Path Navigation Router ---
 function handleHashRouting() {
     let startPage = 'page-dashboard';
+    const pathname = window.location.pathname.replace(/\/$/, '') || '/';
     const hash = window.location.hash;
-    if (hash === '#page-player-pagi') {
+
+    if (pathname === '/about' || hash === '#page-about') {
+        startPage = 'page-about';
+    } else if (hash === '#page-player-pagi') {
         startPage = 'page-player';
         setTimeout(() => {
             switchAppMode('tasbih', false);
@@ -398,7 +406,8 @@ function handleHashRouting() {
         startPage = history.state.pageId;
     }
 
-    history.replaceState({ pageId: startPage }, "", `#${startPage}`);
+    const targetUrl = startPage === 'page-about' ? '/about' : (startPage === 'page-dashboard' && !hash ? '/' : `#${startPage}`);
+    history.replaceState({ pageId: startPage }, "", targetUrl);
     showPage(startPage, false);
 }
 

@@ -411,6 +411,16 @@
                 <input type="file" id="import-file" style="display:none" accept=".json">
             </div>
             
+            <!-- Landing Page Link Section -->
+            <div style="height: 24px;"></div>
+            <a href="/about" target="_blank" rel="noopener noreferrer" class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; text-decoration: none; margin-top: 8px;">
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 800; color: var(--md-sys-color-on-background);">Tentang & Landing Page</span>
+                    <span class="body-small" style="opacity: 0.6; margin-top: 4px;">Informasi aplikasi dan fitur lengkap</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" opacity="0.6"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+            </a>
+
              <div class="footer-watermark">
                  <span id="app-version">tasbihku</span><br>
                  Made with ❤️ by Fadhel A
@@ -557,6 +567,106 @@
                         <span id="stat-current-streak" class="title-large" style="color: #ff9a56;">0</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ABOUT LANDING PAGE -->
+        <div id="page-about" class="page">
+            <div class="top-bar">
+                <button class="btn btn-icon" onclick="goBack('page-dashboard')" aria-label="Kembali ke dashboard">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z"/></svg>
+                </button>
+                <h2 class="title-medium">Tentang TasbihKu</h2>
+                <div class="top-bar-spacer"></div>
+            </div>
+
+            <!-- HERO SECTION -->
+            <div class="about-hero mt-2">
+                <div class="about-hero-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+                    Dzikir & Habit Companion
+                </div>
+                <h1 class="about-hero-title">Aplikasi Dzikir Digital <span>Modern & Sahih</span></h1>
+                <p class="about-hero-subtitle">
+                    Panduan dzikir pagi, petang, dan wirid ba'da shalat sesuai hadits shahih. Dilengkapi pelacak kebiasaan harian dan analisis 90 hari.
+                </p>
+
+                <div class="about-hero-actions">
+                    <button onclick="showPage('page-dashboard')" class="about-btn-cta">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        Buka Aplikasi
+                    </button>
+                    <a href="https://github.com/aifadhel/tasbihku" target="_blank" rel="noopener noreferrer" class="about-btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                        GitHub Repository
+                    </a>
+                </div>
+
+                <div class="about-chips-row">
+                    <span class="about-chip">📱 PWA Ready</span>
+                    <span class="about-chip">⚡ 100% Offline</span>
+                    <span class="about-chip">🔒 Tanpa Iklan & Pelacak</span>
+                    <span class="about-chip">🌙 Mode OLED</span>
+                </div>
+            </div>
+
+            <!-- FEATURES & HIGHLIGHTS -->
+            <div style="margin-bottom: var(--spacing-md);">
+                <span class="label-large text-sub" style="margin-left: 4px; display: block; margin-bottom: 12px;">Fitur Utama</span>
+            </div>
+
+            <div class="about-features-grid">
+                <!-- Card 1 -->
+                <div class="about-feature-card">
+                    <div class="about-feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zm0 14a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zm7-7a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zM5 9a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3z"/></svg>
+                    </div>
+                    <div class="about-feature-body">
+                        <div class="about-feature-title">Counter Tasbih & Wirid Interactive</div>
+                        <div class="about-feature-desc">Penghitung dzikir responsif dengan umpan balik suara ketukan mekanis, getaran haptic berinterval, dan mode layar tetap menyala.</div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="about-feature-card">
+                    <div class="about-feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
+                    </div>
+                    <div class="about-feature-body">
+                        <div class="about-feature-title">Analitik Kebiasaan & Streak 90 Hari</div>
+                        <div class="about-feature-desc">Visualisasi aktivitas harian melalui heatmap 90 hari, pencapaian streak, serta pencatatan target kebiasaan baik harian.</div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="about-feature-card">
+                    <div class="about-feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                    </div>
+                    <div class="about-feature-body">
+                        <div class="about-feature-title">Pustaka & Kustomisasi Azkar</div>
+                        <div class="about-feature-desc">Tersedia teks Arab, latin, dan terjemahan dzikir pagi, petang, dan wirid shalat. Anda juga dapat membuat dan menyunting dzikir kustom.</div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="about-feature-card">
+                    <div class="about-feature-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                    </div>
+                    <div class="about-feature-body">
+                        <div class="about-feature-title">Privasi & Offline First</div>
+                        <div class="about-feature-desc">Data tersimpan sepenuhnya secara lokal di peranti Anda (IndexedDB/localStorage) dengan dukungan backup & restore data dalam bentuk JSON.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="about-footer">
+                <span class="about-version-badge" id="about-app-version">tasbihku</span>
+                <p class="body-small" style="margin: 4px 0 0 0; opacity: 0.7;">
+                    Dibuat dengan ❤️ oleh Fadhel A &bull; Lisensi Open Source (MIT)
+                </p>
             </div>
         </div>
 

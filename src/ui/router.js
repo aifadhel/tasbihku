@@ -40,7 +40,8 @@ export function showPage(pageId, pushToHistory = true) {
     }
 
     if (pushToHistory) {
-        history.pushState({ pageId }, '', '');
+        const targetUrl = pageId === 'page-about' ? '/about' : (pageId === 'page-dashboard' ? '/' : `#${pageId}`);
+        history.pushState({ pageId }, '', targetUrl);
         internalHistoryStack.push(pageId);
     }
 }
@@ -59,6 +60,8 @@ window.addEventListener('popstate', (e) => {
 
     if (e.state && e.state.pageId) {
         showPage(e.state.pageId, false);
+    } else if (window.location.pathname.replace(/\/$/, '') === '/about') {
+        showPage('page-about', false);
     } else {
         showPage('page-dashboard', false);
     }
@@ -68,7 +71,8 @@ export function goBack(fallbackPage = 'page-dashboard') {
     if (internalHistoryStack.length > 0) {
         history.back();
     } else {
-        history.replaceState({ pageId: fallbackPage }, '', '');
+        const targetUrl = fallbackPage === 'page-about' ? '/about' : (fallbackPage === 'page-dashboard' ? '/' : `#${fallbackPage}`);
+        history.replaceState({ pageId: fallbackPage }, '', targetUrl);
         showPage(fallbackPage, false);
     }
 }
