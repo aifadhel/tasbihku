@@ -3,7 +3,7 @@
   "version": "1.7.6",
   "description": "A progressive web app for tracking Tasbih counts and daily habits with advanced statistics.",
   "license": "MIT",
-  "author": "ehfadhel <iemedcahkudus@gmail.com>",
+  "author": "aifadhel <iemedcahkudus@gmail.com>",
   "keywords": [
     "tasbih",
     "dzikir",
@@ -14,13 +14,13 @@
     "islamic",
     "offline-first"
   ],
-  "homepage": "https://github.com/ehfadhel/tasbihku#readme",
+  "homepage": "https://github.com/aifadhel/tasbihku#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ehfadhel/tasbihku.git"
+    "url": "https://github.com/aifadhel/tasbihku.git"
   },
   "bugs": {
-    "url": "https://github.com/ehfadhel/tasbihku/issues"
+    "url": "https://github.com/aifadhel/tasbihku/issues"
   },
   "type": "module",
   "scripts": {

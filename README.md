@@ -6,7 +6,7 @@
 
 A beautiful, offline-first Progressive Web App for tracking Tasbih counts, daily spiritual habits, and guided morning/evening/post-prayer wirid based on authentic Hadith.
 
-[![CI](https://github.com/ehfadhel/tasbihku/actions/workflows/ci.yml/badge.svg)](https://github.com/ehfadhel/tasbihku/actions/workflows/ci.yml)
+[![CI](https://github.com/aifadhel/tasbihku/actions/workflows/ci.yml/badge.svg)](https://github.com/aifadhel/tasbihku/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PWA Ready](https://img.shields.io/badge/PWA-Ready-blue.svg)](#features)
 
@@ -93,7 +93,7 @@ TasbihKu/
 
 ```bash
 # Clone the repository
-git clone https://github.com/ehfadhel/tasbihku.git
+git clone https://github.com/aifadhel/tasbihku.git
 cd tasbihku
 
 # Install dependencies

@@ -6,7 +6,7 @@ Thank you for your interest in contributing to TasbihKu! 🙏
 
 ### Reporting Bugs
 
-1. Check [existing issues](https://github.com/ehfadhel/tasbihku/issues) to avoid duplicates.
+1. Check [existing issues](https://github.com/aifadhel/tasbihku/issues) to avoid duplicates.
 2. Open a new issue with:
    - A clear, descriptive title
    - Steps to reproduce the bug
