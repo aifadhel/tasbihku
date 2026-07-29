@@ -1,5 +1,13 @@
 # TasbihKu WebApp — Changelog
 
+## 1.7.7 — tasbihku-v1.7.7
+
+- **New:** Full Internationalization (i18n) Support — The entire application is now fully translatable. Users can seamlessly switch between Indonesian (id) and English (en) from the settings page.
+- **New:** Custom Dzikir Translations — Users can now enter translations for custom azkar in both English and Indonesian inside the custom azkar editor. The active translation is displayed intelligently based on the app's global language setting.
+- **UX/UI:** Replaced all hardcoded calendar arrays with the native `Date.prototype.toLocaleDateString()`, ensuring perfectly localized month and day labels across the habits UI.
+- **Fix:** Fixed a `ReferenceError` exception in the habits calendar rendering logic that previously prevented the habit detail modal from opening on click.
+- **Tech:** Centralized app version bump (`v1.7.7`) and updated service worker cache bundle registration.
+
 ## 1.7.6 — tasbihku-v1.7.6
 
 - **UX/UI:** Conducted a design audit for Material 3 Expressive compliance.

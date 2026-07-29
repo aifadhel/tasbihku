@@ -72,8 +72,8 @@ export function updateSoundToggleUI(enabled, status = 'ok') {
         state.soundEnabled = false;
         if (hintEl) {
             hintEl.textContent = status === 'unsupported'
-                ? 'Browser ini tidak mendukung audio.'
-                : 'Audio diblokir oleh browser.';
+                ? (window.i18n ? window.i18n.t('hint_audio_unsupported') : 'Browser ini tidak mendukung audio.')
+                : (window.i18n ? window.i18n.t('hint_audio_blocked') : 'Audio diblokir oleh browser.');
             hintEl.style.display = 'block';
         }
         saveState();
@@ -104,7 +104,7 @@ export function showSoundHint() {
     const hintEl = document.getElementById('sound-device-hint');
     if (!hintEl) return;
     clearTimeout(soundHintTimeout);
-    hintEl.textContent = 'Tidak terdengar? Periksa volume & silent mode hp Anda.';
+    hintEl.textContent = window.i18n ? window.i18n.t('hint_audio_volume') : 'Tidak terdengar? Periksa volume & silent mode hp Anda.';
     hintEl.style.display = 'block';
     
     soundHintTimeout = setTimeout(() => {

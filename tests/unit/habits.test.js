@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { state } from '../../src/core/store.js';
+import { t } from '../../src/core/i18n.js';
 import {
     getLocalDateString,
     getTodayDate,
@@ -571,9 +572,9 @@ describe('Habits Module Unit Tests', () => {
             
             const lines = csv.trim().split('\n');
             expect(lines[0]).toBe('Tanggal,Status,Nilai,Catatan');
-            expect(lines[1]).toBe('2026-06-01,Selesai,100,"Done early"');
-            expect(lines[2]).toBe('2026-06-02,Dilewati,0,"Sick day"'); // The value for skipped might be 0, but status must be Dilewati
-            expect(lines[3]).toBe('2026-06-03,Sebagian,50,"Half done"');
+            expect(lines[1]).toBe(`2026-06-01,${t('status_completed')},100,"Done early"`);
+            expect(lines[2]).toBe(`2026-06-02,${t('status_skipped')},0,"Sick day"`); // The value for skipped might be 0, but status must be Dilewati
+            expect(lines[3]).toBe(`2026-06-03,${t('status_partial')},50,"Half done"`);
         });
     });
 });

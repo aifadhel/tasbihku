@@ -1,4 +1,5 @@
 import { state } from '../core/store.js';
+import { t } from '../core/i18n.js';
 import { 
     getLocalDateString, 
     getHabitCompletionStatus, 
@@ -68,7 +69,7 @@ export function renderHeatmapChart(habit, containerEl) {
         }
         
         rectsHTML += `<rect x="${x}" y="${y}" width="${tileSize}" height="${tileSize}" rx="2" ry="2" fill="${fill}" stroke="${stroke}" stroke-width="1" opacity="${opacity}">
-            <title>${dateStr}${isCompleted ? ': Selesai' : (isPartial ? ': Sebagian' : (isSkipped ? ': Dilewati' : (!isScheduled ? ': Libur' : '')))}</title>
+            <title>${dateStr}${isCompleted ? ': ' + t('status_completed') : (isPartial ? ': ' + t('status_partial') : (isSkipped ? ': ' + t('status_skipped') : (!isScheduled ? ': ' + t('status_holiday') : '')))}</title>
         </rect>`;
         
         if (isSkipped) {

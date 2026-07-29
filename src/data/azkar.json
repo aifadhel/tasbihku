@@ -1,65 +1,65 @@
 [
     {
         "id": "istighfar",
-        "name": "Istighfar",
+        "name": { "id": "Istighfar", "en": "Istighfar" },
         "arabic": "أَسْتَغْفِرُ اللَّهَ",
         "latin": "Astaghfirullah.",
-        "translation": "Aku memohon ampun kepada Allah.",
-        "reference": "HR. Muslim no. 591",
+        "translation": { "id": "Aku memohon ampun kepada Allah.", "en": "I seek forgiveness from Allah." },
+        "reference": { "id": "HR. Muslim no. 591", "en": "Sahih Muslim no. 591" },
         "target": 33
     },
     {
         "id": "tasbih",
-        "name": "Tasbih",
+        "name": { "id": "Tasbih", "en": "Tasbih" },
         "arabic": "سُبْحَانَ اللَّهِ",
         "latin": "Subhanallah.",
-        "translation": "Maha Suci Allah.",
-        "reference": "HR. Muslim no. 597",
+        "translation": { "id": "Maha Suci Allah.", "en": "Glory be to Allah." },
+        "reference": { "id": "HR. Muslim no. 597", "en": "Sahih Muslim no. 597" },
         "target": 33
     },
     {
         "id": "tahmid",
-        "name": "Tahmid",
+        "name": { "id": "Tahmid", "en": "Tahmid" },
         "arabic": "الْحَمْدُ لِلَّهِ",
         "latin": "Alhamdulillah.",
-        "translation": "Segala puji bagi Allah.",
-        "reference": "HR. Muslim no. 597",
+        "translation": { "id": "Segala puji bagi Allah.", "en": "All praise is due to Allah." },
+        "reference": { "id": "HR. Muslim no. 597", "en": "Sahih Muslim no. 597" },
         "target": 33
     },
     {
         "id": "takbir",
-        "name": "Takbir",
+        "name": { "id": "Takbir", "en": "Takbir" },
         "arabic": "اللَّهُ أَكْبَرُ",
         "latin": "Allahu Akbar.",
-        "translation": "Allah Maha Besar.",
-        "reference": "HR. Muslim no. 597",
+        "translation": { "id": "Allah Maha Besar.", "en": "Allah is the Greatest." },
+        "reference": { "id": "HR. Muslim no. 597", "en": "Sahih Muslim no. 597" },
         "target": 33
     },
     {
         "id": "tahlil",
-        "name": "Tahlil",
+        "name": { "id": "Tahlil", "en": "Tahlil" },
         "arabic": "لَا إِلَهَ إِلَّا اللَّهُ",
         "latin": "Laa ilaha illallah.",
-        "translation": "Tidak ada tuhan yang berhak disembah selain Allah.",
-        "reference": "Muttafaq 'Alaih",
+        "translation": { "id": "Tidak ada tuhan yang berhak disembah selain Allah.", "en": "There is no deity worthy of worship except Allah." },
+        "reference": { "id": "Muttafaq 'Alaih", "en": "Muttafaq 'Alaih" },
         "target": 100
     },
     {
         "id": "hauqalah",
-        "name": "Hauqalah",
+        "name": { "id": "Hauqalah", "en": "Hauqalah" },
         "arabic": "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
         "latin": "Laa hawla wa laa quwwata illaa billah.",
-        "translation": "Tidak ada daya dan kekuatan kecuali dengan (pertolongan) Allah.",
-        "reference": "HR. Al-Bukhari no. 6384",
+        "translation": { "id": "Tidak ada daya dan kekuatan kecuali dengan (pertolongan) Allah.", "en": "There is no power and no strength except with Allah." },
+        "reference": { "id": "HR. Al-Bukhari no. 6384", "en": "Sahih Al-Bukhari no. 6384" },
         "target": 100
     },
     {
         "id": "shalawat",
-        "name": "Shalawat Nabi",
+        "name": { "id": "Shalawat Nabi", "en": "Salawat on the Prophet" },
         "arabic": "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
         "latin": "Allahumma sholli 'alaa Muhammad wa 'alaa aali Muhammad.",
-        "translation": "Ya Allah, limpahkanlah rahmat kepada Nabi Muhammad dan keluarganya.",
-        "reference": "HR. An-Nasa'i",
+        "translation": { "id": "Ya Allah, limpahkanlah rahmat kepada Nabi Muhammad dan keluarganya.", "en": "O Allah, send blessings upon Muhammad and the family of Muhammad." },
+        "reference": { "id": "HR. An-Nasa'i", "en": "Sunan An-Nasa'i" },
         "target": 10
     }
 ]

@@ -3,6 +3,7 @@
 /* ========================================================================= */
 
 import { state, saveState } from '../core/store.js';
+import { t } from '../core/i18n.js';
 import { vibrate, playTapSound } from '../hardware/media.js';
 import { trackActivity, checkAndTriggerLinkedHabit, showStackingCelebrationToast } from './habits.js';
 import { showModal, showPage, animateValue, triggerCelebration, SVG_ICONS } from '../ui/router.js';
@@ -10,39 +11,39 @@ import azkarData from '../data/azkar.json';
 
 // Hardcoded Guided Readings Datasets
 export const wiridReadings = [
-    { arabic: "أَسْتَغْفِرُ اللَّهَ", latin: "Astaghfirullah.", translation: "Aku memohon ampun kepada Allah.", target: 3, reference: "HR. Muslim no. 591" },
-    { arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", latin: "Allahumma antas salam, wa minkas salam, tabarakta ya dzal jalali wal ikram.", translation: "Ya Allah, Engkau adalah Pemberi keselamatan, dan dari-Mu keselamatan, Maha Suci Engkau wahai Pemilik Keagungan dan Kemuliaan.", target: 1, reference: "HR. Muslim no. 591" },
-    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", target: 1, reference: "HR. An-Nasa'i no. 100, disahihkan oleh Al-Albani" },
-    { arabic: "سُبْحَانَ اللَّهِ", latin: "Subhanallah.", translation: "Maha Suci Allah.", target: 33, reference: "HR. Muslim no. 597" },
-    { arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah.", translation: "Segala puji bagi Allah.", target: 33, reference: "HR. Muslim no. 597" },
-    { arabic: "اللَّهُ أَكْبَرُ", latin: "Allahu Akbar.", translation: "Allah Maha Besar.", target: 33, reference: "HR. Muslim no. 597" },
-    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", target: 1, reference: "HR. Muslim no. 597 (Penggenap 100)" }
+    { arabic: "أَسْتَغْفِرُ اللَّهَ", latin: "Astaghfirullah.", translation: { id: "Aku memohon ampun kepada Allah.", en: "I seek forgiveness from Allah." }, target: 3, reference: { id: "HR. Muslim no. 591", en: "Sahih Muslim no. 591" } },
+    { arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", latin: "Allahumma antas salam, wa minkas salam, tabarakta ya dzal jalali wal ikram.", translation: { id: "Ya Allah, Engkau adalah Pemberi keselamatan, dan dari-Mu keselamatan, Maha Suci Engkau wahai Pemilik Keagungan dan Kemuliaan.", en: "O Allah, You are Peace, and from You comes peace. Blessed are You, O Owner of Majesty and Honor." }, target: 1, reference: { id: "HR. Muslim no. 591", en: "Sahih Muslim no. 591" } },
+    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: { id: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", en: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep..." }, target: 1, reference: { id: "HR. An-Nasa'i no. 100, disahihkan oleh Al-Albani", en: "Sunan An-Nasa'i no. 100, authenticated by Al-Albani" } },
+    { arabic: "سُبْحَانَ اللَّهِ", latin: "Subhanallah.", translation: { id: "Maha Suci Allah.", en: "Glory be to Allah." }, target: 33, reference: { id: "HR. Muslim no. 597", en: "Sahih Muslim no. 597" } },
+    { arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah.", translation: { id: "Segala puji bagi Allah.", en: "All praise is due to Allah." }, target: 33, reference: { id: "HR. Muslim no. 597", en: "Sahih Muslim no. 597" } },
+    { arabic: "اللَّهُ أَكْبَرُ", latin: "Allahu Akbar.", translation: { id: "Allah Maha Besar.", en: "Allah is the Greatest." }, target: 33, reference: { id: "HR. Muslim no. 597", en: "Sahih Muslim no. 597" } },
+    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things." }, target: 1, reference: { id: "HR. Muslim no. 597 (Penggenap 100)", en: "Sahih Muslim no. 597 (Completing 100)" } }
 ];
 
 export const dzikirPagi = [
-    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", target: 1, reference: "HR. Al-Hakim 1/562, disahihkan oleh Al-Albani" },
-    { arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Ashbahnaa wa ashbahal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: "Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", target: 1, reference: "HR. Muslim no. 2723" },
-    { arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ", latin: "Allahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur.", translation: "Ya Allah, dengan rahmat-Mu kami memasuki waktu pagi, dan dengan rahmat-Mu kami memasuki waktu sore. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami dibangkitkan.", target: 1, reference: "HR. At-Tirmidzi no. 3391" },
-    { arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.", translation: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.", target: 1, reference: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)" },
-    { arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhanallahi wa bihamdih.", translation: "Maha Suci Allah dan segala puji bagi-Nya.", target: 100, reference: "HR. Muslim no. 2692" },
-    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", target: 10, reference: "HR. Abu Daud no. 5077" },
-    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", latin: "Allahumma innii as-alukal 'aafiyata fid dunyaa wal aakhirah, allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii.", translation: "Ya Allah, sesungguhnya aku memohon kepada-Mu kesejahteraan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan kesejahteraan dalam agamaku, duniaku, keluargaku, dan hartaku.", target: 1, reference: "HR. Abu Daud no. 5074, Ibnu Majah no. 3871" },
-    { arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ", latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant.", translation: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau.", target: 3, reference: "HR. Abu Daud no. 5090" },
-    { arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", latin: "Bismillahilladzii laa yadhurru ma'asmihi syai-un fil ardhi wa laa fis samaa-i wa huwas samii'ul 'aliim.", translation: "Dengan nama Allah yang dengan nama-Nya tidak ada sesuatu pun di bumi dan langit yang dapat mendatangkan bahaya, dan Dia Maha Mendengar lagi Maha Mengetahui.", target: 3, reference: "HR. Abu Daud no. 5088, At-Tirmidzi no. 3388" },
-    { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", target: 100, reference: "HR. Al-Bukhari no. 6307, Muslim no. 2702" }
+    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: { id: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", en: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep..." }, target: 1, reference: { id: "HR. Al-Hakim 1/562, disahihkan oleh Al-Albani", en: "Al-Hakim 1/562, authenticated by Al-Albani" } },
+    { arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Ashbahnaa wa ashbahal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "We have reached the morning and dominion belongs to Allah, and all praise is due to Allah. There is no deity except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things." }, target: 1, reference: { id: "HR. Muslim no. 2723", en: "Sahih Muslim no. 2723" } },
+    { arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ", latin: "Allahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur.", translation: { id: "Ya Allah, dengan rahmat-Mu kami memasuki waktu pagi, dan dengan rahmat-Mu kami memasuki waktu sore. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami dibangkitkan.", en: "O Allah, by You we enter the morning, and by You we enter the evening. By You we live, and by You we die, and unto You is the resurrection." }, target: 1, reference: { id: "HR. At-Tirmidzi no. 3391", en: "Sunan At-Tirmidhi no. 3391" } },
+    { arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.", translation: { id: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.", en: "O Allah, You are my Lord; there is no deity except You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for none forgives sins except You." }, target: 1, reference: { id: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)", en: "Sahih Al-Bukhari no. 6306 (Sayyidul Istighfar)" } },
+    { arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhanallahi wa bihamdih.", translation: { id: "Maha Suci Allah dan segala puji bagi-Nya.", en: "Glory be to Allah and all praise is due to Him." }, target: 100, reference: { id: "HR. Muslim no. 2692", en: "Sahih Muslim no. 2692" } },
+    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things." }, target: 10, reference: { id: "HR. Abu Daud no. 5077", en: "Sunan Abu Dawud no. 5077" } },
+    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", latin: "Allahumma innii as-alukal 'aafiyata fid dunyaa wal aakhirah, allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii.", translation: { id: "Ya Allah, sesungguhnya aku memohon kepada-Mu kesejahteraan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan kesejahteraan dalam agamaku, duniaku, keluargaku, dan hartaku.", en: "O Allah, I ask You for well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion and worldly affairs, my family, and my wealth." }, target: 1, reference: { id: "HR. Abu Daud no. 5074, Ibnu Majah no. 3871", en: "Sunan Abu Dawud no. 5074, Ibn Majah no. 3871" } },
+    { arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ", latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant.", translation: { id: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau.", en: "O Allah, grant well-being to my body. O Allah, grant well-being to my hearing. O Allah, grant well-being to my sight. There is no deity except You." }, target: 3, reference: { id: "HR. Abu Daud no. 5090", en: "Sunan Abu Dawud no. 5090" } },
+    { arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", latin: "Bismillahilladzii laa yadhurru ma'asmihi syai-un fil ardhi wa laa fis samaa-i wa huwas samii'ul 'aliim.", translation: { id: "Dengan nama Allah yang dengan nama-Nya tidak ada sesuatu pun di bumi dan langit yang dapat mendatangkan bahaya, dan Dia Maha Mendengar lagi Maha Mengetahui.", en: "In the name of Allah, with whose name nothing on earth or in the heavens can cause harm, and He is the Hearing, the Knowing." }, target: 3, reference: { id: "HR. Abu Daud no. 5088, At-Tirmidzi no. 3388", en: "Sunan Abu Dawud no. 5088, At-Tirmidhi no. 3388" } },
+    { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: { id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", en: "I seek the forgiveness of Allah and repent to Him." }, target: 100, reference: { id: "HR. Al-Bukhari no. 6307, Muslim no. 2702", en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702" } }
 ];
 
 export const dzikirPetang = [
-    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", target: 1, reference: "HR. Al-Hakim 1/562, disahihkan oleh Al-Albani" },
-    { arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Amsainaa wa amsal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: "Kami telah memasuki waktu sore dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", target: 1, reference: "HR. Muslim no. 2723" },
-    { arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ", latin: "Allahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir.", translation: "Ya Allah, dengan rahmat-Mu kami memasuki waktu sore, dan dengan rahmat-Mu kami memasuki waktu pagi. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami kembali.", target: 1, reference: "HR. At-Tirmidzi no. 3391" },
-    { arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.", translation: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.", target: 1, reference: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)" },
-    { arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhanallahi wa bihamdih.", translation: "Maha Suci Allah dan segala puji bagi-Nya.", target: 100, reference: "HR. Muslim no. 2692" },
-    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", target: 10, reference: "HR. Abu Daud no. 5077" },
-    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", latin: "Allahumma innii as-alukal 'aafiyata fid dunyaa wal aakhirah, allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii.", translation: "Ya Allah, sesungguhnya aku memohon kepada-Mu kesejahteraan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan kesejahteraan dalam agamaku, duniaku, keluargaku, dan hartaku.", target: 1, reference: "HR. Abu Daud no. 5074" },
-    { arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ", latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant.", translation: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau.", target: 3, reference: "HR. Abu Daud no. 5090" },
-    { arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'uudzu bikalimaatillahit taammaati min syarri maa khalaq.", translation: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk yang Dia ciptakan.", target: 3, reference: "HR. Muslim no. 2709, At-Tirmidzi no. 3393" },
-    { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", target: 100, reference: "HR. Al-Bukhari no. 6307, Muslim no. 2702" }
+    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: { id: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", en: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep..." }, target: 1, reference: { id: "HR. Al-Hakim 1/562, disahihkan oleh Al-Albani", en: "Al-Hakim 1/562, authenticated by Al-Albani" } },
+    { arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Amsainaa wa amsal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Kami telah memasuki waktu sore dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "We have reached the evening and dominion belongs to Allah, and all praise is due to Allah. There is no deity except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things." }, target: 1, reference: { id: "HR. Muslim no. 2723", en: "Sahih Muslim no. 2723" } },
+    { arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ", latin: "Allahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir.", translation: { id: "Ya Allah, dengan rahmat-Mu kami memasuki waktu sore, dan dengan rahmat-Mu kami memasuki waktu pagi. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami kembali.", en: "O Allah, by You we enter the evening, and by You we enter the morning. By You we live, and by You we die, and unto You is the return." }, target: 1, reference: { id: "HR. At-Tirmidzi no. 3391", en: "Sunan At-Tirmidhi no. 3391" } },
+    { arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.", translation: { id: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.", en: "O Allah, You are my Lord; there is no deity except You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for none forgives sins except You." }, target: 1, reference: { id: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)", en: "Sahih Al-Bukhari no. 6306 (Sayyidul Istighfar)" } },
+    { arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhanallahi wa bihamdih.", translation: { id: "Maha Suci Allah dan segala puji bagi-Nya.", en: "Glory be to Allah and all praise is due to Him." }, target: 100, reference: { id: "HR. Muslim no. 2692", en: "Sahih Muslim no. 2692" } },
+    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things." }, target: 10, reference: { id: "HR. Abu Daud no. 5077", en: "Sunan Abu Dawud no. 5077" } },
+    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", latin: "Allahumma innii as-alukal 'aafiyata fid dunyaa wal aakhirah, allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii.", translation: { id: "Ya Allah, sesungguhnya aku memohon kepada-Mu kesejahteraan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan kesejahteraan dalam agamaku, duniaku, keluargaku, dan hartaku.", en: "O Allah, I ask You for well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion and worldly affairs, my family, and my wealth." }, target: 1, reference: { id: "HR. Abu Daud no. 5074", en: "Sunan Abu Dawud no. 5074" } },
+    { arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ", latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant.", translation: { id: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau.", en: "O Allah, grant well-being to my body. O Allah, grant well-being to my hearing. O Allah, grant well-being to my sight. There is no deity except You." }, target: 3, reference: { id: "HR. Abu Daud no. 5090", en: "Sunan Abu Dawud no. 5090" } },
+    { arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'uudzu bikalimaatillahit taammaati min syarri maa khalaq.", translation: { id: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk yang Dia ciptakan.", en: "I seek refuge in the perfect words of Allah from the evil of what He has created." }, target: 3, reference: { id: "HR. Muslim no. 2709, At-Tirmidzi no. 3393", en: "Sahih Muslim no. 2709, At-Tirmidhi no. 3393" } },
+    { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: { id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", en: "I seek the forgiveness of Allah and repent to Him." }, target: 100, reference: { id: "HR. Al-Bukhari no. 6307, Muslim no. 2702", en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702" } }
 ];
 
 // Editor Session state
@@ -54,7 +55,7 @@ let playerAutoSkipTimeout = null;
 
 export function getSessionData(type, id) {
     let rawPages = [];
-    let name = "Dzikir";
+    let name = t('player_title_default');
 
     if (type === 'custom') {
         const item = state.customList.find(i => i.id == id);
@@ -63,9 +64,9 @@ export function getSessionData(type, id) {
             rawPages = item.pages;
         }
     } else {
-        if (type === 'pagi') { name = 'Dzikir Pagi'; rawPages = state.guidedData.pagi || dzikirPagi; }
-        else if (type === 'petang') { name = 'Dzikir Petang'; rawPages = state.guidedData.petang || dzikirPetang; }
-        else if (type === 'wirid') { name = 'Wirid Ba\'da Shalat'; rawPages = state.guidedData.wirid || wiridReadings; }
+        if (type === 'pagi') { name = t('dzikir_pagi_title'); rawPages = state.guidedData.pagi || dzikirPagi; }
+        else if (type === 'petang') { name = t('dzikir_petang_title'); rawPages = state.guidedData.petang || dzikirPetang; }
+        else if (type === 'wirid') { name = t('wirid_title'); rawPages = state.guidedData.wirid || wiridReadings; }
     }
 
     return { name, pages: rawPages };
@@ -81,7 +82,7 @@ export function startPlayer(type, id = null) {
 
     const d = getSessionData(type, id);
     if (!d.pages || d.pages.length === 0) {
-        showModal('Kosong', 'Tidak ada bacaan dzikir.', null, true);
+        showModal(t('modal_empty_title'), t('modal_empty_msg'), null, true);
         return;
     }
 
@@ -121,8 +122,15 @@ export function updatePlayerUI() {
         latinEl.style.display = currentPage.latin ? 'block' : 'none';
     }
     if (transEl) {
-        transEl.innerText = currentPage.translation || '';
-        transEl.style.display = currentPage.translation ? 'block' : 'none';
+        let transText = '';
+        if (typeof currentPage.translation === 'object' && currentPage.translation !== null) {
+            const lang = state.language || 'id';
+            transText = currentPage.translation[lang] || currentPage.translation.id || currentPage.translation.en || '';
+        } else {
+            transText = currentPage.translation || '';
+        }
+        transEl.innerText = transText;
+        transEl.style.display = transText ? 'block' : 'none';
     }
     if (refEl) {
         refEl.innerText = currentPage.reference || '';
@@ -130,7 +138,7 @@ export function updatePlayerUI() {
     }
 
     if (counterEl) counterEl.innerText = state.playerCount;
-    if (targetEl) targetEl.innerText = `Target: ${currentPage.target}x`;
+    if (targetEl) targetEl.innerText = t('player_target_format', { target: currentPage.target });
 
     if (progressEl) {
         const progress = (state.playerCount / Math.max(currentPage.target, 1)) * 100;
@@ -227,7 +235,7 @@ export function goToNextPlayerPage() {
             }
         }
 
-        showModal('Alhamdulillah! Selesai', `Anda telah menyelesaikan ${session.name}. Semoga Allah menerima amal kita.`, () => {
+        showModal(t('modal_celebration_title'), t('modal_celebration_msg', {name: session.name}), () => {
             showPage('page-menu');
         });
     }
@@ -235,7 +243,7 @@ export function goToNextPlayerPage() {
 
 export function confirmResetPlayer() {
     if (state.playerCount === 0 && state.playerIndex === 0) return;
-    showModal('Ulangi Dzikir', 'Apakah Anda ingin mengulang dzikir dari awal?', () => {
+    showModal(t('modal_reset_confirm_title'), t('modal_reset_confirm_msg'), () => {
         state.playerIndex = 0;
         state.playerCount = 0;
         if (playerAutoSkipTimeout) clearTimeout(playerAutoSkipTimeout);
@@ -279,7 +287,7 @@ export function renderCustomList() {
 
         const descSpan = document.createElement('span');
         descSpan.style.cssText = 'font-size: 0.85rem; opacity: 0.7; margin-top: 4px;';
-        descSpan.textContent = `${item.pages.length} Halaman (Total Target: ${item.pages.reduce((a, c) => a + c.target, 0)})`;
+        descSpan.textContent = t('dzikir_pages_target', {pages: item.pages.length, target: item.pages.reduce((a, c) => a + c.target, 0)});
 
         contentDiv.appendChild(nameSpan);
         contentDiv.appendChild(descSpan);
@@ -295,10 +303,10 @@ export function renderCustomList() {
         btnDel.className = 'btn btn-icon-edit';
         btnDel.style.backgroundColor = 'rgba(255, 180, 171, 0.1)';
         btnDel.style.color = '#ffb4ab';
-        btnDel.setAttribute('aria-label', `Hapus ${item.name}`);
+        btnDel.setAttribute('aria-label', `${t('btn_delete')} ${item.name}`);
         btnDel.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12ZM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4Z"/></svg>`;
         btnDel.onclick = () => {
-            showModal('Hapus Dzikir', 'Apakah Anda yakin ingin menghapus dzikir ini?', () => {
+            showModal(t('modal_delete_dzikir_title'), t('modal_delete_dzikir_msg', {name: item.name}), () => {
                 state.customList.splice(index, 1);
                 saveState();
                 renderCustomList();
@@ -351,7 +359,7 @@ export function renderEditor() {
 
         const header = document.createElement('div');
         header.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 12px;';
-        header.innerHTML = `<span style="font-weight:700; color:var(--md-sys-color-primary);">Halaman ${index + 1}</span>`;
+        header.innerHTML = `<span style="font-weight:700; color:var(--md-sys-color-primary);">${t('editor_page_number', {num: index + 1})}</span>`;
 
         const btnGroup = document.createElement('div');
         btnGroup.style.cssText = 'display: flex; gap: 4px;';
@@ -376,18 +384,23 @@ export function renderEditor() {
         header.appendChild(btnGroup);
         card.appendChild(header);
 
+        // Normalize page.translation
+        if (typeof page.translation === 'string') {
+            page.translation = { id: page.translation, en: '' };
+        } else if (!page.translation || typeof page.translation !== 'object') {
+            page.translation = { id: '', en: '' };
+        }
+
         const inputs = [
             { key: 'target', label: 'Target Jumlah (*)', type: 'number', val: page.target },
             { key: 'arabic', label: 'Teks Arab', type: 'text', val: page.arabic },
             { key: 'latin', label: 'Teks Latin', type: 'text', val: page.latin },
-            { key: 'translation', label: 'Terjemahan', type: 'textarea', val: page.translation },
             { key: 'reference', label: 'Referensi', type: 'text', val: page.reference }
         ];
 
         inputs.forEach(f => {
-            const isTextarea = f.type === 'textarea';
-            const el = document.createElement(isTextarea ? 'textarea' : 'input');
-            if (!isTextarea) el.type = f.type;
+            const el = document.createElement('input');
+            el.type = f.type;
             el.value = f.val || '';
             el.placeholder = f.label;
             el.oninput = (e) => {
@@ -400,6 +413,47 @@ export function renderEditor() {
             card.appendChild(el);
         });
 
+        // Translation Block with Language Dropdown
+        const transContainer = document.createElement('div');
+        transContainer.style.cssText = 'margin-bottom: 12px; border-top: 1px dashed var(--md-sys-color-outline-variant); padding-top: 8px;';
+        
+        const transHeader = document.createElement('div');
+        transHeader.style.cssText = 'display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;';
+        
+        const transLabel = document.createElement('label');
+        transLabel.className = 'label-medium';
+        transLabel.style.opacity = '0.8';
+        transLabel.textContent = t('custom_azkar_trans_label');
+        
+        const transLangSelect = document.createElement('select');
+        transLangSelect.style.cssText = 'background: rgba(0,0,0,0.3); border: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-background); border-radius: 6px; padding: 2px 6px; font-size: 0.75rem;';
+        transLangSelect.innerHTML = `
+            <option value="id">${t('custom_azkar_trans_lang_id')}</option>
+            <option value="en">${t('custom_azkar_trans_lang_en')}</option>
+        `;
+        transLangSelect.value = state.language || 'id';
+
+        const transTextarea = document.createElement('textarea');
+        transTextarea.placeholder = 'Terjemahan...';
+        transTextarea.style.cssText = 'width: 100%; background: var(--md-sys-color-surface-container); border: none; color: var(--md-sys-color-on-background); padding: 10px; border-radius: 8px; font-family: inherit; font-size: 0.9rem; resize: vertical; min-height: 50px; box-sizing: border-box;';
+        transTextarea.value = page.translation[transLangSelect.value] || '';
+
+        transTextarea.oninput = (e) => {
+            const currentLang = transLangSelect.value;
+            page.translation[currentLang] = e.target.value;
+        };
+
+        transLangSelect.onchange = (e) => {
+            const selectedLang = e.target.value;
+            transTextarea.value = page.translation[selectedLang] || '';
+        };
+
+        transHeader.appendChild(transLabel);
+        transHeader.appendChild(transLangSelect);
+        transContainer.appendChild(transHeader);
+        transContainer.appendChild(transTextarea);
+        card.appendChild(transContainer);
+
         const actions = document.createElement('div');
         actions.className = 'card-actions';
 
@@ -409,10 +463,10 @@ export function renderEditor() {
         btnDel.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12ZM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4Z"/></svg>`;
         btnDel.onclick = () => {
             if (editorSession.pages.length === 1) {
-                showModal('Error', 'Sesi dzikir minimal harus memiliki 1 halaman.', null, true);
+                showModal('Error', t('modal_min_1_page'), null, true);
                 return;
             }
-            showModal('Hapus Halaman', 'Hapus halaman ke-' + (index + 1) + '?', () => {
+            showModal(t('modal_delete_page_title'), t('modal_delete_page_msg_index', {index: index + 1}), () => {
                 editorSession.pages.splice(index, 1);
                 renderEditor();
             });
@@ -430,10 +484,10 @@ export function addEditorPage() {
 
 export function removeEditorPage(index) {
     if (editorSession.pages.length === 1) {
-        showModal('Error', 'Sesi minimal harus memiliki 1 halaman.', null, true);
+        showModal('Error', t('modal_min_1_page'), null, true);
         return;
     }
-    showModal('Hapus Halaman', 'Hapus halaman bacaan ini?', () => {
+    showModal(t('modal_delete_page_title'), t('modal_delete_page_msg'), () => {
         editorSession.pages.splice(index, 1);
         renderEditor();
     });
@@ -454,7 +508,7 @@ export function saveEditorSession() {
     const nameInput = nameInputEl ? nameInputEl.value.trim() : '';
     if (editorType === 'custom' || editorType === 'new') {
         if (!nameInput) {
-            showModal('Error', 'Nama dzikir tidak boleh kosong.', null, true);
+            showModal('Error', t('modal_dzikir_name_empty'), null, true);
             return;
         }
         editorSession.name = nameInput;
@@ -475,16 +529,16 @@ export function saveEditorSession() {
 
     saveState();
     renderCustomList();
-    showModal('Berhasil', 'Dzikir berhasil disimpan!', () => {
+    showModal(t('modal_success'), t('modal_saved'), () => {
         showPage('page-menu');
     }, true);
 }
 
 export function confirmRestoreGuided() {
-    showModal('Kembali ke Default', 'Apakah Anda yakin ingin mengembalikan bacaan ini ke setelan standar (sahih)? Semua editan Anda pada dzikir ini akan hilang.', () => {
+    showModal(t('modal_reset_guided_title'), t('modal_reset_guided_msg'), () => {
         delete state.guidedData[editorType];
         saveState();
-        showModal('Sukses', 'Berhasil dikembalikan ke default.', () => {
+        showModal(t('modal_success'), t('modal_success_default'), () => {
             showPage('page-menu');
         }, true);
     });
@@ -543,7 +597,7 @@ export async function showLibraryModal() {
         if (modal) modal.classList.add('active');
     } catch (e) {
         console.error('Failed to load Azkar Library', e);
-        showModal('Error', 'Gagal memuat pustaka azkar.', null, true);
+        showModal('Error', t('modal_library_load_error'), null, true);
     }
 }
 
@@ -552,13 +606,19 @@ export function closeLibraryModal() {
     if (modal) modal.classList.remove('active');
 }
 
+let tempCustomTranslations = { id: '', en: '' };
+
 export function addFromLibrary(zkr) {
     if (!editorSession) return;
+    const transVal = typeof zkr.translation === 'object' && zkr.translation !== null
+        ? { id: zkr.translation.id || '', en: zkr.translation.en || '' }
+        : { id: zkr.translation || '', en: '' };
+
     editorSession.pages.push({
         id: Date.now() + Math.random(),
         arabic: zkr.arabic || '',
         latin: zkr.latin || '',
-        translation: zkr.translation || '',
+        translation: transVal,
         reference: zkr.reference || '',
         target: zkr.target || 33
     });
@@ -573,6 +633,28 @@ export function openCustomAzkarModal() {
         document.getElementById('custom-azkar-latin').value = '';
         document.getElementById('custom-azkar-target').value = 33;
         
+        tempCustomTranslations = { id: '', en: '' };
+        const langSelect = document.getElementById('custom-azkar-trans-lang');
+        const transTextarea = document.getElementById('custom-azkar-translation');
+        const activeLang = state.language || 'id';
+
+        if (langSelect) langSelect.value = activeLang;
+        if (transTextarea) {
+            transTextarea.value = '';
+            transTextarea.oninput = (e) => {
+                const currentLang = langSelect ? langSelect.value : (state.language || 'id');
+                tempCustomTranslations[currentLang] = e.target.value;
+            };
+        }
+        if (langSelect) {
+            langSelect.onchange = (e) => {
+                const newLang = e.target.value;
+                if (transTextarea) {
+                    transTextarea.value = tempCustomTranslations[newLang] || '';
+                }
+            };
+        }
+
         modal.classList.add('active');
     }
 }
@@ -589,14 +671,26 @@ export function saveCustomAzkar() {
     const arabic = document.getElementById('custom-azkar-arabic').value.trim();
     const latin = document.getElementById('custom-azkar-latin').value.trim();
     const target = parseInt(document.getElementById('custom-azkar-target').value) || 33;
+    const transTextarea = document.getElementById('custom-azkar-translation');
+    const langSelect = document.getElementById('custom-azkar-trans-lang');
+    
+    if (transTextarea && langSelect) {
+        tempCustomTranslations[langSelect.value] = transTextarea.value;
+    }
 
     if (!name) {
-        showModal('Error', 'Nama azkar wajib diisi.', null, true);
+        showModal('Error', t('modal_azkar_name_empty'), null, true);
         return;
     }
 
     if (!state.customAzkar) state.customAzkar = [];
-    state.customAzkar.push({ name, arabic, latin, target });
+    state.customAzkar.push({ 
+        name, 
+        arabic, 
+        latin, 
+        target,
+        translation: { id: tempCustomTranslations.id || '', en: tempCustomTranslations.en || '' }
+    });
     saveState();
     
     closeCustomAzkarModal();

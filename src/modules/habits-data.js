@@ -1,4 +1,5 @@
 import { state, saveState } from '../core/store.js';
+import { t } from '../core/i18n.js';
 
 // --- Date Helper Functions ---
 export function getLocalDateString(d = new Date()) {
@@ -321,15 +322,15 @@ export function generateHabitCSVData(habit, reps) {
     
     let csvContent = "Tanggal,Status,Nilai,Catatan\n";
     if (sortedDates.length === 0) {
-        csvContent += "Tidak ada data,,,\n";
+        csvContent += t('modal_empty_title') + ",,,\n";
     } else {
         sortedDates.forEach(dateStr => {
             const entry = reps[dateStr];
             const { completed: isCompleted, partial: isPartial, skipped: isSkipped } = getHabitCompletionStatus(habit, entry);
-            let statusText = "Belum";
-            if (isCompleted) statusText = "Selesai";
-            else if (isSkipped) statusText = "Dilewati";
-            else if (isPartial) statusText = "Sebagian";
+            let statusText = t('status_not_completed');
+            if (isCompleted) statusText = t('status_completed');
+            else if (isSkipped) statusText = t('status_skipped');
+            else if (isPartial) statusText = t('status_partial');
             const val = entry && entry.value !== undefined ? entry.value : 0;
             const note = entry && entry.note ? entry.note.replace(/"/g, '""') : "";
             csvContent += `${dateStr},${statusText},${val},"${note}"\n`;

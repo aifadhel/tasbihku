@@ -6,6 +6,7 @@ import { state, saveState, saveStateImmediate } from '../core/store.js';
 import { vibrate, playTapSound } from '../hardware/media.js';
 import { trackActivity, triggerTimerNotification } from './habits.js';
 import { showModal, animateValue, SVG_ICONS, triggerCelebration } from '../ui/router.js';
+import { t } from '../core/i18n.js';
 
 let lastFreeCountBeforeReset = 0; // For undo support
 
@@ -37,7 +38,7 @@ export function incrementFree() {
 
 export function confirmResetFree() {
     lastFreeCountBeforeReset = state.freeCount;
-    showModal('Reset Hitungan', 'Apakah Anda yakin ingin memulai ulang hitungan bebas?', () => {
+    showModal(t('modal_reset_free_title'), t('modal_reset_free_msg'), () => {
         state.freeCount = 0;
         const freeCounterEl = document.getElementById('free-counter');
         if (freeCounterEl) freeCounterEl.innerText = 0;
@@ -98,7 +99,7 @@ export function applyNumberInputModal() {
 }
 
 export function promptManualCount() {
-    openNumberInputModal("Hitungan Manual", "Masukkan jumlah hitungan saat ini:", state.freeCount, (newVal) => {
+    openNumberInputModal(t('modal_manual_count_title'), t('modal_manual_count_msg'), state.freeCount, (newVal) => {
         if (newVal !== null && newVal !== '') {
             const parsed = parseInt(newVal);
             if (!isNaN(parsed) && parsed >= 0) {
@@ -106,14 +107,14 @@ export function promptManualCount() {
                 animateValue('free-counter', state.freeCount);
                 saveState();
             } else {
-                showModal('Input Tidak Valid', 'Masukkan angka yang benar.', null, true);
+                showModal(t('modal_invalid_input_title'), t('modal_invalid_input_msg'), null, true);
             }
         }
     });
 }
 
 export function promptTargetLimit() {
-    openNumberInputModal("Target Hitungan", "Isi 0 atau kosongkan untuk tanpa batas.", state.targetLimit || 0, (newVal) => {
+    openNumberInputModal(t('modal_target_limit_title'), t('modal_target_limit_msg'), state.targetLimit || 0, (newVal) => {
         if (newVal !== null) {
             const parsed = parseInt(newVal);
             if (!isNaN(parsed) && parsed > 0) {
@@ -123,7 +124,7 @@ export function promptTargetLimit() {
                 state.targetLimit = 0;
                 saveState();
             } else {
-                showModal('Input Tidak Valid', 'Masukkan angka yang benar.', null, true);
+                showModal(t('modal_invalid_input_title'), t('modal_invalid_input_msg'), null, true);
             }
         }
     });
@@ -196,7 +197,7 @@ export function stopStopwatch() {
 }
 
 export function resetStopwatch() {
-    showModal('Reset Stopwatch', 'Mulai ulang stopwatch dari awal?', () => {
+    showModal(t('modal_reset_stopwatch_title'), t('modal_reset_stopwatch_msg'), () => {
         if (state.stopwatch.running) stopStopwatch();
         state.stopwatch.elapsedTime = 0;
         const stopwatchCounterEl = document.getElementById('stopwatch-counter');
@@ -215,11 +216,11 @@ export function updateStopwatchUI() {
 
     if (state.stopwatch.running) {
         emojiEl.innerHTML = SVG_ICONS.pause;
-        labelEl.innerText = 'PAUSE';
+        labelEl.innerText = t('label_pause');
         btnEl.style.background = 'linear-gradient(135deg, #ffb4ab 0%, #ff897d 100%)';
     } else {
         emojiEl.innerHTML = SVG_ICONS.play;
-        labelEl.innerText = 'START';
+        labelEl.innerText = t('label_start');
         btnEl.style.background = 'linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%)';
     }
     const stopwatchCounterEl = document.getElementById('stopwatch-counter');
@@ -234,7 +235,7 @@ export function toggleTimer() {
         stopTimer();
     } else {
         if (!state.timer.targetDuration) {
-            showModal('Pilih Waktu', 'Silakan tentukan waktu timer terlebih dahulu.', null, true);
+            showModal(t('modal_timer_setup_title'), t('modal_timer_setup_msg'), null, true);
             return;
         }
         startTimer();
@@ -282,7 +283,7 @@ export function applyTimeInputModal() {
         setTimerPreset(total);
         closeTimeInputModal();
     } else {
-        showModal('Error', 'Waktu tidak boleh 0.', null, true);
+        showModal(t('modal_timer_error_title'), t('modal_timer_error_msg'), null, true);
     }
 }
 
@@ -330,12 +331,12 @@ export function stopTimer() {
 export function completeTimer() {
     stopTimer();
     vibrate([500, 200, 500, 200, 500, 200, 1000, 200, 1000]);
-    showModal('Waktu Selesai!', 'Waktu timer telah habis. Alhamdulillah!', null, true);
+    showModal(t('modal_timer_done_title'), t('modal_timer_done_msg'), null, true);
     triggerTimerNotification();
 }
 
 export function resetTimer() {
-    showModal('Reset Timer', 'Kembalikan timer ke awal?', () => {
+    showModal(t('modal_reset_timer_title'), t('modal_reset_timer_msg'), () => {
         if (state.timer.running) stopTimer();
         state.timer.targetDuration = null;
         state.timer.remainingTime = null;
@@ -354,13 +355,13 @@ export function updateTimerUI() {
 
     if (state.timer.running) {
         emojiEl.innerHTML = SVG_ICONS.pause;
-        labelEl.innerText = 'PAUSE';
+        labelEl.innerText = t('label_pause');
         btnEl.style.background = 'linear-gradient(135deg, #ffb4ab 0%, #ff897d 100%)';
         if (setupArea) setupArea.style.display = 'none';
         counterEl.style.fontSize = 'clamp(3.5rem, 12vw, 5.5rem)';
     } else {
         emojiEl.innerHTML = SVG_ICONS.play;
-        labelEl.innerText = 'START';
+        labelEl.innerText = t('label_start');
         btnEl.style.background = 'linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%)';
         if (setupArea) setupArea.style.display = 'block';
         counterEl.style.fontSize = 'clamp(2.5rem, 8vw, 3.5rem)';

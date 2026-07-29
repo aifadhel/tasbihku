@@ -1,5 +1,6 @@
 import { state } from '../core/store.js';
 import { generateHabitCSVData } from './habits-data.js';
+import { t } from '../core/i18n.js';
 
 export function exportHabitCSV(habitId) {
     const habit = state.habits.find(h => h.id === habitId);
@@ -26,7 +27,7 @@ export function exportHabitCSV(habitId) {
     } catch (e) {
         console.error("CSV Export failed", e);
         if (window.showModal) {
-            window.showModal('Ekspor Gagal', 'Gagal membuat file CSV.', null, true);
+            window.showModal(t('modal_export_failed_title'), t('modal_export_failed_msg'), null, true);
         }
     }
 }

@@ -7,8 +7,9 @@ import { playTapSound, isVibrationSupported, showSoundHint, vibrate } from '../h
 import { requestWakeLock, releaseWakeLock } from '../hardware/system.js';
 import { stopStopwatch, stopTimer, updateStopwatchUI, updateTimerUI } from '../modules/tasbih.js';
 import { renderHabits, renderStats } from '../modules/habits.js';
+import { t } from '../core/i18n.js';
 
-export const APP_VERSION = '1.7.6';
+export const APP_VERSION = '1.7.7';
 
 export const SVG_ICONS = {
     tap: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>`,
@@ -90,7 +91,7 @@ export function showModal(title, message, yesCallback, isAlert = false, noCallba
     if (titleEl) titleEl.innerText = title;
     if (msgEl) msgEl.innerText = message;
     if (yesBtn) {
-        yesBtn.innerText = isAlert ? "OK" : "Ya";
+        yesBtn.innerText = isAlert ? t('modal_ok') : t('modal_yes');
         yesBtn.onclick = () => {
             const yesCb = currentModalCallback;
             currentModalCallback = null;
@@ -196,8 +197,8 @@ export function toggleSoundMode(isChecked) {
         const toggleEl = document.getElementById('toggle-sound');
         if (toggleEl) toggleEl.checked = false;
         showModal(
-            'Audio Tidak Tersedia', 
-            'Browser atau perangkat ini memblokir audio. Coba muat ulang halaman atau izinkan audio di pengaturan browser.', 
+            t('modal_audio_unavail_title'), 
+            t('modal_audio_unavail_msg'), 
             null, 
             true
         );
@@ -218,7 +219,7 @@ export function toggleVibrationMode(isChecked) {
     if (isChecked && !isVibrationSupported()) {
         const toggleEl = document.getElementById('toggle-vibration');
         if (toggleEl) toggleEl.checked = false;
-        showModal('Getaran Tidak Didukung', 'Perangkat atau browser ini tidak mendukung getaran (haptic).', null, true);
+        showModal(t('modal_vib_unsupported_title'), t('modal_vib_unsupported_msg'), null, true);
         return;
     }
     state.vibrationEnabled = isChecked;
@@ -310,13 +311,13 @@ export function switchAppMode(mode, save = true) {
     const menuTasbihReminders = document.getElementById('menu-tasbih-reminders');
 
     if (mode === 'tasbih') {
-        if (menuTitle) menuTitle.innerText = 'Pilih Dzikir';
+        if (menuTitle) menuTitle.innerText = t('menu_title');
         if (menuTasbihSections) menuTasbihSections.style.display = 'block';
         if (menuItemSound) menuItemSound.style.display = 'flex';
         if (menuItemArabicSize) menuItemArabicSize.style.display = 'flex';
         if (menuTasbihReminders) menuTasbihReminders.style.display = 'block';
     } else {
-        if (menuTitle) menuTitle.innerText = 'Pengaturan';
+        if (menuTitle) menuTitle.innerText = t('section_settings');
         if (menuTasbihSections) menuTasbihSections.style.display = 'none';
         if (menuItemSound) menuItemSound.style.display = 'none';
         if (menuItemSoundHint) menuItemSoundHint.style.display = 'none';
@@ -348,21 +349,21 @@ export function switchDashboardMode(mode) {
 
     if (mode === 'counting') {
         if (freeCounterArea) freeCounterArea.style.display = 'block';
-        if (titleEl) titleEl.innerText = 'Hitungan Bebas';
+        if (titleEl) titleEl.innerText = t('title_free_count');
         // Restore TAP button (stopStopwatch/stopTimer override it to START)
         const emojiEl = document.getElementById('dashboard-main-emoji');
         const labelEl = document.getElementById('dashboard-main-label');
         const btnEl = document.getElementById('dashboard-main-btn');
         if (emojiEl) emojiEl.innerHTML = SVG_ICONS.tap;
-        if (labelEl) labelEl.innerText = 'TAP';
+        if (labelEl) labelEl.innerText = t('btn_tap');
         if (btnEl) btnEl.style.background = 'linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%)';
     } else if (mode === 'stopwatch') {
         if (stopwatchDisplayArea) stopwatchDisplayArea.style.display = 'block';
-        if (titleEl) titleEl.innerText = 'Stopwatch';
+        if (titleEl) titleEl.innerText = t('mode_stopwatch');
         updateStopwatchUI();
     } else if (mode === 'timer') {
         if (timerDisplayArea) timerDisplayArea.style.display = 'block';
-        if (titleEl) titleEl.innerText = 'Timer';
+        if (titleEl) titleEl.innerText = t('mode_timer');
         updateTimerUI();
     }
 }
@@ -379,7 +380,7 @@ export function exportData() {
         downloadAnchorNode.remove();
         vibrate([50, 50]);
     } catch (e) {
-        showModal('Error', 'Gagal membuat backup data.', null, true);
+        showModal(t('modal_backup_error_title'), t('modal_backup_error_msg'), null, true);
     }
 }
 
@@ -394,15 +395,15 @@ export function importDataProcess(file) {
         try {
             const importedState = JSON.parse(e.target.result);
             if (typeof importedState.freeCount !== 'undefined') {
-                showModal('Pulihkan Data', 'Data saat ini akan ditimpa dengan data backup. Lanjutkan?', () => {
+                showModal(t('modal_restore_title'), t('modal_restore_msg'), () => {
                     updateState(importedState, true);
                     window.location.reload();
                 });
             } else {
-                showModal('Error', 'Format file tidak valid atau rusak.', null, true);
+                showModal(t('modal_backup_error_title'), t('modal_restore_invalid_msg'), null, true);
             }
         } catch (err) {
-            showModal('Error', 'Gagal membaca file backup.', null, true);
+            showModal(t('modal_backup_error_title'), t('modal_restore_failed_msg'), null, true);
         }
     };
     reader.readAsText(file);

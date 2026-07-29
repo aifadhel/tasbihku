@@ -7,6 +7,7 @@ import '@fontsource/google-sans-code/500.css';
 import '@fontsource/google-sans-code/700.css';
 
 import { loadState, state, subscribe, saveState } from './core/store.js';
+import { t, setLanguage, getLanguage, applyTranslations } from './core/i18n.js';
 import { 
     vibrate, 
     playTapSound, 
@@ -76,11 +77,15 @@ import {
     APP_VERSION 
 } from './ui/router.js';
 
-// Expose core store, navigation, and module APIs globally to bridge with index.html events
+// Expose core store, navigation, i18n, and module APIs globally to bridge with index.html events
 window.loadState = loadState;
 window.state = state;
 window.subscribe = subscribe;
 window.saveState = saveState;
+window.t = t;
+window.setLanguage = setLanguage;
+window.getLanguage = getLanguage;
+window.applyTranslations = applyTranslations;
 window.showPage = showPage;
 window.goBack = goBack;
 window.showModal = showModal;
@@ -273,9 +278,18 @@ subscribe('vibrationEnabled', (state) => {
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Initial State Loading
     await loadState();
+    applyTranslations();
     if (typeof refreshAllHabitMetricsCache === 'function') {
         refreshAllHabitMetricsCache();
     }
+
+    window.addEventListener('languageChanged', () => {
+        applyTranslations();
+        renderCustomList();
+        renderHabits();
+        renderStats();
+        updateStreakBadge();
+    });
 
     // 2. Setup inputs and listeners
     const nameInput = document.getElementById('username-input');
@@ -293,6 +307,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             const file = e.target.files[0];
             if (!file) return;
             importDataProcess(file);
+        });
+    }
+
+    const langSelect = document.getElementById('select-language');
+    if (langSelect) {
+        langSelect.addEventListener('change', (e) => {
+            setLanguage(e.target.value);
         });
     }
 

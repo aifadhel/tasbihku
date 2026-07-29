@@ -34,7 +34,8 @@ const DEFAULT_STATE = {
     pagiReminderEnabled: false,
     pagiReminderTime: "06:00",
     petangReminderEnabled: false,
-    petangReminderTime: "16:00"
+    petangReminderTime: "16:00",
+    language: 'id'
 };
 
 // Private raw state container

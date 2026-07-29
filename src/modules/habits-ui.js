@@ -21,6 +21,7 @@ import {
 import { renderHeatmapChart, renderDayOfWeekChart, renderFrequencyChart, renderScoreTrend } from './habits-chart.js';
 import { exportHabitCSV } from './habits-export.js';
 import azkarData from '../data/azkar.json';
+import { t } from '../core/i18n.js';
 
 // Private variables for habit session state
 export let currentEditingHabitId = null;
@@ -81,7 +82,7 @@ export function renderStats() {
     const activeDaysEl = document.getElementById('total-days-active');
     const totalSessionsEl = document.getElementById('stat-total-sessions');
     const currentStreakEl = document.getElementById('stat-current-streak');
-    if (activeDaysEl) activeDaysEl.innerText = `${activeDaysCount} Hari Aktif`;
+    if (activeDaysEl) activeDaysEl.innerText = t('stats_active_days', {count: activeDaysCount});
     if (totalSessionsEl) totalSessionsEl.innerText = uniqueDates.length;
     if (currentStreakEl) currentStreakEl.innerText = calculateStreak();
 }
@@ -261,7 +262,7 @@ export function renderHabits() {
         if (tags.length > 0) {
             const allChip = document.createElement('div');
             allChip.className = 'habit-filter-chip ' + (activeHabitFilter === null ? 'active' : '');
-            allChip.textContent = 'Semua';
+            allChip.textContent = t('filter_all');
             allChip.onclick = () => {
                 activeHabitFilter = null;
                 renderHabits();
@@ -290,8 +291,8 @@ export function renderHabits() {
         emptyCard.className = 'habit-empty-card';
         emptyCard.innerHTML = `
             <div class="habit-empty-icon">${SVG_ICONS.calendar}</div>
-            <div class="label-large" style="margin-bottom: 8px;">Belum Ada Kebiasaan</div>
-            <div class="text-sub" style="font-size: 0.85rem;">Mulai buat kebiasaan baik Anda hari ini.</div>
+            <div class="label-large" style="margin-bottom: 8px;">${t('habit_empty_title')}</div>
+            <div class="text-sub" style="font-size: 0.85rem;">${t('habit_empty_desc')}</div>
         `;
         habitListContainer.appendChild(emptyCard);
     }
@@ -300,11 +301,11 @@ export function renderHabits() {
     
     // Group activeHabits by routineSection to create DOM wrappers first
     const sections = {
-        pagi: { title: "☀️ Pagi", habits: [], contentWrapper: null },
-        siang: { title: "☀️ Siang", habits: [], contentWrapper: null },
-        sore: { title: "🌅 Sore", habits: [], contentWrapper: null },
-        malam: { title: "🌙 Malam", habits: [], contentWrapper: null },
-        anytime: { title: "📅 Bebas", habits: [], contentWrapper: null }
+        pagi: { title: t('routine_pagi'), habits: [], contentWrapper: null },
+        siang: { title: t('routine_siang'), habits: [], contentWrapper: null },
+        sore: { title: t('routine_sore'), habits: [], contentWrapper: null },
+        malam: { title: t('routine_malam'), habits: [], contentWrapper: null },
+        anytime: { title: t('routine_anytime'), habits: [], contentWrapper: null }
     };
 
     activeHabits.forEach(h => {
@@ -463,19 +464,19 @@ export function renderHabits() {
         
         const desc = document.createElement('span');
         desc.className = 'habit-desc';
-        desc.textContent = habit.description || 'Tidak ada deskripsi';
+        desc.textContent = habit.description || t('no_description');
         
         const currentStreak = typeof habit.currentStreak !== 'undefined' ? habit.currentStreak : 0;
         const strength = typeof habit.strengthScore !== 'undefined' ? habit.strengthScore : 0;
         const streak = document.createElement('span');
         streak.className = 'habit-streak';
         let targetText = "";
-        let streakSuffix = " Hari";
+        let streakSuffix = t('suffix_days');
         if (habit.scheduleType === 'weekly') {
-            targetText = ` &nbsp;&bull;&nbsp; 🎯 ${habit.weeklyTarget}x/minggu`;
-            streakSuffix = " Minggu";
+            targetText = ` &nbsp;&bull;&nbsp; 🎯 ${habit.weeklyTarget}${t('target_weekly')}`;
+            streakSuffix = t('suffix_weeks');
         } else if (habit.scheduleType === 'interval') {
-            targetText = ` &nbsp;&bull;&nbsp; 🎯 Tiap ${habit.intervalDays || 2} hari`;
+            targetText = ` &nbsp;&bull;&nbsp; 🎯 ${t('target_interval', {days: habit.intervalDays || 2})}`;
         }
         streak.innerHTML = `🔥 ${currentStreak}${streakSuffix} &nbsp;&bull;&nbsp; ⚡ ${strength}%${targetText}`;
         
@@ -594,7 +595,7 @@ export function renderHabits() {
 
         const titleSpan = document.createElement('span');
         titleSpan.className = 'archived-section-title';
-        titleSpan.textContent = `Diarsipkan (${archivedHabits.length})`;
+        titleSpan.textContent = t('archived_title', {count: archivedHabits.length});
 
         const chevron = document.createElement('svg');
         chevron.id = 'archived-section-chevron';
@@ -633,7 +634,7 @@ export function renderHabits() {
 
             const desc = document.createElement('span');
             desc.className = 'habit-desc';
-            desc.textContent = habit.description || 'Diarsipkan';
+            desc.textContent = habit.description || t('archived_desc');
 
             details.appendChild(title);
             details.appendChild(desc);
@@ -645,12 +646,12 @@ export function renderHabits() {
 
             const restoreBtn = document.createElement('button');
             restoreBtn.className = 'btn btn-restore';
-            restoreBtn.textContent = 'Pulihkan';
+            restoreBtn.textContent = t('btn_restore_habit');
             restoreBtn.onclick = (e) => { e.stopPropagation(); restoreHabit(habit.id); };
 
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'btn btn-permanent-delete';
-            deleteBtn.textContent = 'Hapus';
+            deleteBtn.textContent = t('btn_delete_habit');
             deleteBtn.onclick = (e) => { e.stopPropagation(); permanentDeleteHabit(habit.id); };
 
             actions.appendChild(restoreBtn);
@@ -684,8 +685,8 @@ export function toggleScheduleDaysView(val) {
 export function applyPreset(presetType) {
     const presets = {
         tilawah: {
-            name: "Tilawah Al-Qur'an",
-            desc: "Membaca Al-Qur'an harian",
+            name: t('preset_tilawah_name'),
+            desc: t('preset_tilawah_desc'),
             routine: "anytime",
             numerical: true,
             targetVal: 1,
@@ -693,8 +694,8 @@ export function applyPreset(presetType) {
             color: "#8cd6b5"
         },
         dhuha: {
-            name: "Shalat Dhuha",
-            desc: "Melaksanakan shalat sunnah Dhuha",
+            name: t('preset_dhuha_name'),
+            desc: t('preset_dhuha_desc'),
             routine: "pagi",
             numerical: true,
             targetVal: 2,
@@ -702,8 +703,8 @@ export function applyPreset(presetType) {
             color: "#dcc48c"
         },
         sedekah: {
-            name: "Sedekah Subuh",
-            desc: "Sedekah harian setelah shalat Subuh",
+            name: t('preset_sedekah_name'),
+            desc: t('preset_sedekah_desc'),
             routine: "pagi",
             numerical: false,
             targetVal: 1,
@@ -711,8 +712,8 @@ export function applyPreset(presetType) {
             color: "#ff8a65"
         },
         tahajjud: {
-            name: "Shalat Tahajjud",
-            desc: "Melaksanakan shalat sunnah Tahajjud",
+            name: t('preset_tahajjud_name'),
+            desc: t('preset_tahajjud_desc'),
             routine: "malam",
             numerical: true,
             targetVal: 2,
@@ -850,7 +851,7 @@ export function openHabitModal(mode, habitId = null) {
         if (weeklyTargetInput) {
             weeklyTargetInput.value = 3;
             const targetLabel = document.getElementById('weekly-target-label');
-            if (targetLabel) targetLabel.innerText = '3 Kali';
+            if (targetLabel) targetLabel.innerText = '3 ' + t('habit_kali');
         }
         
         const intervalDaysInput = document.getElementById('habit-input-interval-days');
@@ -904,7 +905,7 @@ export function openHabitModal(mode, habitId = null) {
             if (weeklyTargetInput) {
                 weeklyTargetInput.value = habit.weeklyTarget || 3;
                 const targetLabel = document.getElementById('weekly-target-label');
-                if (targetLabel) targetLabel.innerText = (habit.weeklyTarget || 3) + ' Kali';
+                if (targetLabel) targetLabel.innerText = (habit.weeklyTarget || 3) + ' ' + t('habit_kali');
             }
             
             const intervalDaysInput = document.getElementById('habit-input-interval-days');
@@ -959,7 +960,7 @@ export function saveHabitFromModal() {
     const tagsVal = tagsInput ? tagsInput.value.split(',').map(t => t.trim()).filter(t => t) : [];
     
     if (!nameVal) {
-        showModal('Input Tidak Valid', 'Nama kebiasaan tidak boleh kosong.', null, true);
+        showModal(t('modal_invalid_input_title'), t('modal_habit_empty_name'), null, true);
         return;
     }
     
@@ -973,7 +974,7 @@ export function saveHabitFromModal() {
             schedDays.push(parseInt(chk.value));
         });
         if (schedDays.length === 0) {
-            showModal('Jadwal Tidak Valid', 'Pilih setidaknya satu hari untuk jadwal kebiasaan.', null, true);
+            showModal(t('modal_habit_invalid_schedule_title'), t('modal_habit_invalid_schedule_msg'), null, true);
             return;
         }
     }
@@ -990,7 +991,7 @@ export function saveHabitFromModal() {
         const intervalDaysInput = document.getElementById('habit-input-interval-days');
         intervalDaysVal = intervalDaysInput ? parseInt(intervalDaysInput.value) || 2 : 2;
         if (intervalDaysVal < 2) {
-            showModal('Input Tidak Valid', 'Interval pengulangan minimal 2 hari.', null, true);
+            showModal(t('modal_invalid_input_title'), t('modal_habit_invalid_interval_msg'), null, true);
             return;
         }
         const anchorDateInput = document.getElementById('habit-input-anchor-date');
@@ -1083,7 +1084,7 @@ export function deleteHabitFromModal() {
     
     closeHabitModal();
     
-    showModal('Hapus Kebiasaan', 'Apakah Anda yakin ingin menghapus kebiasaan ini? Semua riwayat penyelesaian akan dihapus secara permanen.', () => {
+    showModal(t('modal_habit_delete_title'), t('modal_habit_delete_msg'), () => {
         state.habits = state.habits.filter(h => h.id !== currentEditingHabitId);
         delete state.habitRepetitions[currentEditingHabitId];
         
@@ -1171,9 +1172,9 @@ export function refreshHabitDetailModal(habitId) {
     const heatmapEl = document.getElementById('habit-detail-heatmap');
 
     const streaks = getHabitStreaks(habitId);
-    let streakSuffix = " Hari";
+    let streakSuffix = t('suffix_days');
     if (habit.scheduleType === 'weekly') {
-        streakSuffix = " Minggu";
+        streakSuffix = t('suffix_weeks');
     }
     if (streakEl) streakEl.textContent = `${streaks.current}${streakSuffix}`;
     if (bestStreakEl) bestStreakEl.textContent = `${streaks.best}${streakSuffix}`;
@@ -1202,7 +1203,7 @@ export function refreshHabitDetailModal(habitId) {
             notesList.className = 'habit-notes-list';
             leftCol.appendChild(notesList);
         }
-        notesList.innerHTML = '<label class="label-large" style="display: block; margin-bottom: 8px;">Catatan Harian</label>';
+        notesList.innerHTML = `<label class="label-large" style="display: block; margin-bottom: 8px;">${t('habit_log_note')}</label>`;
 
         const sortedNoteDates = Object.keys(reps)
             .filter(dStr => reps[dStr].note && reps[dStr].note.trim() !== '')
@@ -1214,7 +1215,7 @@ export function refreshHabitDetailModal(habitId) {
             emptyNote.style.fontSize = '0.85rem';
             emptyNote.style.opacity = '0.6';
             emptyNote.style.padding = '8px 4px';
-            emptyNote.textContent = 'Belum ada catatan harian.';
+            emptyNote.textContent = t('habit_log_empty');
             notesList.appendChild(emptyNote);
         } else {
             sortedNoteDates.forEach(dStr => {
@@ -1224,8 +1225,8 @@ export function refreshHabitDetailModal(habitId) {
                 noteItem.style.setProperty('--habit-color', habit.color || 'var(--md-sys-color-primary)');
 
                 const [yr, mo, dy] = dStr.split('-').map(Number);
-                const monthsIndoShort = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
-                const dateFormatted = `${dy} ${monthsIndoShort[mo - 1]} ${yr}`;
+                const lang = state.language === 'en' ? 'en-US' : 'id-ID';
+                const dateFormatted = new Date(yr, mo - 1, dy).toLocaleDateString(lang, { day: 'numeric', month: 'short', year: 'numeric' });
 
                 const noteDate = document.createElement('div');
                 noteDate.className = 'habit-note-date';
@@ -1268,12 +1269,10 @@ export function renderCalendarPicker(habitId) {
     if (!grid || !headerText) return;
 
     grid.innerHTML = '';
-    const monthsIndo = [
-        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-    ];
+    const lang = state.language === 'en' ? 'en-US' : 'id-ID';
+    const dateFormatted = new Date(calendarYearState, calendarMonthState, 1).toLocaleDateString(lang, { month: 'long', year: 'numeric' });
 
-    headerText.textContent = `${monthsIndo[calendarMonthState]} ${calendarYearState}`;
+    headerText.textContent = dateFormatted;
 
     const firstDayIndex = new Date(calendarYearState, calendarMonthState, 1).getDay();
     const numDays = new Date(calendarYearState, calendarMonthState + 1, 0).getDate();
@@ -1324,7 +1323,9 @@ export function renderCalendarPicker(habitId) {
             // a11y support
             cell.setAttribute('role', 'button');
             cell.setAttribute('tabindex', '0');
-            cell.setAttribute('aria-label', `${dayNum} ${monthsIndo[prevMonth]} ${prevYear}, ${isCompleted ? 'Selesai' : (isPartial ? 'Selesai Sebagian' : 'Belum Selesai')}${!isScheduled ? ' (Tidak dijadwalkan)' : ''}`);
+            const lang = state.language === 'en' ? 'en-US' : 'id-ID';
+            const prevMonthName = new Date(prevYear, prevMonth).toLocaleDateString(lang, { month: 'long' });
+            cell.setAttribute('aria-label', `${dayNum} ${prevMonthName} ${prevYear}, ${isCompleted ? t('status_completed') : (isPartial ? t('status_partial') : t('status_not_completed'))}${!isScheduled ? ' (' + t('status_not_scheduled') + ')' : ''}`);
             
             cell.onclick = () => openHabitLogModal(habitId, dStr);
             cell.onkeydown = (e) => {
@@ -1372,7 +1373,9 @@ export function renderCalendarPicker(habitId) {
             // a11y support
             cell.setAttribute('role', 'button');
             cell.setAttribute('tabindex', '0');
-            cell.setAttribute('aria-label', `${i} ${monthsIndo[calendarMonthState]} ${calendarYearState}, ${isCompleted ? 'Selesai' : (isPartial ? 'Selesai Sebagian' : 'Belum Selesai')}${isToday ? ' (Hari ini)' : ''}${!isScheduled ? ' (Tidak dijadwalkan)' : ''}`);
+            const lang = state.language === 'en' ? 'en-US' : 'id-ID';
+            const currMonthName = new Date(calendarYearState, calendarMonthState).toLocaleDateString(lang, { month: 'long' });
+            cell.setAttribute('aria-label', `${i} ${currMonthName} ${calendarYearState}, ${isCompleted ? t('status_completed') : (isPartial ? t('status_partial') : t('status_not_completed'))}${isToday ? ' (' + t('status_today') + ')' : ''}${!isScheduled ? ' (' + t('status_not_scheduled') + ')' : ''}`);
 
             cell.onclick = () => openHabitLogModal(habitId, dStr);
             cell.onkeydown = (e) => {
@@ -1424,7 +1427,9 @@ export function renderCalendarPicker(habitId) {
             // a11y support
             cell.setAttribute('role', 'button');
             cell.setAttribute('tabindex', '0');
-            cell.setAttribute('aria-label', `${i} ${monthsIndo[nextMonth]} ${nextYear}, ${isCompleted ? 'Selesai' : (isPartial ? 'Selesai Sebagian' : 'Belum Selesai')}${!isScheduled ? ' (Tidak dijadwalkan)' : ''}`);
+            const lang = state.language === 'en' ? 'en-US' : 'id-ID';
+            const nextMonthName = new Date(nextYear, nextMonth).toLocaleDateString(lang, { month: 'long' });
+            cell.setAttribute('aria-label', `${i} ${nextMonthName} ${nextYear}, ${isCompleted ? t('status_completed') : (isPartial ? t('status_partial') : t('status_not_completed'))}${!isScheduled ? ' (' + t('status_not_scheduled') + ')' : ''}`);
 
             cell.onclick = () => openHabitLogModal(habitId, dStr);
             cell.onkeydown = (e) => {
@@ -1463,7 +1468,7 @@ export function archiveHabitFromModal() {
 
     closeHabitModal();
 
-    showModal('Arsipkan Kebiasaan', 'Kebiasaan ini akan dipindahkan ke arsip. Anda dapat memulihkannya kapan saja.', () => {
+    showModal(t('modal_habit_archive_title'), t('modal_habit_archive_msg'), () => {
         const habit = state.habits.find(h => h.id === currentEditingHabitId);
         if (habit) {
             habit.archived = true;
@@ -1487,7 +1492,7 @@ export function restoreHabit(habitId) {
 }
 
 export function permanentDeleteHabit(habitId) {
-    showModal('Hapus Permanen', 'Apakah Anda yakin? Kebiasaan dan seluruh riwayatnya akan dihapus secara permanen dan tidak dapat dipulihkan.', () => {
+    showModal(t('modal_habit_perm_delete_title'), t('modal_habit_perm_delete_msg'), () => {
         state.habits = state.habits.filter(h => h.id !== habitId);
         delete state.habitRepetitions[habitId];
         saveState();
@@ -1507,7 +1512,7 @@ export function toggleArchivedSection() {
 
 export function requestNotificationPermission(onGranted = null, onDenied = null) {
     if (!("Notification" in window)) {
-        showModal('Notifikasi Tidak Didukung', 'Browser atau perangkat Anda tidak mendukung fitur notifikasi pengingat.', null, true);
+        showModal(t('modal_notif_unsupported_title'), t('modal_notif_unsupported_msg'), null, true);
         if (onDenied) onDenied();
         return;
     }
@@ -1517,12 +1522,12 @@ export function requestNotificationPermission(onGranted = null, onDenied = null)
             if (permission === "granted") {
                 if (onGranted) onGranted();
             } else {
-                showModal('Izin Ditolak', 'Anda harus memberikan izin notifikasi agar pengingat dapat bekerja.', null, true);
+                showModal(t('modal_notif_denied_title'), t('modal_notif_denied_msg'), null, true);
                 if (onDenied) onDenied();
             }
         });
     } else if (Notification.permission === "denied") {
-        showModal('Izin Notifikasi Diblokir', 'Izin notifikasi diblokir di pengaturan browser Anda. Silakan aktifkan secara manual di pengaturan situs.', null, true);
+        showModal(t('modal_notif_blocked_title'), t('modal_notif_blocked_msg'), null, true);
         if (onDenied) onDenied();
     } else if (Notification.permission === "granted") {
         if (onGranted) onGranted();
@@ -1551,7 +1556,7 @@ function sendNotification(habit) {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(reg => {
             reg.showNotification("Ingat Kebiasaan Baik!", {
-                body: `Jangan lupa untuk menyelesaikan kebiasaan Anda hari ini: ${habit.name}`,
+                body: t('notif_habit_reminder', {name: habit.name}),
                 icon: './icon-192.png',
                 badge: './icon-192.png',
                 vibrate: [200, 100, 200],
@@ -1564,7 +1569,7 @@ function sendNotification(habit) {
         });
     } else {
         new Notification("Ingat Kebiasaan Baik!", {
-            body: `Jangan lupa untuk menyelesaikan kebiasaan Anda hari ini: ${habit.name}`,
+            body: t('notif_habit_reminder', {name: habit.name}),
             icon: './icon-192.png',
             tag: `reminder-${habit.id}`
         });
@@ -1575,7 +1580,7 @@ export function triggerDzikirNotification(type) {
     if (!("Notification" in window)) return;
     if (Notification.permission !== "granted") return;
 
-    const title = type === 'pagi' ? "Waktunya Dzikir Pagi ☀️" : "Waktunya Dzikir Petang 🌙";
+    const title = type === 'pagi' ? t('notif_time_pagi') : t('notif_time_petang');
     const body = type === 'pagi' 
         ? "Sudah masuk waktu pagi, yuk luangkan waktu sejenak untuk berdzikir." 
         : "Sudah masuk waktu petang, yuk luangkan waktu sejenak untuk berdzikir.";
@@ -1609,7 +1614,7 @@ export function triggerTimerNotification() {
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(reg => {
-            reg.showNotification("Waktu Selesai!", {
+            reg.showNotification(t("notif_time_up"), {
                 body: "Waktu timer telah habis. Alhamdulillah!",
                 icon: './icon-192.png',
                 badge: './icon-192.png',
@@ -1622,7 +1627,7 @@ export function triggerTimerNotification() {
             });
         });
     } else {
-        new Notification("Waktu Selesai!", {
+        new Notification(t("notif_time_up"), {
             body: "Waktu timer telah habis. Alhamdulillah!",
             icon: './icon-192.png',
             tag: `timer-finished`
@@ -1655,10 +1660,11 @@ export function openHabitLogModal(habitId, dateStr) {
 
     if (!modal) return;
 
-    // Format date in Indonesian for title
+    // Format date based on selected language
     const [yr, mo, dy] = dateStr.split('-').map(Number);
-    const monthsIndoShort = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agt", "Sep", "Okt", "Nov", "Des"];
-    if (title) title.innerText = `Catatan: ${dy} ${monthsIndoShort[mo - 1]} ${yr}`;
+    const lang = state.language === 'en' ? 'en-US' : 'id-ID';
+    const dateFormatted = new Date(yr, mo - 1, dy).toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' });
+    if (title) title.innerText = t('habit_log_title') + ': ' + dateFormatted;
 
     const reps = state.habitRepetitions[habitId] || {};
     const entry = reps[dateStr] || { value: 0, note: "" };
@@ -1666,7 +1672,7 @@ export function openHabitLogModal(habitId, dateStr) {
     if (habit.isNumerical) {
         if (numSection) numSection.style.display = 'block';
         if (valInput) valInput.value = entry.value || 0;
-        if (unitSpan) unitSpan.innerText = habit.targetUnit || "kali";
+        if (unitSpan) unitSpan.innerText = habit.targetUnit || t('habit_kali');
     } else {
         if (numSection) numSection.style.display = 'none';
     }
@@ -1847,7 +1853,7 @@ export function showStackingCelebrationToast(habitName) {
         <div class="stacking-toast-icon">📿</div>
         <div class="stacking-toast-content">
             <h4 class="stacking-toast-title">Alhamdulillah! Stacking Dzikir</h4>
-            <p class="stacking-toast-body">Kebiasaan <b>${habitName}</b> selesai otomatis!</p>
+            <p class="stacking-toast-body">${t('notif_habit_auto_done', {name: habitName})}</p>
         </div>
     `;
 

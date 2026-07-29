@@ -4,6 +4,7 @@
 
 import { state, saveState } from '../core/store.js';
 import { showModal } from '../ui/router.js';
+import { t } from '../core/i18n.js';
 
 let wakeLock = null;
 let deferredPrompt = null;
@@ -55,8 +56,8 @@ export function initServiceWorker() {
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             showModal(
-                                'Update Tersedia',
-                                'Versi baru TasbihKu tersedia. Muat ulang sekarang?',
+                                t('modal_update_avail_title'),
+                                t('modal_update_avail_msg'),
                                 () => window.location.reload()
                             );
                         }
