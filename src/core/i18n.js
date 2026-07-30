@@ -94,7 +94,7 @@ export const translations = {
         "btn_restore": "Restore",
         "about_landing_title": "Tentang & Landing Page",
         "about_landing_desc": "Informasi aplikasi dan fitur lengkap",
-        "made_with": "Dibuat dengan ❤️ oleh Fadhel A",
+        "made_with": "Dibuat dengan ❤️ untuk Ummah",
 
         // Player Page
         "player_title_default": "Dzikir",
@@ -273,7 +273,7 @@ export const translations = {
         "modal_azkar_name_empty": "Nama azkar wajib diisi.",
         "modal_library_load_error": "Gagal memuat pustaka azkar.",
         
-        "about_footer_info": "Dibuat dengan ❤️ oleh Fadhel A &bull; Lisensi Open Source (MIT)",
+        "about_footer_info": "Dibuat dengan ❤️ untuk Ummah &bull; Lisensi Open Source (MIT)",
         "about_features_title": "Fitur Utama",
         "about_feature1_title": "Counter Tasbih & Wirid Interactive",
         "about_feature1_desc": "Penghitung dzikir responsif dengan umpan balik suara ketukan mekanis, getaran haptic berinterval, dan mode layar tetap menyala.",
@@ -460,7 +460,7 @@ export const translations = {
         "btn_restore": "Restore",
         "about_landing_title": "About & Landing Page",
         "about_landing_desc": "App information and full features",
-        "made_with": "Made with ❤️ by Fadhel A",
+        "made_with": "Made with ❤️ for the Ummah",
 
         // Player Page
         "player_title_default": "Dzikir",
@@ -639,7 +639,7 @@ export const translations = {
         "modal_azkar_name_empty": "Azkar name is required.",
         "modal_library_load_error": "Failed to load azkar library.",
 
-        "about_footer_info": "Made with ❤️ by Fadhel A &bull; Open Source License (MIT)",
+        "about_footer_info": "Made with ❤️ for the Ummah &bull; Open Source License (MIT)",
         "about_features_title": "Main Features",
         "about_feature1_title": "Interactive Tasbih & Wirid Counter",
         "about_feature1_desc": "Responsive dzikir counter with mechanical click sound feedback, interval haptic vibration, and screen awake mode.",
