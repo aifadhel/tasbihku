@@ -1,5 +1,16 @@
 # TasbihKu WebApp — Changelog
 
+## 1.7.8 — tasbihku-v1.7.8
+
+- **UX/UI:** Material 3 Expressive Multi-Perspective Audit & Refactor — Conducted rigorous UI/UX evaluation across Android Jetpack Compose M3 Expressive specs, Nielsen Usability Heuristics, and Visual Craft design tokens.
+- **UX/UI:** Expressive Micro-Animations — Integrated a physics-based spring scale pop animation (`.expressive-pop`) on counter target count achievements.
+- **UX/UI:** Material 3 Snackbar / Toast Notification System — Built `src/ui/toast.js` delivering lightweight, accessible toast notifications with action callbacks.
+- **UX/UI:** User Freedom & Undo Recovery — Integrated action undo toasts for destructive counter resets, habit deletions, and custom azkar deletions.
+- **UX/UI:** Expressive Geometry Math — Applied nested shape math (`inner = outer - padding`) across modal elements and container cards to eliminate visual bulge.
+- **Tech:** Verified 100% pass rate across unit test suite (Vitest) and end-to-end browser tests (Playwright).
+- **Tech:** Centralized app version bump (`v1.7.8`).
+
+
 ## 1.7.7 — tasbihku-v1.7.7
 
 - **New:** Full Internationalization (i18n) Support — The entire application is now fully translatable. Users can seamlessly switch between Indonesian (id) and English (en) from the settings page.

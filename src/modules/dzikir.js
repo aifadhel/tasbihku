@@ -8,6 +8,7 @@ import { vibrate, playTapSound } from '../hardware/media.js';
 import { trackActivity, checkAndTriggerLinkedHabit, showStackingCelebrationToast } from './habits.js';
 import { showModal, showPage, animateValue, triggerCelebration, SVG_ICONS } from '../ui/router.js';
 import azkarData from '../data/azkar.json';
+import { showToast } from '../ui/toast.js';
 
 // Hardcoded Guided Readings Datasets
 export const wiridReadings = [
@@ -697,11 +698,27 @@ export function saveCustomAzkar() {
     showLibraryModal(); // Refresh the list
 }
 
+let lastDeletedCustomAzkar = null;
+
 export function deleteCustomAzkar(index) {
     if (state.customAzkar && state.customAzkar[index]) {
+        lastDeletedCustomAzkar = { item: state.customAzkar[index], index };
         state.customAzkar.splice(index, 1);
         saveState();
         showLibraryModal(); // Refresh the list
+        showToast(t('modal_azkar_deleted') || 'Azkar dihapus', t('btn_undo') || 'Undo', () => {
+            undoDeleteCustomAzkar();
+        });
+    }
+}
+
+export function undoDeleteCustomAzkar() {
+    if (lastDeletedCustomAzkar && lastDeletedCustomAzkar.item) {
+        if (!state.customAzkar) state.customAzkar = [];
+        state.customAzkar.splice(lastDeletedCustomAzkar.index, 0, lastDeletedCustomAzkar.item);
+        saveState();
+        showLibraryModal();
+        lastDeletedCustomAzkar = null;
     }
 }
 

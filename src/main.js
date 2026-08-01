@@ -76,6 +76,7 @@ import {
     applyQuoteState, 
     APP_VERSION 
 } from './ui/router.js';
+import { showToast, hideToast } from './ui/toast.js';
 
 // Expose core store, navigation, i18n, and module APIs globally to bridge with index.html events
 window.loadState = loadState;
@@ -90,6 +91,8 @@ window.showPage = showPage;
 window.goBack = goBack;
 window.showModal = showModal;
 window.closeModal = closeModal;
+window.showToast = showToast;
+window.hideToast = hideToast;
 window.switchAppMode = switchAppMode;
 window.switchDashboardMode = switchDashboardMode;
 window.toggleOledMode = toggleOledMode;

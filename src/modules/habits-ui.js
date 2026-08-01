@@ -6,6 +6,7 @@ import { state, saveState, saveStateImmediate } from '../core/store.js';
 import { vibrate, playTapSound } from '../hardware/media.js';
 import { showModal, closeModal, SVG_ICONS } from '../ui/router.js';
 import { fireConfetti } from '../ui/confetti.js';
+import { showToast } from '../ui/toast.js';
 import {
     getLocalDateString,
     getRecentDates,
@@ -1084,15 +1085,23 @@ export function deleteHabitFromModal() {
     
     closeHabitModal();
     
-    showModal(t('modal_habit_delete_title'), t('modal_habit_delete_msg'), () => {
-        state.habits = state.habits.filter(h => h.id !== currentEditingHabitId);
-        delete state.habitRepetitions[currentEditingHabitId];
-        
+    const habitToDelete = state.habits.find(h => h.id === currentEditingHabitId);
+    if (!habitToDelete) return;
+    const index = state.habits.indexOf(habitToDelete);
+    const repsBackup = state.habitRepetitions[currentEditingHabitId] ? JSON.parse(JSON.stringify(state.habitRepetitions[currentEditingHabitId])) : null;
+    
+    // Optimistic deletion
+    state.habits.splice(index, 1);
+    delete state.habitRepetitions[currentEditingHabitId];
+    saveState();
+    renderHabits();
+    closeHabitDetailModal();
+
+    showToast(t('modal_habit_deleted') || 'Habit dihapus', t('btn_undo') || 'Undo', () => {
+        state.habits.splice(index, 0, habitToDelete);
+        if (repsBackup) state.habitRepetitions[currentEditingHabitId] = repsBackup;
         saveState();
         renderHabits();
-        closeHabitDetailModal();
-    }, false, () => {
-        openHabitModal('edit', currentEditingHabitId);
     });
 }
 
@@ -1492,9 +1501,20 @@ export function restoreHabit(habitId) {
 }
 
 export function permanentDeleteHabit(habitId) {
-    showModal(t('modal_habit_perm_delete_title'), t('modal_habit_perm_delete_msg'), () => {
-        state.habits = state.habits.filter(h => h.id !== habitId);
-        delete state.habitRepetitions[habitId];
+    const habitToDelete = state.habits.find(h => h.id === habitId);
+    if (!habitToDelete) return;
+    const index = state.habits.indexOf(habitToDelete);
+    const repsBackup = state.habitRepetitions[habitId] ? JSON.parse(JSON.stringify(state.habitRepetitions[habitId])) : null;
+
+    // Optimistic deletion
+    state.habits.splice(index, 1);
+    delete state.habitRepetitions[habitId];
+    saveState();
+    renderHabits();
+
+    showToast(t('modal_habit_deleted') || 'Habit dihapus', t('btn_undo') || 'Undo', () => {
+        state.habits.splice(index, 0, habitToDelete);
+        if (repsBackup) state.habitRepetitions[habitId] = repsBackup;
         saveState();
         renderHabits();
     });

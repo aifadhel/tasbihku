@@ -2148,6 +2148,7 @@ button:focus-visible {
     line-height: 1.45;
 }
 
+
 /* About Footer */
 .about-footer {
     text-align: center;
@@ -2166,5 +2167,88 @@ button:focus-visible {
     color: var(--md-sys-color-primary);
     margin-bottom: var(--spacing-sm);
 }
+
+/* --- MATERIAL 3 EXPRESSIVE MICRO-ANIMATIONS & TOAST SYSTEM --- */
+@keyframes expressivePop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.18); color: var(--md-sys-color-tertiary); }
+    70% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.expressive-pop {
+    animation: expressivePop 0.45s var(--md-sys-motion-easing-spring-enter);
+}
+
+/* M3 Expressive Snackbar / Toast Component */
+.m3-toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 440px;
+    pointer-events: none;
+}
+
+.m3-toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    background: var(--md-sys-color-surface-container-highest, #2b3830);
+    color: var(--md-sys-color-on-background);
+    padding: 14px 20px;
+    border-radius: var(--shape-corner-lg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: opacity 0.3s var(--md-sys-motion-easing-spring-standard),
+                transform 0.3s var(--md-sys-motion-easing-spring-enter);
+    pointer-events: auto;
+}
+
+.m3-toast.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.m3-toast-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--md-sys-color-on-background);
+}
+
+.m3-toast-action {
+    background: transparent;
+    border: none;
+    color: var(--md-sys-color-primary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: var(--shape-corner-full);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s ease;
+}
+
+.m3-toast-action:hover {
+    background: rgba(140, 214, 181, 0.12);
+}
+
+.m3-toast-action:active {
+    background: rgba(140, 214, 181, 0.24);
+}
+
+/* M3 Expressive Nested Shape Math (outer - padding = inner radius) */
+.modal-box .btn-list-item,
+.modal-box .dzikir-row-content {
+    border-radius: calc(var(--shape-corner-lg) - 12px);
+}
+
 
 

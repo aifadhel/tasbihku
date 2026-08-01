@@ -7,6 +7,7 @@ import { vibrate, playTapSound } from '../hardware/media.js';
 import { trackActivity, triggerTimerNotification } from './habits.js';
 import { showModal, animateValue, SVG_ICONS, triggerCelebration } from '../ui/router.js';
 import { t } from '../core/i18n.js';
+import { showToast } from '../ui/toast.js';
 
 let lastFreeCountBeforeReset = 0; // For undo support
 
@@ -25,6 +26,12 @@ export function incrementFree() {
     if (state.targetLimit > 0 && state.freeCount % state.targetLimit === 0) {
         vibrate([50, 100, 50]);
         triggerCelebration();
+        const freeCounterEl = document.getElementById('free-counter');
+        if (freeCounterEl) {
+            freeCounterEl.classList.remove('expressive-pop');
+            void freeCounterEl.offsetWidth; // trigger reflow
+            freeCounterEl.classList.add('expressive-pop');
+        }
     } else if (state.vibrationInterval > 0 && state.freeCount % state.vibrationInterval === 0) {
         vibrate([40, 40]);
     } else {
@@ -43,6 +50,9 @@ export function confirmResetFree() {
         const freeCounterEl = document.getElementById('free-counter');
         if (freeCounterEl) freeCounterEl.innerText = 0;
         saveState();
+        showToast(t('modal_reset_free_title'), t('btn_undo') || 'Undo', () => {
+            undoFreeReset();
+        });
     });
 }
 
