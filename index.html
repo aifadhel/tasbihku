@@ -583,12 +583,8 @@
 
         <!-- ABOUT LANDING PAGE -->
         <div id="page-about" class="page">
-            <div class="top-bar">
-                <button class="btn btn-icon" onclick="goBack('page-dashboard')" aria-label="Kembali ke dashboard" data-i18n-aria="back_to_dashboard">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2Z"/></svg>
-                </button>
-                <h2 class="title-medium" data-i18n="about_title">Tentang TasbihKu</h2>
-                <div class="top-bar-spacer"></div>
+            <div class="top-bar" style="justify-content: center;">
+                <h2 class="title-medium" style="text-align: center; width: 100%;" data-i18n="about_title">Tentang TasbihKu</h2>
             </div>
 
             <!-- HERO SECTION -->
@@ -597,7 +593,7 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
                     Dzikir & Habit Companion
                 </div>
-                <h1 class="about-hero-title" data-i18n="about_hero_title">Aplikasi Dzikir Digital <span>Modern & Sahih</span></h1>
+                <h1 class="about-hero-title" data-i18n-html="about_hero_title">Aplikasi Dzikir Digital <span>Modern & Sahih</span></h1>
                 <p class="about-hero-subtitle" data-i18n="about_hero_subtitle">
                     Panduan dzikir pagi, petang, dan wirid ba'da shalat sesuai hadits shahih. Dilengkapi pelacak kebiasaan harian dan analisis 90 hari.
                 </p>
@@ -609,21 +605,21 @@
                     </button>
                     <a href="https://github.com/aifadhel/tasbihku" target="_blank" rel="noopener noreferrer" class="about-btn-secondary">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
-                        GitHub Repository
+                        <span data-i18n="about_github_repo">GitHub Repository</span>
                     </a>
                 </div>
 
                 <div class="about-chips-row">
-                    <span class="about-chip">📱 PWA Ready</span>
-                    <span class="about-chip">⚡ 100% Offline</span>
-                    <span class="about-chip">🔒 Tanpa Iklan & Pelacak</span>
-                    <span class="about-chip">🌙 Mode OLED</span>
+                    <span class="about-chip" data-i18n="about_chip_pwa">📱 PWA Ready</span>
+                    <span class="about-chip" data-i18n="about_chip_offline">⚡ 100% Offline</span>
+                    <span class="about-chip" data-i18n="about_chip_no_ads">🔒 Tanpa Iklan & Pelacak</span>
+                    <span class="about-chip" data-i18n="about_chip_oled">🌙 Mode OLED</span>
                 </div>
             </div>
 
             <!-- FEATURES & HIGHLIGHTS -->
-            <div style="margin-bottom: var(--spacing-md);">
-                <span class="label-large text-sub" style="margin-left: 4px; display: block; margin-bottom: 12px;">Fitur Utama</span>
+            <div style="margin-bottom: var(--spacing-md); text-align: center;">
+                <span class="label-large text-sub" style="display: block; margin-bottom: 12px; text-align: center;" data-i18n="about_features_title">Fitur Utama</span>
             </div>
 
             <div class="about-features-grid">
@@ -633,8 +629,8 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zm0 14a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zm7-7a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3zM5 9a3 3 0 0 1 3 3 3 3 0 0 1-3 3 3 3 0 0 1-3-3 3 3 0 0 1 3-3z"/></svg>
                     </div>
                     <div class="about-feature-body">
-                        <div class="about-feature-title">Counter Tasbih & Wirid Interactive</div>
-                        <div class="about-feature-desc">Penghitung dzikir responsif dengan umpan balik suara ketukan mekanis, getaran haptic berinterval, dan mode layar tetap menyala.</div>
+                        <div class="about-feature-title" data-i18n="about_feature1_title">Counter Tasbih & Wirid Interactive</div>
+                        <div class="about-feature-desc" data-i18n="about_feature1_desc">Penghitung dzikir responsif dengan umpan balik suara ketukan mekanis, getaran haptic berinterval, dan mode layar tetap menyala.</div>
                     </div>
                 </div>
 
@@ -644,8 +640,8 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
                     </div>
                     <div class="about-feature-body">
-                        <div class="about-feature-title">Analitik Kebiasaan & Streak 90 Hari</div>
-                        <div class="about-feature-desc">Visualisasi aktivitas harian melalui heatmap 90 hari, pencapaian streak, serta pencatatan target kebiasaan baik harian.</div>
+                        <div class="about-feature-title" data-i18n="about_feature2_title">Analitik Kebiasaan & Streak 90 Hari</div>
+                        <div class="about-feature-desc" data-i18n="about_feature2_desc">Visualisasi aktivitas harian melalui heatmap 90 hari, pencapaian streak, serta pencatatan target kebiasaan baik harian.</div>
                     </div>
                 </div>
 
@@ -655,8 +651,8 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                     </div>
                     <div class="about-feature-body">
-                        <div class="about-feature-title">Pustaka & Kustomisasi Azkar</div>
-                        <div class="about-feature-desc">Tersedia teks Arab, latin, dan terjemahan dzikir pagi, petang, dan wirid shalat. Anda juga dapat membuat dan menyunting dzikir kustom.</div>
+                        <div class="about-feature-title" data-i18n="about_feature3_title">Pustaka & Kustomisasi Azkar</div>
+                        <div class="about-feature-desc" data-i18n="about_feature3_desc">Tersedia teks Arab, latin, dan terjemahan dzikir pagi, petang, dan wirid shalat. Anda juga dapat membuat dan menyunting dzikir kustom.</div>
                     </div>
                 </div>
 
@@ -666,8 +662,8 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-5.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
                     </div>
                     <div class="about-feature-body">
-                        <div class="about-feature-title">Privasi & Offline First</div>
-                        <div class="about-feature-desc">Data tersimpan sepenuhnya secara lokal di peranti Anda (IndexedDB/localStorage) dengan dukungan backup & restore data dalam bentuk JSON.</div>
+                        <div class="about-feature-title" data-i18n="about_feature4_title">Privasi & Offline First</div>
+                        <div class="about-feature-desc" data-i18n="about_feature4_desc">Data tersimpan sepenuhnya secara lokal di peranti Anda (IndexedDB/localStorage) dengan dukungan backup & restore data dalam bentuk JSON.</div>
                     </div>
                 </div>
             </div>
@@ -675,7 +671,7 @@
             <!-- FOOTER -->
             <div class="about-footer">
                 <span class="about-version-badge" id="about-app-version">tasbihku</span>
-                <p class="body-small" style="margin: 4px 0 0 0; opacity: 0.7;">
+                <p class="body-small" style="margin: 4px 0 0 0; opacity: 0.7;" data-i18n-html="about_footer_info">
                     Dibuat dengan ❤️ untuk Ummah &bull; Lisensi Open Source (MIT)
                 </p>
             </div>

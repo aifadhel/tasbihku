@@ -1,5 +1,13 @@
 # TasbihKu WebApp — Changelog
 
+## 1.7.9 — tasbihku-v1.7.9
+
+- **i18n:** About Page Audit & Translation Integration — Full internationalization (i18n) audit of `#page-about`, tagging all hero text, badges, CTA actions, PWA/offline chips, main features list, feature cards, and footer info with `data-i18n` and `data-i18n-html`.
+- **i18n:** HTML Content Translation Engine Support — Enhanced `applyTranslations()` in `src/core/i18n.js` to process `data-i18n-html` elements via `innerHTML = t(key)` to cleanly render HTML formatting (e.g. `<span>` tag styling and `&bull;` entity decoding) without escaping.
+- **UX/UI:** Clean Standalone About Header — Removed top-bar back button from `#page-about` and center-aligned the page title and section header label for a balanced standalone layout.
+- **Tech:** Centralized app version bump (`v1.7.9`) and updated service worker cache registration.
+
+
 ## 1.7.8 — tasbihku-v1.7.8
 
 - **UX/UI:** Material 3 Expressive Multi-Perspective Audit & Refactor — Conducted rigorous UI/UX evaluation across Android Jetpack Compose M3 Expressive specs, Nielsen Usability Heuristics, and Visual Craft design tokens.

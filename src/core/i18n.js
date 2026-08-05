@@ -287,6 +287,9 @@ export const translations = {
         "about_chip_offline": "⚡ 100% Offline",
         "about_chip_no_ads": "🔒 Tanpa Iklan & Pelacak",
         "about_chip_oled": "🌙 Mode OLED",
+        "about_github_repo": "GitHub Repository",
+        "about_lang_switcher_title": "Pengaturan Bahasa",
+        "about_lang_switcher_desc": "Pilih bahasa utama aplikasi (akan tersimpan otomatis)",
         "modal_confirm_title": "Konfirmasi",
         "modal_confirm_msg": "Apakah Anda yakin?",
         "habit_input_angka": "Input Angka",
@@ -653,6 +656,9 @@ export const translations = {
         "about_chip_offline": "⚡ 100% Offline",
         "about_chip_no_ads": "🔒 No Ads & Trackers",
         "about_chip_oled": "🌙 OLED Mode",
+        "about_github_repo": "GitHub Repository",
+        "about_lang_switcher_title": "Language Settings",
+        "about_lang_switcher_desc": "Select main application language (saved automatically)",
         "modal_confirm_title": "Confirmation",
         "modal_confirm_msg": "Are you sure?",
         "habit_input_angka": "Input Number",
@@ -796,6 +802,14 @@ export function applyTranslations() {
         const key = el.getAttribute('data-i18n');
         if (key) {
             el.innerText = t(key);
+        }
+    });
+
+    // HTML content replacement
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (key) {
+            el.innerHTML = t(key);
         }
     });
 
