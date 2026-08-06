@@ -1,5 +1,13 @@
 # TasbihKu WebApp — Changelog
 
+## 1.8.0 — tasbihku-v1.8.0
+
+- **UX/UI:** CSS Container Queries Architecture — Refactored all application layout overlays, full-screen modals, sidebars, and habit/dzikir detail cards from legacy viewport media queries (`@media`) to modern CSS Container Queries (`@container`).
+- **UX/UI:** Responsive Sub-components — Sub-components now adapt seamlessly based on their parent container's width, enabling fluid layout transitions for cards, grids, and modal elements regardless of browser window size.
+- **UX/UI:** Centered Desktop Layouts — Adjusted habit-detail overlay to perfectly align center vertically in high resolution and desktop viewports, removing legacy bottom-alignment.
+- **Tech:** Established robust backwards compatibility via `@supports not (container-type: inline-size)` graceful degradation fallback rules.
+- **Tech:** Centralized app version bump (`v1.8.0`) and updated service worker cache registration.
+
 ## 1.7.9 — tasbihku-v1.7.9
 
 - **i18n:** About Page Audit & Translation Integration — Full internationalization (i18n) audit of `#page-about`, tagging all hero text, badges, CTA actions, PWA/offline chips, main features list, feature cards, and footer info with `data-i18n` and `data-i18n-html`.

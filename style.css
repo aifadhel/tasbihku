@@ -163,6 +163,8 @@ body {
     display: flex;
     flex-direction: column;
     transition: background-color 0.3s ease;
+    container-type: inline-size;
+    container-name: app-container;
 }
 
 /* --- TYPOGRAPHY (Expressive Scale) --- */
@@ -743,6 +745,8 @@ input:checked + .slider:before {
     transition: 
         opacity var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
         visibility 0s linear var(--md-sys-motion-duration-medium);
+    container-type: inline-size;
+    container-name: modal-viewport;
 }
 
 #modal-overlay.active, #time-input-modal.active, .m3-modal-overlay.active {
@@ -1082,6 +1086,8 @@ input:checked + .slider:before {
     border: 1px solid var(--md-sys-color-outline-variant);
     position: relative;
     overflow: hidden;
+    container-type: inline-size;
+    container-name: habit-card;
 }
 
 .habit-card:hover {
@@ -1506,6 +1512,8 @@ input:checked + .slider:before {
     transition: 
         opacity var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
         visibility 0s linear var(--md-sys-motion-duration-medium);
+    container-type: inline-size;
+    container-name: habit-detail;
 }
 
 .habit-detail-overlay.active {
@@ -1568,12 +1576,16 @@ input:checked + .slider:before {
     gap: 24px;
 }
 
-/* Desktop/Tablet Responsive Grid */
-@media (min-width: 768px) {
+/* --- CSS CONTAINER QUERIES (@container) --- */
+
+/* Habit Detail Responsive Queries (Desktop / High Resolution Centering) */
+@media (min-width: 600px) {
     .habit-detail-overlay {
-        align-items: center; /* Center on desktop */
+        align-items: center; /* Center vertically on desktop / high resolution */
     }
-    
+}
+
+@container habit-detail (min-width: 600px) {
     .habit-detail-container {
         width: 95%;
         max-width: 900px;
@@ -1584,6 +1596,147 @@ input:checked + .slider:before {
     
     .habit-detail-grid {
         grid-template-columns: 1.1fr 0.9fr;
+    }
+}
+
+@container habit-detail (max-width: 340px) {
+    .habit-detail-body {
+        padding: 12px;
+    }
+    .habit-detail-header {
+        padding: 12px 14px;
+    }
+    .habit-detail-header-left {
+        gap: 8px;
+    }
+}
+
+/* Habit Card Container Queries */
+@container habit-card (max-width: 340px) {
+    .habit-card {
+        padding: 12px;
+        gap: 10px;
+    }
+    .habit-title {
+        font-size: 0.95rem;
+    }
+    .habit-desc {
+        font-size: 0.75rem;
+    }
+    .habit-days-strip {
+        gap: 4px;
+    }
+    .day-circle {
+        width: 28px;
+        height: 28px;
+    }
+    .day-label {
+        font-size: 0.6rem;
+    }
+    .checkmark-icon {
+        font-size: 0.8rem;
+    }
+}
+
+@container habit-card (min-width: 480px) {
+    .habit-card {
+        padding: 20px;
+        gap: 20px;
+    }
+    .habit-title {
+        font-size: 1.2rem;
+    }
+    .habit-days-strip {
+        gap: 12px;
+    }
+    .day-circle {
+        width: 42px;
+        height: 42px;
+    }
+    .day-label {
+        font-size: 0.75rem;
+    }
+}
+
+/* Modal Viewport Container Queries */
+@container modal-viewport (max-width: 340px) {
+    .modal-box {
+        width: 95%;
+        padding: 16px;
+        border-radius: var(--shape-corner-lg);
+    }
+    .modal-title {
+        font-size: 1.1rem;
+    }
+    .modal-actions {
+        flex-direction: column;
+        gap: 6px;
+    }
+    .modal-actions .btn {
+        width: 100%;
+    }
+}
+
+@container modal-viewport (min-width: 600px) {
+    .modal-box {
+        max-width: 460px;
+        padding: 32px;
+        border-radius: var(--shape-corner-xl);
+    }
+    .modal-title {
+        font-size: 1.35rem;
+    }
+}
+
+/* Dzikir Panel Container Queries */
+@container dzikir-panel (max-width: 340px) {
+    .dzikir-row {
+        gap: 6px;
+        margin-top: 8px;
+    }
+    .dzikir-row-title {
+        font-size: 0.95rem;
+    }
+    .dzikir-row-desc {
+        font-size: 0.75rem;
+    }
+    .btn-icon-edit {
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+    }
+}
+
+@container dzikir-panel (min-width: 480px) {
+    .dzikir-row {
+        gap: 16px;
+    }
+    .dzikir-row-title {
+        font-size: 1.2rem;
+    }
+    .btn-icon-edit {
+        width: 60px;
+        min-width: 60px;
+        height: 60px;
+    }
+}
+
+/* Fallback for Legacy Browsers without CSS Container Queries */
+@supports not (container-type: inline-size) {
+    @media (min-width: 768px) {
+        .habit-detail-overlay {
+            align-items: center;
+        }
+        .habit-detail-container {
+            width: 95%;
+            max-width: 900px;
+            height: 90vh;
+            max-height: 800px;
+            border-radius: var(--shape-corner-xl);
+        }
+        .habit-detail-grid {
+            grid-template-columns: 1.1fr 0.9fr;
+        }
     }
 }
 
@@ -1718,6 +1871,8 @@ button:focus-visible {
     border-radius: var(--shape-corner-md);
     border: 1px solid var(--md-sys-color-outline-variant);
     padding: var(--spacing-xs);
+    container-type: inline-size;
+    container-name: dzikir-panel;
 }
 
 .routine-section-header {
