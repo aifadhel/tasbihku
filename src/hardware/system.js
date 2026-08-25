@@ -50,7 +50,7 @@ export function initServiceWorker() {
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js').then(reg => {
-                console.log('SW registered!', reg);
+                console.info('SW registered!', reg);
                 reg.addEventListener('updatefound', () => {
                     const newWorker = reg.installing;
                     newWorker.addEventListener('statechange', () => {
@@ -63,7 +63,7 @@ export function initServiceWorker() {
                         }
                     });
                 });
-            }).catch(err => console.log('SW registration failed', err));
+            }).catch(err => console.error('SW registration failed', err));
         });
     }
 }

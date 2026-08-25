@@ -43,42 +43,45 @@ A beautiful, offline-first Progressive Web App for tracking Tasbih counts, daily
 ## 📁 Project Structure
 
 ```
-TasbihKu/
 ├── index.html              # Main SPA entry point
 ├── style.css               # Full design system & component styles
 ├── src/
 │   ├── main.js             # App initialization & global event wiring
 │   ├── core/
-│   │   └── store.js        # State management & IndexedDB persistence
+│   │   ├── store.js        # State management & IndexedDB persistence
+│   │   └── i18n.js         # Internationalization (ID/EN)
 │   ├── data/
 │   │   └── azkar.json      # Dzikir content database
 │   ├── hardware/
-│   │   ├── media.js         # Haptic feedback & audio engine
-│   │   └── system.js        # PWA install, notifications, wake lock
+│   │   ├── media.js        # Haptic feedback & audio engine
+│   │   └── system.js       # PWA install, notifications, wake lock
 │   ├── modules/
-│   │   ├── tasbih.js        # Tasbih counter logic
-│   │   ├── dzikir.js        # Guided dzikir engine
-│   │   ├── habits.js        # Habit module barrel export
-│   │   ├── habits-data.js   # Habit data & streak calculations
-│   │   ├── habits-ui.js     # Habit UI rendering & interactions
-│   │   ├── habits-chart.js  # Chart rendering for habit statistics
-│   │   └── habits-export.js # CSV export for habit data
+│   │   ├── tasbih.js       # Tasbih counter logic
+│   │   ├── dzikir.js       # Guided dzikir engine & custom editor
+│   │   ├── habits.js       # Habit module barrel export
+│   │   ├── habits-data.js  # Habit data & streak calculations
+│   │   ├── habits-ui.js    # Habit UI rendering & interactions
+│   │   ├── habits-chart.js # Chart rendering for habit statistics
+│   │   └── habits-export.js# CSV export for habit data
 │   └── ui/
-│       ├── router.js        # Page navigation, modals, toasts
-│       └── confetti.js      # Celebration animations
+│       ├── router.js       # Page navigation, modals, OLED theme
+│       ├── toast.js        # Toast notification queue
+│       └── confetti.js     # Celebration animations
 ├── public/
-│   ├── manifest.json        # PWA manifest
-│   ├── sw.js                # Service worker for offline caching
-│   ├── config.json          # App configuration
-│   ├── sound.ogg            # Tap sound effect
-│   └── icon-*.png           # App icons
+│   ├── manifest.json       # PWA manifest
+│   ├── sw.js               # Service worker for offline caching
+│   ├── config.json         # Audio sprite configuration
+│   ├── sound.ogg           # Tap sound effect
+│   └── icon-*.png          # App icons
+├── docs/
+│   ├── ARCHITECTURE.md     # System architecture & dynamic context map
+│   └── archive/            # Historical changelogs and notes
 ├── tests/
-│   ├── unit/                # Vitest unit tests
-│   └── e2e/                 # Playwright E2E tests
-├── scripts/                 # Developer utility scripts
-├── .github/workflows/       # GitHub Actions CI pipeline
-├── vite.config.js           # Vite configuration
-├── playwright.config.js     # Playwright configuration
+│   ├── unit/               # Vitest unit tests
+│   └── e2e/                # Playwright E2E tests
+├── .github/workflows/      # GitHub Actions CI pipeline
+├── vite.config.js          # Vite configuration
+├── playwright.config.js    # Playwright configuration
 └── package.json
 ```
 

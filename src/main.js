@@ -544,7 +544,7 @@ function handleSwipeGesture() {
 window.toggleFullscreen = function() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
-            console.log(`Error attempting to enable fullscreen: ${err.message}`);
+            console.warn(`Error attempting to enable fullscreen: ${err.message}`);
         });
     } else {
         if (document.exitFullscreen) {
