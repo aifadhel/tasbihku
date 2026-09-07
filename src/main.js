@@ -41,7 +41,8 @@ import {
     incrementPlayer, 
     playerUndo, 
     renderCustomList, 
-    openEditor 
+    openEditor,
+    updatePlayerUI
 } from './modules/dzikir.js';
 import { 
     renderHabits, 
@@ -287,6 +288,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderHabits();
         renderStats();
         updateStreakBadge();
+        const playerPage = document.getElementById('page-player');
+        if (playerPage && playerPage.classList.contains('active')) {
+            updatePlayerUI();
+        }
     });
 
     // 2. Setup inputs and listeners

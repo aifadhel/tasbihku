@@ -47,6 +47,20 @@ export const dzikirPetang = [
     { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: { id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", en: "I seek the forgiveness of Allah and repent to Him." }, target: 100, reference: { id: "HR. Al-Bukhari no. 6307, Muslim no. 2702", en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702" } }
 ];
 
+/**
+ * Resolves a localized string from either a plain string or an i18n object { id, en }.
+ * @param {string|object|null|undefined} val
+ * @param {string} [lang]
+ * @returns {string}
+ */
+export function getLocalizedText(val, lang = state.language || 'id') {
+    if (val === null || val === undefined) return '';
+    if (typeof val === 'object') {
+        return val[lang] || val.id || val.en || '';
+    }
+    return String(val);
+}
+
 // Editor Session state
 export let editorSession = null;
 export let editorType = null;
@@ -123,19 +137,14 @@ export function updatePlayerUI() {
         latinEl.style.display = currentPage.latin ? 'block' : 'none';
     }
     if (transEl) {
-        let transText = '';
-        if (typeof currentPage.translation === 'object' && currentPage.translation !== null) {
-            const lang = state.language || 'id';
-            transText = currentPage.translation[lang] || currentPage.translation.id || currentPage.translation.en || '';
-        } else {
-            transText = currentPage.translation || '';
-        }
+        const transText = getLocalizedText(currentPage.translation, state.language || 'id');
         transEl.innerText = transText;
         transEl.style.display = transText ? 'block' : 'none';
     }
     if (refEl) {
-        refEl.innerText = currentPage.reference || '';
-        refEl.style.display = currentPage.reference ? 'block' : 'none';
+        const refText = getLocalizedText(currentPage.reference, state.language || 'id');
+        refEl.innerText = refText;
+        refEl.style.display = refText ? 'block' : 'none';
     }
 
     if (counterEl) counterEl.innerText = state.playerCount;
@@ -396,7 +405,7 @@ export function renderEditor() {
             { key: 'target', label: 'Target Jumlah (*)', type: 'number', val: page.target },
             { key: 'arabic', label: 'Teks Arab', type: 'text', val: page.arabic },
             { key: 'latin', label: 'Teks Latin', type: 'text', val: page.latin },
-            { key: 'reference', label: 'Referensi', type: 'text', val: page.reference }
+            { key: 'reference', label: 'Referensi', type: 'text', val: getLocalizedText(page.reference, state.language || 'id') }
         ];
 
         inputs.forEach(f => {
@@ -553,10 +562,11 @@ export async function showLibraryModal() {
         listContainer.innerHTML = '';
         
         azkarData.forEach(zkr => {
+            const zkrName = getLocalizedText(zkr.name, state.language || 'id');
             const card = document.createElement('div');
             card.style.cssText = 'background: var(--md-sys-color-surface-variant); padding: 12px; border-radius: 8px; cursor: pointer; transition: background 0.2s;';
             card.innerHTML = `
-                <div style="font-weight: bold; margin-bottom: 4px;">${zkr.name}</div>
+                <div style="font-weight: bold; margin-bottom: 4px;">${zkrName}</div>
                 <div style="font-size: 0.85rem; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" dir="rtl">${zkr.arabic}</div>
             `;
             card.onclick = () => {
@@ -730,17 +740,19 @@ export function filterLibrary(query) {
     const lowerQuery = query.toLowerCase().trim();
     
     // Filter default presets
-    const filteredPresets = azkarData.filter(zkr => 
-        (zkr.name && zkr.name.toLowerCase().includes(lowerQuery)) ||
-        (zkr.arabic && zkr.arabic.toLowerCase().includes(lowerQuery)) ||
-        (zkr.latin && zkr.latin.toLowerCase().includes(lowerQuery))
-    );
+    const filteredPresets = azkarData.filter(zkr => {
+        const zkrName = getLocalizedText(zkr.name, state.language || 'id');
+        return (zkrName && zkrName.toLowerCase().includes(lowerQuery)) ||
+            (zkr.arabic && zkr.arabic.toLowerCase().includes(lowerQuery)) ||
+            (zkr.latin && zkr.latin.toLowerCase().includes(lowerQuery));
+    });
     
     filteredPresets.forEach(zkr => {
+        const zkrName = getLocalizedText(zkr.name, state.language || 'id');
         const card = document.createElement('div');
         card.style.cssText = 'background: var(--md-sys-color-surface-variant); padding: 12px; border-radius: 8px; cursor: pointer; transition: background 0.2s;';
         card.innerHTML = `
-            <div style="font-weight: bold; margin-bottom: 4px;">${zkr.name}</div>
+            <div style="font-weight: bold; margin-bottom: 4px;">${zkrName}</div>
             <div style="font-size: 0.85rem; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" dir="rtl">${zkr.arabic}</div>
         `;
         card.onclick = () => {
