@@ -1,5 +1,13 @@
 # TasbihKu WebApp — Changelog
 
+## 1.8.1 — tasbihku-v1.8.1
+
+- **Fix (Player):** Hadith Citation Localization — Fixed an issue where `#player-reference` rendered `[object Object]` when citations were stored as localized `{ id, en }` objects (e.g., `HR. Al-Hakim 1/562, disahihkan oleh Al-Albani`, `HR. Muslim no. 2723`). Integrated universal `getLocalizedText(val, lang)` helper to seamlessly extract language-appropriate strings.
+- **Fix (Editor):** Reference Input Binding — Resolved `[object Object]` display inside custom dzikir and guided session editor inputs by normalizing reference values to human-readable strings.
+- **Fix (Library):** Preset Title Rendering & Search Stability — Resolved `[object Object]` titles in the Azkar library modal (`showLibraryModal`) and fixed a fatal `TypeError` during query filtering in `filterLibrary` by extracting localized names before comparison.
+- **i18n:** Dynamic In-Session Language Updates — Extended `languageChanged` event listener in `src/main.js` to trigger `updatePlayerUI()`, allowing the active dzikir player to update translation and reference text immediately when switching between Indonesian and English.
+- **Tech:** Centralized app version bump (`v1.8.1`) across `package.json`, `src/ui/router.js`, and updated service worker cache name (`tasbihku-v1.8.1`).
+
 ## 1.8.0 — tasbihku-v1.8.0
 
 - **UX/UI:** CSS Container Queries Architecture — Refactored all application layout overlays, full-screen modals, sidebars, and habit/dzikir detail cards from legacy viewport media queries (`@media`) to modern CSS Container Queries (`@container`).
