@@ -2,9 +2,9 @@
 /* --- TasbihKu Habits Module (src/modules/habits.js) --- */
 /* ========================================================================= */
 
-import { state, saveState, saveStateImmediate } from '../core/store.js';
+import { state, saveState } from '../core/store.js';
 import { vibrate, playTapSound } from '../hardware/media.js';
-import { showModal, closeModal, SVG_ICONS } from '../ui/router.js';
+import { showModal, SVG_ICONS } from '../ui/router.js';
 import { fireConfetti } from '../ui/confetti.js';
 import { showToast } from '../ui/toast.js';
 import {

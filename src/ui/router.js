@@ -6,7 +6,7 @@ import { state, saveState, updateState } from '../core/store.js';
 import { playTapSound, isVibrationSupported, showSoundHint, vibrate } from '../hardware/media.js';
 import { requestWakeLock, releaseWakeLock } from '../hardware/system.js';
 import { stopStopwatch, stopTimer, updateStopwatchUI, updateTimerUI } from '../modules/tasbih.js';
-import { renderHabits, renderStats } from '../modules/habits.js';
+import { renderHabits } from '../modules/habits.js';
 import { t } from '../core/i18n.js';
 
 export const APP_VERSION = '1.8.0';

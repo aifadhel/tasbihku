@@ -60,8 +60,37 @@ This document serves as the high-density architectural reference and dynamic con
 
 ## 4. Agent Discovery & JIT Loading Heuristics
 
-When performing tasks on this repository:
-- **For Tasbih/Timer changes:** Load `src/modules/tasbih.js` and `src/core/store.js`.
-- **For Guided Dzikir changes:** Load `src/modules/dzikir.js` and `src/data/azkar.json`.
-- **For Habit Tracker changes:** Target specific submodules (`habits-data.js` for logic, `habits-ui.js` for DOM, `habits-chart.js` for visualization).
-- **For Layout / Theme styling:** Inspect `style.css` and `index.html`.
+To prevent context-window saturation and maintain prompt-cache efficiency, load only the specific files mapped to each functional domain. Never load the entire codebase into context.
+
+| Domain | Primary Entry | Supporting Files | What NOT to Load |
+|---|---|---|---|
+| **Tasbih Counter & Timers** | `src/modules/tasbih.js` | `src/core/store.js`, `src/hardware/media.js` | Dzikir, Habits, Chart engines |
+| **Guided Dzikir Engine** | `src/modules/dzikir.js` | `src/data/azkar.json`, `src/core/store.js` | Habits modules, Chart engines |
+| **Habit Tracker: Logic & Streaks** | `src/modules/habits-data.js` | `src/core/store.js` | Habits UI, Chart rendering |
+| **Habit Tracker: DOM & Modals** | `src/modules/habits-ui.js` | `src/modules/habits-data.js`, `src/ui/router.js` | Free counter, Hardware audio |
+| **Habit Tracker: Charts & Trends** | `src/modules/habits-chart.js` | `src/modules/habits-data.js` | UI modals, Dzikir engines |
+| **Habit Tracker: CSV Export** | `src/modules/habits-export.js` | `src/core/store.js` | UI rendering, SVG charts |
+| **App Routing, Dialogs & OLED** | `src/ui/router.js` | `style.css`, `index.html` (targeted lines) | Module business logic |
+| **Toasts & Micro-Interactions** | `src/ui/toast.js`, `src/ui/confetti.js` | `style.css` | Store persistence, Data JSON |
+| **Audio & Haptic Feedback** | `src/hardware/media.js` | `src/core/store.js` | UI templates, Dzikir data |
+| **WakeLock & PWA Service Worker** | `src/hardware/system.js` | `public/sw.js` | Counter logic, Chart rendering |
+| **State Persistence & Migrations** | `src/core/store.js` | - | Any UI / Hardware components |
+| **Localization & Translations** | `src/core/i18n.js` | - | Logic modules |
+
+---
+
+## 5. Filesystem Discovery Recipes for Agents
+
+When discovering symbols or investigating bugs, execute targeted ripgrep queries rather than viewing complete files:
+
+```bash
+# Locate function declaration without loading file
+grep -nE "^export function <functionName>" src/modules/*.js
+
+# Locate store state mutations
+grep -n "state\.<property>" src/
+
+# Search translation keys
+grep -n "<translation_key>" src/core/i18n.js
+```
+

@@ -10,8 +10,6 @@ import { loadState, state, subscribe, saveState } from './core/store.js';
 import { t, setLanguage, getLanguage, applyTranslations } from './core/i18n.js';
 import { 
     vibrate, 
-    playTapSound, 
-    isVibrationSupported, 
     applyVibrationCapability 
 } from './hardware/media.js';
 import { 
@@ -29,8 +27,6 @@ import {
     toggleTimer, 
     resetStopwatch, 
     resetTimer, 
-    updateStopwatchUI, 
-    updateTimerUI, 
     promptCustomTimer, 
     closeTimeInputModal, 
     applyTimeInputModal,
@@ -44,7 +40,6 @@ import {
     startPlayer, 
     incrementPlayer, 
     playerUndo, 
-    confirmResetPlayer, 
     renderCustomList, 
     openEditor 
 } from './modules/dzikir.js';

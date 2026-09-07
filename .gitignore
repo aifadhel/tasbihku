@@ -64,12 +64,19 @@ node_modules/
 
 # dotenv environment variables file
 .env
+.env*.local
+*.pem
+*.key
+*.cert
+credentials.json
+serviceAccountKey.json
 
 # dataconnect generated files
 .dataconnect
 
 # Build output
 dist/
+build/
 
 # Test results & artifacts
 test-results/
@@ -84,3 +91,15 @@ blob-report/
 *~
 .DS_Store
 Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Backup and temp files
+*.bak
+*_old.*
+*_backup.*
+*_copy.*
+*.tmp
+*.temp
+*.cache
+

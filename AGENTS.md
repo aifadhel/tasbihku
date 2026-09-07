@@ -28,12 +28,34 @@ This workspace adheres to strict context-window management, prompt caching optim
 ### Rule 5: Surgical Diff Edits
 - Always use targeted block replacement (`replace_file_content` / `multi_replace_file_content`).
 - Never reprint entire 500+ line files to modify small functions.
+- Consolidate multiple non-contiguous edits in a single file into a single multi-replace chunk operation, ordered from leaf dependencies upward.
+
+### Rule 6: Telegraphic Grammar & Density
+- Strip articles, redundant helper verbs, and politeness modifiers ("please", "simply", "just", "easy").
+- Format outputs into dense semantic mappings (`key: val`), short bullet lists, and compact tables.
+- For code reviews, strictly use structured headers: `[ISSUE]`, `[SUGGESTION]`, `[NITPICK]`.
+
+### Rule 7: Token-Budget Reasoning (CoT Optimization)
+- **Direct Mode:** Skip extensive planning cycles for trivial, deterministic edits (formatting, typos, simple imports).
+- **Abbreviated Thoughts:** Keep thought blocks compact. Never reprint code snippets or copy-paste file blocks inside thoughts; reference via file path and line numbers (e.g. `src/core/store.js#L12-18`).
+
+### Negative Constraints
+- Zero filler: "Here is", "I understand", "Let me", "Certainly", "Of course", "Happy to help".
+- No blind truncation of stacktraces or error logs.
+- No full-file reads on large files (>300 lines).
+- No re-reading files already loaded in the conversation history unless modified on disk.
+- No multi-question clarification dumps (max 1 single question).
+- No full git diff ingestion on large changesets — extract specific hunks only.
+
 
 ---
 
-## 2. Dynamic Context Discovery Heuristic
+## 2. Dynamic Context Discovery Heuristic (Filesystem-Context)
 
 Before initiating work:
-1. Consult `docs/ARCHITECTURE.md` to identify the target submodule.
-2. Only load the specific file required for the task.
-3. Keep vanilla JS / ES module architecture intact without introducing runtime build steps or unnecessary frameworks.
+1. **Target Identification:** Consult `docs/ARCHITECTURE.md` section 4 to identify the exact submodule and strict boundaries.
+2. **Just-In-Time Loading:** Only load the specific file required for the active domain. Never preload unrelated modules or entire directories.
+3. **Observation Offloading:** When tool output exceeds 2,000 tokens, offload data to scratch files or grep for targeted lines rather than carrying full outputs in context.
+4. **Targeted Inspections:** Use `grep_search` and targeted slice reads (`StartLine`/`EndLine`) for files > 300 lines instead of ingesting whole files.
+5. **Architectural Invariance:** Keep vanilla JS / ES module architecture intact without introducing runtime build steps or unnecessary frameworks.
+
