@@ -59,3 +59,39 @@ Before initiating work:
 4. **Targeted Inspections:** Use `grep_search` and targeted slice reads (`StartLine`/`EndLine`) for files > 300 lines instead of ingesting whole files.
 5. **Architectural Invariance:** Keep vanilla JS / ES module architecture intact without introducing runtime build steps or unnecessary frameworks.
 
+---
+
+## 3. Mandatory Version Bumping & Changelog Standards
+
+For **EVERY non-trivial update, feature addition, bug fix, or refactor**:
+1. **Bump Version & Update Changelog**: You **MUST** run the automated version bumper script before marking your task complete. Do not manually edit version numbers across files.
+2. **Execution Command**:
+   ```bash
+   node scripts/bump-version.js patch "Brief summary of changes made"
+   ```
+   - Use `patch` for bug fixes, performance tweaks, or minor UI adjustments (e.g. `v1.8.1` -> `v1.8.2`).
+   - Use `minor` for new components, new features, or architectural upgrades (e.g. `v1.8.1` -> `v1.9.0`).
+   - Use `major` for breaking API or system rewrites (e.g. `v1.8.1` -> `v2.0.0`).
+
+3. **Versioning & Detailed Changelog Standards**:
+   - **Version Format**: Version strings adhere to `tasbihku-vX.Y.Z` (e.g. `tasbihku-v1.8.2`).
+   - **Single Source of Truth**: `"version"` in [`package.json`](file:///package.json) is the authoritative source.
+   - **Detailed Changelog Requirement (MANDATORY)**:
+     - [`CHANGELOG.md`](file:///CHANGELOG.md) adheres to [Keep a Changelog](https://keepachangelog.com/) and [Semantic Versioning](https://semver.org/).
+     - **Never write vague or single-line changelog entries.**
+     - Every release entry in [`CHANGELOG.md`](file:///CHANGELOG.md) must provide a comprehensive, structured breakdown detailing:
+       - **Specific UI & Component Changes**: Added/modified views, modals, full-screen containers, buttons, and CSS tokens.
+       - **Core Logic & Audio/Haptic Workflows**: Changes to counters, state persistence, debounce times, audio synth, and haptic vibration intervals.
+       - **Dzikir & Habits Engine**: Preset changes, calculation algorithms, streak tracking, and i18n localization keys.
+       - **Test & Verification**: Results of `npm test` (`vitest`) and `npm run build` (`vite build`).
+
+---
+
+## 4. Checklist Before Completion
+
+- [ ] Has `node scripts/bump-version.js` been executed successfully for non-trivial changes?
+- [ ] Has [`CHANGELOG.md`](file:///CHANGELOG.md) been enriched with detailed, structured bullet points?
+- [ ] Did you verify 0 test errors via `npm test`?
+- [ ] Did you verify clean bundle compilation via `npm run build`?
+
+

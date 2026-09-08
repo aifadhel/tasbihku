@@ -1,5 +1,12 @@
 # TasbihKu WebApp — Changelog
 
+## [tasbihku-v1.8.2] - 2026-09-08
+
+- **Automation:** Centralized Version Bumper — Implemented `scripts/bump-version.js` to automatically synchronize version changes across `package.json`, `src/ui/router.js` (`APP_VERSION`), `public/sw.js` (`CACHE_NAME`), and `CHANGELOG.md`.
+- **Tooling:** NPM Workflow Integration — Added `"version:bump": "node scripts/bump-version.js"` to `package.json` supporting `patch`, `minor`, `major`, or explicit version string arguments.
+- **Directives:** Agent Versioning Standard — Enriched `AGENTS.md` with mandatory version bumping rules, Keep-a-Changelog guidelines, and pre-completion checklists adapted from the PresensiKu repository standard.
+- **Tech:** Verified 100% pass rate on unit test suites (`tests/unit/`) and production build compilation (`vite build`).
+
 ## 1.8.1 — tasbihku-v1.8.1
 
 - **Fix (Player):** Hadith Citation Localization — Fixed an issue where `#player-reference` rendered `[object Object]` when citations were stored as localized `{ id, en }` objects (e.g., `HR. Al-Hakim 1/562, disahihkan oleh Al-Albani`, `HR. Muslim no. 2723`). Integrated universal `getLocalizedText(val, lang)` helper to seamlessly extract language-appropriate strings.
