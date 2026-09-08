@@ -85,13 +85,24 @@ For **EVERY non-trivial update, feature addition, bug fix, or refactor**:
        - **Dzikir & Habits Engine**: Preset changes, calculation algorithms, streak tracking, and i18n localization keys.
        - **Test & Verification**: Results of `npm test` (`vitest`) and `npm run build` (`vite build`).
 
+### 3.1 In-App Update Broadcast & Draft Review Rule (MANDATORY)
+
+- **Do Not Broadcast Immediately**: Never automatically display or broadcast an update notification directly into user prompts or modals without user review.
+- **Draft Generation Gate**:
+  1. Whenever performing a version bump, `scripts/bump-version.js` automatically generates an In-App Broadcast Draft with the following schema:
+     - **ID**: `tasbihku-vX.Y.Z-<short-slug>`
+     - **Title**: `TasbihKu vX.Y.Z: <Ringkasan Fitur>`
+     - **Message**: Concise Indonesian summary explaining the improvement/fix to users (dzikir, counter, habits, or offline UX).
+     - **Priority**: `"normal" | "high" | "urgent"`
+  2. **Present Draft for User Review**: Present the generated broadcast draft directly in the conversation for user confirmation.
+  3. **Stage After Approval**: Once approved by the user, stage the release notification in `src/ui/toast.js` or the About modal release feed.
+
 ---
 
 ## 4. Checklist Before Completion
 
 - [ ] Has `node scripts/bump-version.js` been executed successfully for non-trivial changes?
 - [ ] Has [`CHANGELOG.md`](file:///CHANGELOG.md) been enriched with detailed, structured bullet points?
+- [ ] Has an In-App Broadcast draft been generated and presented to the user for review?
 - [ ] Did you verify 0 test errors via `npm test`?
 - [ ] Did you verify clean bundle compilation via `npm run build`?
-
-

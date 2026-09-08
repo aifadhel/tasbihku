@@ -1,5 +1,5 @@
 // NOTE: Update APP_VERSION in app.js when changing version
-const CACHE_NAME = 'tasbihku-v1.8.2';
+const CACHE_NAME = 'tasbihku-v1.8.3';
 
 // File utama yang WAJIB ada saat offline
 const urlsToCache = [

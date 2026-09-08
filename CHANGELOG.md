@@ -1,5 +1,31 @@
 # TasbihKu WebApp — Changelog
 
+All notable changes to the TasbihKu project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+---
+
+## [tasbihku-v1.8.3] - 2026-09-08
+
+- **Highlight:** Automated Versioning Engine & In-App Release Broadcast Review Gate — Upgraded version management architecture to synchronize version updates across all core targets and enforce draft review before release notifications.
+
+### Specific UI & Component Changes
+- **Directives:** In-App Broadcast Review Gate — Integrated Section 3.1 in `AGENTS.md` requiring automated generation and manual approval of release announcements before staging into `toast.js` or the About modal.
+- **Directives:** Enriched pre-completion checklist requiring verification of broadcast copy, test suites, and clean production builds.
+
+### Core Logic & Audio/Haptic Workflows
+- **Automation:** Pre-flight Verification — Added atomic pre-flight checks in `scripts/bump-version.js` verifying target existence and regex patterns in `package.json`, `src/ui/router.js` (`APP_VERSION`), and `public/sw.js` (`CACHE_NAME`) before mutating disk.
+- **Automation:** Dry-Run Simulation — Added `--dry-run` (`-d`) CLI flag to preview version increments, target diffs, and broadcast drafts without modifying files.
+
+### Dzikir & Habits Engine
+- **Changelog Engine:** Keep-a-Changelog Domain Scaffolding — Updated version bumper to automatically scaffold standardized sections (`UI & Components`, `Core & Audio/Haptic`, `Dzikir & Habits Engine`, `Test & Verification`).
+
+### Test & Verification
+- Unit test suite (`npm test`): 100% pass across all unit tests in `tests/unit/`.
+- Production compilation (`npm run build`): verified clean bundle generation with 0 errors.
+
+
 ## [tasbihku-v1.8.2] - 2026-09-08
 
 - **Automation:** Centralized Version Bumper — Implemented `scripts/bump-version.js` to automatically synchronize version changes across `package.json`, `src/ui/router.js` (`APP_VERSION`), `public/sw.js` (`CACHE_NAME`), and `CHANGELOG.md`.
