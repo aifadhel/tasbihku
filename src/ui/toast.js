@@ -70,8 +70,33 @@ export function hideToast() {
             }
         }, 300);
     }
-    if (toastTimeoutId) {
-        clearTimeout(toastTimeoutId);
-        toastTimeoutId = null;
-    }
 }
+
+/**
+ * Approved In-App Update Broadcast (Section 3.1)
+ */
+export const CURRENT_RELEASE_BROADCAST = {
+    id: "tasbihku-v1.8.4-audit-material-3-expressive-un",
+    title: "TasbihKu v1.8.4: Material 3 Expressive Refactor",
+    message: "Pembaruan antarmuka Material 3 Expressive: cincin fokus aksesibilitas universal, target sentuh kalender 48px, tokenisasi kontras mode OLED hitam pekat, serta animasi timer dan getaran tombol yang lebih taktil.",
+    priority: "normal"
+};
+
+/**
+ * Broadcast current app release announcement once per user session if not dismissed.
+ */
+export function checkAndShowReleaseBroadcast() {
+    if (!CURRENT_RELEASE_BROADCAST) return;
+    const dismissedId = localStorage.getItem('tasbihku_last_broadcast_id');
+    if (dismissedId === CURRENT_RELEASE_BROADCAST.id) return;
+
+    setTimeout(() => {
+        showToast(CURRENT_RELEASE_BROADCAST.message, 'Info', () => {
+            if (typeof window.showPage === 'function') {
+                window.showPage('page-about');
+            }
+        }, 6000);
+        localStorage.setItem('tasbihku_last_broadcast_id', CURRENT_RELEASE_BROADCAST.id);
+    }, 1500);
+}
+

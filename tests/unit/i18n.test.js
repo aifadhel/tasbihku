@@ -76,12 +76,12 @@ describe('i18n Translation System Unit Tests', () => {
     it('should translate About page keys correctly in ID and EN', () => {
         setLanguage('id');
         expect(t('about_title')).toBe('Tentang TasbihKu');
-        expect(t('about_chip_pwa')).toBe('📱 PWA Ready');
+        expect(t('about_chip_pwa')).toBe('PWA Ready');
         expect(t('about_features_title')).toBe('Fitur Utama');
 
         setLanguage('en');
         expect(t('about_title')).toBe('About TasbihKu');
-        expect(t('about_chip_pwa')).toBe('📱 PWA Ready');
+        expect(t('about_chip_pwa')).toBe('PWA Ready');
         expect(t('about_features_title')).toBe('Main Features');
     });
 });

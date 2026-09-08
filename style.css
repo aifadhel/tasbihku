@@ -141,6 +141,50 @@ body.oled-mode {
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+/* --- MATERIAL 3 EXPRESSIVE FOCUS INDICATORS & A11Y --- */
+:focus-visible {
+    outline: 3px solid var(--md-sys-color-primary) !important;
+    outline-offset: 2px !important;
+}
+
+:focus:not(:focus-visible) {
+    outline: none !important;
+}
+
+button:focus-visible,
+.btn:focus-visible,
+.mode-btn:focus-visible,
+.segment-btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--md-sys-color-primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* --- PREFERS-REDUCED-MOTION (M3 Accessibility Fallback) --- */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .page,
+    .page.active,
+    .modal-box,
+    .card,
+    .btn,
+    .fab-large {
+        transform: none !important;
+        transition: opacity 0.01ms !important;
+    }
+}
+
 body {
     font-family: var(--font-family-base);
     background-color: var(--md-sys-color-background);
@@ -389,7 +433,10 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
+    transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-enter),
+                background-color var(--md-sys-motion-duration-short) ease,
+                color var(--md-sys-motion-duration-short) ease,
+                box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
     text-decoration: none;
     position: relative;
     overflow: hidden;
@@ -448,7 +495,10 @@ body {
 .color-picker-dot:active,
 .day-chk-bubble:active,
 .routine-section-header:active,
-.btn-icon-edit:active { transform: scale(0.96); }
+.btn-icon-edit:active {
+    transform: scale(0.95);
+    transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
+}
 
 .btn-filled {
     background-color: var(--md-sys-color-primary);
@@ -764,10 +814,12 @@ input:checked + .slider:before {
 .modal-box {
     background: var(--md-sys-color-surface-container-high);
     padding: 24px;
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
     border-radius: var(--shape-corner-xl);
     width: 90%;
     max-width: 360px; /* M3 Expressive dialog max-width */
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid var(--md-sys-color-outline-variant);
     transform: scale(0.85);
     transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
     max-height: 85vh;
@@ -781,20 +833,55 @@ input:checked + .slider:before {
     transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-enter);
 }
 
-/* Standardized M3 Component Shape Corner tokens for forms and overlays */
+/* Standardized M3 Component Shape Corner tokens & Surface Styling for forms and overlays */
 .modal-box input,
 .modal-box textarea,
 .modal-box select,
 .editor-page-card input,
-.editor-page-card textarea {
+.editor-page-card textarea,
+.m3-input,
+.m3-select,
+.m3-textarea {
+    background: var(--md-sys-color-surface-container) !important;
+    color: var(--md-sys-color-on-background) !important;
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
     border-radius: var(--shape-corner-md) !important;
+    padding: 12px !important;
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color var(--md-sys-motion-duration-short) ease,
+                background-color var(--md-sys-motion-duration-short) ease;
+}
+
+.modal-box input:focus,
+.modal-box textarea:focus,
+.modal-box select:focus,
+.m3-input:focus,
+.m3-select:focus,
+.m3-textarea:focus {
+    border-color: var(--md-sys-color-primary) !important;
+    background-color: var(--md-sys-color-surface-container-high) !important;
 }
 
 .btn-list-item input[type="time"] {
+    background: var(--md-sys-color-surface-container) !important;
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
+    color: var(--md-sys-color-on-background) !important;
     border-radius: var(--shape-corner-md) !important;
 }
 
-#stats-summary > div {
+.btn-list-item select {
+    background: var(--md-sys-color-surface-container) !important;
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
+    color: var(--md-sys-color-on-background) !important;
+    border-radius: var(--shape-corner-md) !important;
+}
+
+.m3-card-tile,
+#stats-summary > div,
+.habit-detail-grid .flex-col {
+    background: var(--md-sys-color-surface-container-high) !important;
+    border: 1px solid var(--md-sys-color-outline-variant) !important;
     border-radius: var(--shape-corner-md) !important;
 }
 
@@ -947,6 +1034,23 @@ input:checked + .slider:before {
   font-family: var(--font-family-mono);
   color: var(--md-sys-color-tertiary);
   text-shadow: 0 0 20px rgba(220, 196, 140, 0.2);
+  transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+}
+
+/* Expressive Running status indicator pulse for Stopwatch and Timer */
+.timer-running {
+    animation: m3-timer-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes m3-timer-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.85;
+        transform: scale(1.02);
+    }
 }
 
 /* Preset Buttons */
@@ -1426,6 +1530,31 @@ input:checked + .slider:before {
 }
 
 /* --- INTERACTIVE CALENDAR PICKER STYLES --- */
+.calendar-nav-btn {
+    width: 48px;
+    min-width: 48px;
+    height: 48px;
+    border-radius: var(--shape-corner-full);
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard),
+                background-color var(--md-sys-motion-duration-short) ease;
+}
+
+.calendar-nav-btn:hover {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.calendar-nav-btn:active {
+    transform: scale(0.92);
+}
+
 .calendar-picker-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

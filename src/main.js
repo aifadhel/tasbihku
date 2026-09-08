@@ -72,7 +72,7 @@ import {
     applyQuoteState, 
     APP_VERSION 
 } from './ui/router.js';
-import { showToast, hideToast } from './ui/toast.js';
+import { showToast, hideToast, CURRENT_RELEASE_BROADCAST, checkAndShowReleaseBroadcast } from './ui/toast.js';
 
 // Expose core store, navigation, i18n, and module APIs globally to bridge with index.html events
 window.loadState = loadState;
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initServiceWorker();
     initInstallPrompt();
 
-    // 8. Bind App Version Label
+    // 8. Bind App Version Label & Release Feed
     const versionEl = document.getElementById('app-version');
     if (versionEl) {
         versionEl.textContent = `tasbihku-v${APP_VERSION}`;
@@ -390,6 +390,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (aboutVersionEl) {
         aboutVersionEl.textContent = `TasbihKu v${APP_VERSION}`;
     }
+    const aboutReleaseNote = document.getElementById('about-release-note');
+    if (aboutReleaseNote && CURRENT_RELEASE_BROADCAST) {
+        aboutReleaseNote.textContent = `${CURRENT_RELEASE_BROADCAST.title}: ${CURRENT_RELEASE_BROADCAST.message}`;
+    }
+
+    // 9. Stage In-App Release Broadcast (Section 3.1)
+    checkAndShowReleaseBroadcast();
 });
 
 // --- Hash & Path Navigation Router ---

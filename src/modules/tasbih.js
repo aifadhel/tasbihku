@@ -236,6 +236,7 @@ export function updateStopwatchUI() {
     const stopwatchCounterEl = document.getElementById('stopwatch-counter');
     if (stopwatchCounterEl) {
         stopwatchCounterEl.innerText = formatTime(state.stopwatch.elapsedTime || 0);
+        stopwatchCounterEl.classList.toggle('timer-running', !!state.stopwatch.running);
     }
 }
 
@@ -369,12 +370,14 @@ export function updateTimerUI() {
         btnEl.style.background = 'linear-gradient(135deg, #ffb4ab 0%, #ff897d 100%)';
         if (setupArea) setupArea.style.display = 'none';
         counterEl.style.fontSize = 'clamp(3.5rem, 12vw, 5.5rem)';
+        counterEl.classList.add('timer-running');
     } else {
         emojiEl.innerHTML = SVG_ICONS.play;
         labelEl.innerText = t('label_start');
         btnEl.style.background = 'linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%)';
         if (setupArea) setupArea.style.display = 'block';
         counterEl.style.fontSize = 'clamp(2.5rem, 8vw, 3.5rem)';
+        counterEl.classList.remove('timer-running');
     }
 
     if (state.timer.remainingTime !== null) {

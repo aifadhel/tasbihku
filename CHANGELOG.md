@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.8.4] - 2026-09-08
+
+- **Highlight:** Material 3 Expressive UI/UX Refactor — Comprehensive audit synthesis resolving accessibility focus indicators, 48px mobile touch targets, design token consolidation, and expressive spring dynamics.
+
+### Specific UI & Component Changes
+- **Accessibility & Focus Indicators:** Implemented high-contrast `:focus-visible` styling (`3px solid var(--md-sys-color-primary)` with `2px` offset) across all interactive elements (`button`, `.btn`, `.mode-btn`, `.segment-btn`, `input`, `select`, `textarea`, `a`).
+- **Motion Accessibility:** Added `@media (prefers-reduced-motion: reduce)` fallbacks disabling CSS keyframe animations, setting immediate transitions (`0.01ms`), and resetting dynamic transforms across pages, modals, cards, and buttons.
+- **Touch Ergonomics:** Expanded calendar month navigation buttons (`navigateCalendarMonth`) from `32x32px` to a touch-safe `48x48px` bounding area (`.calendar-nav-btn`) with flex centering, and enlarged habit detail action buttons to `48x48px`.
+- **Token Consolidation & OLED Contrast:** Replaced hardcoded inline `background: rgba(...)` styles across modal inputs, selects, textareas, habit settings, and stats cards with semantic M3 tokens (`--md-sys-color-surface-container`, `--md-sys-color-outline-variant`, and `.m3-card-tile`), eliminating visual extinction on `#000000` OLED displays.
+- **Nested Radii Coherence:** Standardized modal child containers and input fields to `--shape-corner-md` (`16px`) inside `--shape-corner-xl` (`28px`) modals to satisfy the nested radius hierarchy law.
+- **Visual Coherence & Emojis:** Purged residual emojis (`☀️`, `🌙`, `📿`) from wirid titles, reminders, and routine dropdowns in `index.html` and `src/core/i18n.js` (Indonesian & English), standardizing on semantic typography and theme-aware SVG icons.
+- **Safe Area Insets:** Enhanced modal dialog padding with `padding-bottom: max(24px, env(safe-area-inset-bottom))` for modern edge-to-edge mobile devices.
+
+### Core Logic & Audio/Haptic Workflows
+- **Expressive Dynamics & Spring Rebound:** Added M3 Expressive overshoot rebound (`var(--md-sys-motion-easing-spring-enter)`) to `.btn` release transitions and calibrated active press states to `scale(0.95)`.
+- **Timer & Stopwatch Status Cue:** Added `.timer-running` pulse animation (`@keyframes m3-timer-pulse`) with automatic state toggling in `src/modules/tasbih.js` (`updateTimerUI` and `updateStopwatchUI`) providing subtle visual feedback during active sessions.
+
+### Dzikir & Habits Engine
+- **Localization Updates:** Normalized translation dictionary keys in `src/core/i18n.js` for wirid sessions (`dzikir_pagi_title`, `dzikir_petang_title`, `dzikir_wirid_title`, `reminder_pagi_title`, `reminder_petang_title`, `habit_sesi_*`, and `routine_*`) to cleanly decouple text from icon graphics.
+- **Habit Modal Form Styling:** Standardized habit creation/edit modal inputs, anchor date pickers, interval inputs, and monthly calendar wrappers to semantic tokens and coordinated focus rings.
+
+### Test & Verification
+- **Unit Test Suite:** Verified 41/41 passing tests across `tests/unit/i18n.test.js` and `tests/unit/habits.test.js` via `npm test` (`vitest`).
+- **Production Build:** Verified clean bundle generation via `npm run build` (`vite build`) with 0 errors.
+
+
 ## [tasbihku-v1.8.3] - 2026-09-08
 
 - **Highlight:** Automated Versioning Engine & In-App Release Broadcast Review Gate — Upgraded version management architecture to synchronize version updates across all core targets and enforce draft review before release notifications.
