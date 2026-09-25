@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.9.0] - 2026-09-25
+
+- **Highlight:** Eyes-Free Zen Counter Mode, Autonomous Multi-Pitch Audio Synthesis, Direct Habit-to-Dzikir Launcher, and Istiqamah 1-Day Streak Grace Recovery.
+
+### Specific UI & Component Changes
+- **Full-Screen Zen Mode Overlay (`#zen-counter-overlay`):** Implemented an immersive, true `#000000` pitch-black OLED full-screen tap-anywhere hit surface with responsive monospace typography (`clamp(5rem, 25vw, 12rem)`), soft glowing numbers, subtle guidance hint, and long-press / escape dismiss handlers.
+- **Accidental Tap Decrement (`-1`):** Added a 1-tap decrement action on both the main dashboard control bar (`#dashboard-decrement-btn`) and inside the Zen mode overlay, providing instant error correction for accidental taps without resetting counts.
+- **Habit Card Quick Launcher (`.habit-launch-dzikir-btn`):** Added direct `[📿 Mulai Dzikir]` pill buttons to habit cards linked with `linkedDzikirId`, allowing users to jump directly into the relevant guided azkar (Pagi, Petang, Wirid) or custom reading.
+- **Keyboard Shortcuts:** Expanded global `keydown` orchestrator with `-` and `ArrowDown` for decrements and `Escape` for closing Zen mode.
+
+### Core Logic & Audio/Haptic Workflows
+- **Autonomous Web Audio Oscillator Synthesizer:** Integrated zero-asset oscillator audio fallback (`playSynthesizedTone`) with exponential gain ramp to guarantee 100% offline audio feedback even when external sound assets fail to fetch.
+- **Multi-Pitch Milestone Audio Feedback:** Synthesized distinct acoustic pitches: standard tap (520Hz sine), milestone sub-targets at 33/66/99/100 (880Hz triangle), and four-note ascending arpeggio fanfare (C5, E5, G5, C6) upon reaching target goals.
+- **Calibrated Milestone Haptics:** Orchestrated tactile rhythm with standard pulse (`15ms`), sub-target cadence (`[40, 50, 40]ms`), target celebration burst (`[80, 50, 80, 50, 150]ms`), and decrement acknowledgement (`25ms`).
+- **SSR / Node Document Guard:** Fortified counter logic with `typeof document !== 'undefined'` checks to ensure deterministic execution across both browser and headless test environments.
+
+### Dzikir & Habits Engine
+- **Istiqamah 1-Day Streak Grace Algorithm:** Upgraded `calculateStreak()` to support single-day skip recovery when `state.istiqamahGrace` is enabled, eliminating streak anxiety while maintaining integrity by strictly resetting on 2+ consecutive inactive days.
+- **State Store Persistence & Migration:** Introduced `istiqamahGrace: true` in `DEFAULT_STATE` and `loadState()` migrations within `src/core/store.js`.
+- **Localization (i18n):** Added bilingual dictionary entries in Indonesian and English for `btn_decrement`, `btn_zen_mode`, `zen_mode_title`, `zen_tap_hint`, and `btn_launch_dzikir`.
+
+### Test & Verification
+- **Unit Test Suite (`npm test`):** 44 unit tests passing cleanly across `tests/unit/i18n.test.js` and `tests/unit/habits.test.js` with 100% pass rate.
+- **Production Compilation (`npm run build`):** Validated clean bundle compilation under Vite 5 and Rollup with zero asset errors.
+
 ## [tasbihku-v1.8.4] - 2026-09-08
 
 - **Highlight:** Material 3 Expressive UI/UX Refactor — Comprehensive audit synthesis resolving accessibility focus indicators, 48px mobile touch targets, design token consolidation, and expressive spring dynamics.

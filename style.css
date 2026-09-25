@@ -2534,5 +2534,112 @@ button:focus-visible {
     border-radius: calc(var(--shape-corner-lg) - 12px);
 }
 
+/* --- ZEN MODE FULL-SCREEN STYLING (Pitch Black OLED & Distraction-Free) --- */
+.zen-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    color: #ffffff;
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: env(safe-area-inset-top, 24px) 24px env(safe-area-inset-bottom, 24px) 24px;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+}
+
+.zen-overlay.active {
+    display: flex;
+}
+
+.zen-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    z-index: 2;
+}
+
+.zen-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.zen-target {
+    color: var(--md-sys-color-primary, #8cd6b5);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.zen-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+}
+
+.zen-center-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    pointer-events: none;
+}
+
+.zen-counter-number {
+    font-family: var(--font-family-mono, monospace);
+    font-size: clamp(5rem, 25vw, 12rem);
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 40px rgba(140, 214, 181, 0.25);
+    line-height: 1;
+    transition: transform 0.08s ease;
+}
+
+.zen-hint {
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.zen-bottom-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: 2;
+}
+
+.zen-action-btn {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--shape-corner-full, 9999px);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+.zen-action-btn:active {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(0.95);
+}
+
 
 

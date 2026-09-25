@@ -35,6 +35,7 @@ const DEFAULT_STATE = {
     pagiReminderTime: "06:00",
     petangReminderEnabled: false,
     petangReminderTime: "16:00",
+    istiqamahGrace: true,
     language: 'id'
 };
 
@@ -188,6 +189,7 @@ export async function loadState() {
             if (typeof rawState.pagiReminderTime === 'undefined') rawState.pagiReminderTime = "06:00";
             if (typeof rawState.petangReminderEnabled === 'undefined') rawState.petangReminderEnabled = false;
             if (typeof rawState.petangReminderTime === 'undefined') rawState.petangReminderTime = "16:00";
+            if (typeof rawState.istiqamahGrace === 'undefined') rawState.istiqamahGrace = true;
 
             // Migrate habits scheduling defaults
             rawState.habits.forEach(habit => {

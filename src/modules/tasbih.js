@@ -3,7 +3,7 @@
 /* ========================================================================= */
 
 import { state, saveState, saveStateImmediate } from '../core/store.js';
-import { vibrate, playTapSound } from '../hardware/media.js';
+import { vibrate, playTapSound, triggerMilestoneFeedback } from '../hardware/media.js';
 import { trackActivity, triggerTimerNotification } from './habits.js';
 import { showModal, animateValue, SVG_ICONS, triggerCelebration } from '../ui/router.js';
 import { t } from '../core/i18n.js';
@@ -18,29 +18,71 @@ let stopwatchLastVibrateMinute = 0;
 // Timer private state variables
 let timerIntervalId = null;
 
+let lastIncrementTime = 0;
+const TAP_DEBOUNCE_MS = 60;
+
 // --- Free Counter Logic ---
 export function incrementFree() {
+    const now = Date.now();
+    if (now - lastIncrementTime < TAP_DEBOUNCE_MS) {
+        return;
+    }
+    lastIncrementTime = now;
+
     state.freeCount++;
     animateValue('free-counter', state.freeCount);
+    if (typeof document !== 'undefined') {
+        const zenCounter = document.getElementById('zen-counter-display');
+        if (zenCounter) zenCounter.innerText = state.freeCount;
+    }
     
     if (state.targetLimit > 0 && state.freeCount % state.targetLimit === 0) {
-        vibrate([50, 100, 50]);
         triggerCelebration();
-        const freeCounterEl = document.getElementById('free-counter');
-        if (freeCounterEl) {
-            freeCounterEl.classList.remove('expressive-pop');
-            void freeCounterEl.offsetWidth; // trigger reflow
-            freeCounterEl.classList.add('expressive-pop');
+        if (typeof document !== 'undefined') {
+            const freeCounterEl = document.getElementById('free-counter');
+            if (freeCounterEl) {
+                freeCounterEl.classList.remove('expressive-pop');
+                void freeCounterEl.offsetWidth; // trigger reflow
+                freeCounterEl.classList.add('expressive-pop');
+            }
         }
-    } else if (state.vibrationInterval > 0 && state.freeCount % state.vibrationInterval === 0) {
-        vibrate([40, 40]);
-    } else {
-        vibrate();
     }
+    
+    triggerMilestoneFeedback(state.freeCount, state.targetLimit);
     
     saveState();
     trackActivity();
-    playTapSound();
+}
+
+export function decrementFree() {
+    if (state.freeCount <= 0) return;
+    state.freeCount--;
+    animateValue('free-counter', state.freeCount);
+    if (typeof document !== 'undefined') {
+        const zenCounter = document.getElementById('zen-counter-display');
+        if (zenCounter) zenCounter.innerText = state.freeCount;
+    }
+    vibrate(25);
+    saveState();
+}
+
+export function toggleZenMode(enable) {
+    if (typeof document === 'undefined') return;
+    const zenOverlay = document.getElementById('zen-counter-overlay');
+    const zenCounter = document.getElementById('zen-counter-display');
+    const zenTarget = document.getElementById('zen-target-display');
+    if (!zenOverlay) return;
+
+    const shouldOpen = typeof enable === 'boolean' ? enable : !zenOverlay.classList.contains('active');
+    if (shouldOpen) {
+        if (zenCounter) zenCounter.innerText = state.freeCount;
+        if (zenTarget) zenTarget.innerText = state.targetLimit > 0 ? `/ ${state.targetLimit}` : '∞';
+        zenOverlay.classList.add('active');
+        vibrate([30, 30]);
+    } else {
+        zenOverlay.classList.remove('active');
+        vibrate(20);
+    }
 }
 
 export function confirmResetFree() {

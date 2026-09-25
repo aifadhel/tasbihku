@@ -494,6 +494,25 @@ export function renderHabits() {
             progressMini.innerHTML = `🎯 ${todayEntry.value || 0} / ${habit.targetValue || 100} ${habit.targetUnit || 'kali'}`;
             details.appendChild(progressMini);
         }
+
+        if (habit.linkedDzikirId) {
+            const launchBtn = document.createElement('button');
+            launchBtn.className = 'btn btn-tonal habit-launch-dzikir-btn';
+            launchBtn.style.padding = '4px 10px';
+            launchBtn.style.fontSize = '0.75rem';
+            launchBtn.style.marginTop = '6px';
+            launchBtn.style.borderRadius = '12px';
+            launchBtn.style.display = 'inline-flex';
+            launchBtn.style.alignItems = 'center';
+            launchBtn.style.gap = '4px';
+            launchBtn.style.width = 'fit-content';
+            launchBtn.innerHTML = `📿 ${t('btn_launch_dzikir') || 'Mulai Dzikir'}`;
+            launchBtn.onclick = (e) => {
+                e.stopPropagation();
+                launchLinkedDzikir(habit.linkedDzikirId);
+            };
+            details.appendChild(launchBtn);
+        }
         
         infoContent.appendChild(colorIndicator);
         infoContent.appendChild(details);
@@ -1893,8 +1912,24 @@ export function showStackingCelebrationToast(habitName) {
     }, 4000);
 }
 
+export function launchLinkedDzikir(linkedId) {
+    if (!linkedId) return;
+    if (typeof window.startPlayer !== 'function') return;
+    if (linkedId.startsWith('guided-')) {
+        const type = linkedId.replace('guided-', '');
+        window.startPlayer(type);
+    } else if (linkedId.startsWith('custom-')) {
+        const id = linkedId.replace('custom-', '');
+        window.startPlayer('custom', id);
+    } else if (linkedId.startsWith('library-')) {
+        const id = linkedId.replace('library-', '');
+        window.startPlayer('library', id);
+    }
+}
+
 // Bind handlers to window for HTML actions compatibility
 if (typeof window !== 'undefined') {
+    window.launchLinkedDzikir = launchLinkedDzikir;
     window.checkAndTriggerLinkedHabit = checkAndTriggerLinkedHabit;
     window.showStackingCelebrationToast = showStackingCelebrationToast;
     window.openHabitModal = openHabitModal;

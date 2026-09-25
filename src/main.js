@@ -33,6 +33,8 @@ import {
     setTimerPreset,
     promptManualCount,
     promptTargetLimit,
+    decrementFree,
+    toggleZenMode,
     closeNumberInputModal,
     applyNumberInputModal
 } from './modules/tasbih.js';
@@ -217,6 +219,8 @@ window.handleDashboardMainBtn = handleDashboardMainBtn;
 window.handleDashboardReset = handleDashboardReset;
 window.promptManualCount = promptManualCount;
 window.promptTargetLimit = promptTargetLimit;
+window.decrementFree = decrementFree;
+window.toggleZenMode = toggleZenMode;
 window.closeNumberInputModal = closeNumberInputModal;
 window.applyNumberInputModal = applyNumberInputModal;
 
@@ -246,6 +250,8 @@ pageHooks['page-dashboard'] = () => {
 subscribe('freeCount', (state) => {
     const el = document.getElementById('free-counter');
     if (el) el.innerText = state.freeCount;
+    const zenEl = document.getElementById('zen-counter-display');
+    if (zenEl) zenEl.innerText = state.freeCount;
 });
 subscribe('targetLimit', (state) => {
     const el = document.getElementById('free-target-display');
@@ -456,10 +462,31 @@ document.addEventListener('keydown', (e) => {
     // Space or Enter to increment/start/stop
     if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
-        if (dashboardActive) {
+        const zenOverlay = document.getElementById('zen-counter-overlay');
+        if (zenOverlay && zenOverlay.classList.contains('active')) {
+            incrementFree();
+        } else if (dashboardActive) {
             handleDashboardMainBtn();
         } else if (playerActive) {
             incrementPlayer();
+        }
+    }
+
+    // Escape to close Zen mode
+    if (e.key === 'Escape') {
+        const zenOverlay = document.getElementById('zen-counter-overlay');
+        if (zenOverlay && zenOverlay.classList.contains('active')) {
+            e.preventDefault();
+            toggleZenMode(false);
+        }
+    }
+
+    // Minus or ArrowDown to decrement in counting / zen mode
+    if (e.key === '-' || e.key === 'ArrowDown') {
+        const zenOverlay = document.getElementById('zen-counter-overlay');
+        if ((zenOverlay && zenOverlay.classList.contains('active')) || (dashboardActive && state.dashboardMode === 'counting')) {
+            e.preventDefault();
+            decrementFree();
         }
     }
 

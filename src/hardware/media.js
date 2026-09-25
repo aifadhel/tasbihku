@@ -50,7 +50,10 @@ export function playTapSound() {
         });
     }
 
-    if (!soundBuffer || validSoundKeys.length === 0) return;
+    if (!soundBuffer || validSoundKeys.length === 0) {
+        playSynthesizedTone(520, 0.04, 'sine');
+        return;
+    }
 
     // Pick a random key sound for natural variance
     const randomId = validSoundKeys[Math.floor(Math.random() * validSoundKeys.length)];
@@ -115,6 +118,57 @@ export function showSoundHint() {
 export function vibrate(pattern = 15) {
     if (state.vibrationEnabled && navigator.vibrate) {
         navigator.vibrate(pattern);
+    }
+}
+
+export function playSynthesizedTone(frequency = 520, duration = 0.05, type = 'sine') {
+    if (!state.soundEnabled) return;
+    if (!audioCtx) {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+            return;
+        }
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+    }
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {
+        // Silently swallow audio playback error
+    }
+}
+
+export function playCelebrationTones() {
+    if (!state.soundEnabled) return;
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+        setTimeout(() => {
+            playSynthesizedTone(freq, 0.12, 'sine');
+        }, idx * 110);
+    });
+}
+
+export function triggerMilestoneFeedback(count, targetLimit = 0) {
+    if (targetLimit > 0 && count > 0 && count % targetLimit === 0) {
+        vibrate([80, 50, 80, 50, 150]);
+        playCelebrationTones();
+    } else if (count > 0 && (count % 33 === 0 || count % 100 === 0)) {
+        vibrate([40, 50, 40]);
+        playSynthesizedTone(880, 0.08, 'triangle');
+    } else {
+        vibrate(15);
+        playTapSound();
     }
 }
 

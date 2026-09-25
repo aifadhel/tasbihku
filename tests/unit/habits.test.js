@@ -13,13 +13,16 @@ import {
     moveHabit,
     generateHabitCSVData
 } from '../../src/modules/habits.js';
+import { decrementFree } from '../../src/modules/tasbih.js';
 
 // Mock dependencies to isolate pure functions
 vi.mock('../../src/core/store.js', () => {
     const mockState = {
         activityLog: [],
         habits: [],
-        habitRepetitions: {}
+        habitRepetitions: {},
+        freeCount: 0,
+        istiqamahGrace: false
     };
     return {
         state: mockState,
@@ -31,7 +34,8 @@ vi.mock('../../src/core/store.js', () => {
 vi.mock('../../src/hardware/media.js', () => {
     return {
         vibrate: vi.fn(),
-        playTapSound: vi.fn()
+        playTapSound: vi.fn(),
+        triggerMilestoneFeedback: vi.fn()
     };
 });
 
@@ -39,6 +43,8 @@ vi.mock('../../src/ui/router.js', () => {
     return {
         showModal: vi.fn(),
         closeModal: vi.fn(),
+        animateValue: vi.fn(),
+        triggerCelebration: vi.fn(),
         SVG_ICONS: {
             calendar: '',
             arrowLeft: ''
@@ -132,6 +138,29 @@ describe('Habits Module Unit Tests', () => {
         it('calculateStreak should deduplicate active dates correctly', () => {
             state.activityLog = ['2026-06-02', '2026-06-02', '2026-06-01', '2026-06-01'];
             expect(calculateStreak()).toBe(2);
+        });
+
+        it('calculateStreak with grace enabled should forgive a single missed day gap', () => {
+            // Gap on 2026-06-01 (yesterday)
+            state.activityLog = ['2026-06-02', '2026-05-31', '2026-05-30'];
+            expect(calculateStreak(true)).toBe(3);
+            expect(calculateStreak(false)).toBe(1);
+        });
+
+        it('calculateStreak with grace should not forgive multiple consecutive missed days', () => {
+            // 2 days gap: 2026-06-01 and 2026-05-31 both missing
+            state.activityLog = ['2026-06-02', '2026-05-30'];
+            expect(calculateStreak(true)).toBe(1);
+        });
+
+        it('decrementFree should decrease count but not go below zero', () => {
+            state.freeCount = 5;
+            decrementFree();
+            expect(state.freeCount).toBe(4);
+
+            state.freeCount = 0;
+            decrementFree();
+            expect(state.freeCount).toBe(0);
         });
     });
 

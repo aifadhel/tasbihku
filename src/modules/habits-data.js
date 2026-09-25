@@ -59,7 +59,7 @@ export function trackActivity() {
     return false;
 }
 
-export function calculateStreak() {
+export function calculateStreak(useGrace = Boolean(state.istiqamahGrace)) {
     if (!state.activityLog || state.activityLog.length === 0) return 0;
 
     const uniqueDates = [...new Set(state.activityLog)].sort();
@@ -70,12 +70,23 @@ export function calculateStreak() {
 
     let streak = 0;
     let currentDate = uniqueDates.includes(today) ? today : yesterday;
+    let graceUsed = false;
 
     while (true) {
         if (uniqueDates.includes(currentDate)) {
             streak++;
             currentDate = getPreviousDate(currentDate);
-        } else break;
+        } else if (useGrace && !graceUsed) {
+            const dayBeforeSkipped = getPreviousDate(currentDate);
+            if (uniqueDates.includes(dayBeforeSkipped)) {
+                graceUsed = true;
+                currentDate = dayBeforeSkipped;
+            } else {
+                break;
+            }
+        } else {
+            break;
+        }
     }
     return streak;
 }
