@@ -703,7 +703,7 @@ textarea::placeholder { color: var(--md-sys-color-outline); font-weight: 400; }
     font-size: var(--arabic-font-size);
     color: var(--md-sys-color-tertiary); /* Gold color for sacred text */
     direction: rtl;
-    line-height: 1.6;
+    line-height: 1.8;
     margin-bottom: 8px;
     transition: font-size 0.2s ease;
 }

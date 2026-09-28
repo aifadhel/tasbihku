@@ -22,29 +22,438 @@ export const wiridReadings = [
 ];
 
 export const dzikirPagi = [
-    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: { id: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", en: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep..." }, target: 1, reference: { id: "HR. Al-Hakim 1/562, disahihkan oleh Al-Albani", en: "Al-Hakim 1/562, authenticated by Al-Albani" } },
-    { arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Ashbahnaa wa ashbahal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "We have reached the morning and dominion belongs to Allah, and all praise is due to Allah. There is no deity except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things." }, target: 1, reference: { id: "HR. Muslim no. 2723", en: "Sahih Muslim no. 2723" } },
-    { arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ", latin: "Allahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur.", translation: { id: "Ya Allah, dengan rahmat-Mu kami memasuki waktu pagi, dan dengan rahmat-Mu kami memasuki waktu sore. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami dibangkitkan.", en: "O Allah, by You we enter the morning, and by You we enter the evening. By You we live, and by You we die, and unto You is the resurrection." }, target: 1, reference: { id: "HR. At-Tirmidzi no. 3391", en: "Sunan At-Tirmidhi no. 3391" } },
-    { arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.", translation: { id: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.", en: "O Allah, You are my Lord; there is no deity except You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for none forgives sins except You." }, target: 1, reference: { id: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)", en: "Sahih Al-Bukhari no. 6306 (Sayyidul Istighfar)" } },
-    { arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhanallahi wa bihamdih.", translation: { id: "Maha Suci Allah dan segala puji bagi-Nya.", en: "Glory be to Allah and all praise is due to Him." }, target: 100, reference: { id: "HR. Muslim no. 2692", en: "Sahih Muslim no. 2692" } },
-    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things." }, target: 10, reference: { id: "HR. Abu Daud no. 5077", en: "Sunan Abu Dawud no. 5077" } },
-    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", latin: "Allahumma innii as-alukal 'aafiyata fid dunyaa wal aakhirah, allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii.", translation: { id: "Ya Allah, sesungguhnya aku memohon kepada-Mu kesejahteraan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan kesejahteraan dalam agamaku, duniaku, keluargaku, dan hartaku.", en: "O Allah, I ask You for well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion and worldly affairs, my family, and my wealth." }, target: 1, reference: { id: "HR. Abu Daud no. 5074, Ibnu Majah no. 3871", en: "Sunan Abu Dawud no. 5074, Ibn Majah no. 3871" } },
-    { arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ", latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant.", translation: { id: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau.", en: "O Allah, grant well-being to my body. O Allah, grant well-being to my hearing. O Allah, grant well-being to my sight. There is no deity except You." }, target: 3, reference: { id: "HR. Abu Daud no. 5090", en: "Sunan Abu Dawud no. 5090" } },
-    { arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", latin: "Bismillahilladzii laa yadhurru ma'asmihi syai-un fil ardhi wa laa fis samaa-i wa huwas samii'ul 'aliim.", translation: { id: "Dengan nama Allah yang dengan nama-Nya tidak ada sesuatu pun di bumi dan langit yang dapat mendatangkan bahaya, dan Dia Maha Mendengar lagi Maha Mengetahui.", en: "In the name of Allah, with whose name nothing on earth or in the heavens can cause harm, and He is the Hearing, the Knowing." }, target: 3, reference: { id: "HR. Abu Daud no. 5088, At-Tirmidzi no. 3388", en: "Sunan Abu Dawud no. 5088, At-Tirmidhi no. 3388" } },
-    { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: { id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", en: "I seek the forgiveness of Allah and repent to Him." }, target: 100, reference: { id: "HR. Al-Bukhari no. 6307, Muslim no. 2702", en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702" } }
+    {
+        arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+        latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum. Lahuu maa fis samaawaati wa maa fil ardh. Man dzalladzii yasyfa'u 'indahuu illaa bi-idznih. Ya'lamu maa baina aidiihim wa maa khalfahum wa laa yuhiithuuna bisyai-im min 'ilmihii illaa bimaa syaa-a. Wasi'a kursiyyuhus samaawaati wal ardh, wa laa ya-uuduhuu hifzhuhumaa wa huwal 'aliyyul 'adzim.",
+        translation: {
+            id: "Allah, tidak ada tuhan yang berhak disembah selain Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya). Tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tiada yang dapat memberi syafaat di sisi Allah tanpa izin-Nya. Allah mengetahui apa-apa yang di hadapan mereka dan di belakang mereka, dan mereka tidak mengetahui apa-apa dari ilmu Allah melainkan apa yang dikehendaki-Nya. Kursi Allah meliputi langit dan bumi. Dan Allah tidak merasa berat memelihara keduanya, dan Allah Maha Tinggi lagi Maha Besar.",
+            en: "Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great."
+        },
+        target: 1,
+        reference: {
+            id: "HR. An-Nasa'i & Al-Hakim 1/562, disahihkan oleh Al-Albani",
+            en: "Sunan An-Nasa'i & Al-Hakim 1/562, authenticated by Al-Albani"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul huwallaahu ahad. Allaahush-shamad. Lam yalid wa lam yuulad. Wa lam yakun lahuu kufuwan ahad.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, He is Allah, [who is] One. Allah, the Eternal Refuge. He neither begets nor is born, nor is there to Him any equivalent."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5082, At-Tirmidzi no. 3575",
+            en: "Sunan Abu Dawud no. 5082, At-Tirmidhi no. 3575"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul a'uudzu birabbil falaq. Min syarri maa khalaq. Wa min syarri ghaasiqin idzaa waqab. Wa min syarrin-naffaatsaati fil 'uqad. Wa min syarri haasidin idzaa hasad.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan perempuan-perempuan (penyihir) yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, I seek refuge in the Lord of daybreak from the evil of that which He created and from the evil of darkness when it settles and from the evil of the blowers in knots and from the evil of an envier when he envies."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5082, At-Tirmidzi no. 3575",
+            en: "Sunan Abu Dawud no. 5082, At-Tirmidhi no. 3575"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul a'uudzu birabbin-naas. Malikin-naas. Ilaahin-naas. Min syarril waswaasil khannaas. Alladzii yuwaswisu fii shuduurin-naas. Minal jinnati wan-naas.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, Sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, I seek refuge in the Lord of mankind, the Sovereign of mankind, the God of mankind, from the evil of the retreating whisperer who whispers into the breasts of mankind, from among the jinn and mankind."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5082, At-Tirmidzi no. 3575",
+            en: "Sunan Abu Dawud no. 5082, At-Tirmidhi no. 3575"
+        }
+    },
+    {
+        arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ",
+        latin: "Ashbahnaa wa ashbahal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir. Rabbi as-aluka khaira maa fii haadzal yaumi wa khaira maa ba'dahu, wa a'uudzu bika min syarri maa fii haadzal yaumi wa syarri maa ba'dahu. Rabbi a'uudzu bika minal kasali wa suu-il kibar, rabbi a'uudzu bika min 'adzaabin fin naari wa 'adzaabin fil qabr.",
+        translation: {
+            id: "Kami telah memasuki waktu pagi dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tiada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu. Wahai Tuhanku, aku memohon kepada-Mu kebaikan di hari ini dan kebaikan sesudahnya. Dan aku berlindung kepada-Mu dari keburukan di hari ini dan keburukan sesudahnya. Wahai Tuhanku, aku berlindung kepada-Mu dari kemalasan dan keburukan di hari tua. Wahai Tuhanku, aku berlindung kepada-Mu dari siksa neraka dan siksa kubur.",
+            en: "We have entered upon the morning and the dominion belongs to Allah, and all praise is due to Allah. There is no deity except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things. My Lord, I ask You for the good of what is in this day and the good of what comes after it, and I seek refuge in You from the evil of what is in this day and the evil of what comes after it. My Lord, I seek refuge in You from laziness and the hardships of old age. My Lord, I seek refuge in You from torment in the Fire and torment in the grave."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Muslim no. 2723",
+            en: "Sahih Muslim no. 2723"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ النُّشُورُ",
+        latin: "Allahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur.",
+        translation: {
+            id: "Ya Allah, dengan rahmat-Mu kami memasuki waktu pagi, dan dengan rahmat-Mu kami memasuki waktu sore. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami dibangkitkan.",
+            en: "O Allah, by You we enter the morning, and by You we enter the evening. By You we live, and by You we die, and unto You is the resurrection."
+        },
+        target: 1,
+        reference: {
+            id: "HR. At-Tirmidzi no. 3391, Abu Daud no. 5068",
+            en: "Sunan At-Tirmidhi no. 3391, Sunan Abu Dawud no. 5068"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+        latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.",
+        translation: {
+            id: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.",
+            en: "O Allah, You are my Lord; there is no deity except You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for none forgives sins except You."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)",
+            en: "Sahih Al-Bukhari no. 6306 (Sayyidul Istighfar)"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي",
+        latin: "Allahumma innii as-alukal 'afwa wal 'aafiyata fid dunyaa wal aakhirah. Allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii. Allahummastur 'auraatii wa aamin rau'aatii. Allahummahfazhnii mim baini yadayya wa min khalfii wa 'an yamiinii wa 'an syimaalii wa min fauqii, wa a'uudzu bi'azhamatika an ughtaala min tahtii.",
+        translation: {
+            id: "Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan dalam agamaku, duniaku, keluargaku, dan hartaku. Ya Allah, tutupilah auratku (aib dan kelemahanku) dan tenangkanlah rasa takutku. Ya Allah, jagalah aku dari arah depanku, dari belakangku, dari kananku, dari kiriku, dan dari atasku. Dan aku berlindung dengan keagungan-Mu agar aku tidak diserang secara tiba-tiba dari bawahku.",
+            en: "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion, worldly affairs, family, and wealth. O Allah, conceal my faults and calm my fears. O Allah, protect me from in front of me, behind me, on my right, on my left, and from above me. And I seek refuge in Your greatness from being assassinated from beneath me."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Abu Daud no. 5074, Ibnu Majah no. 3871",
+            en: "Sunan Abu Dawud no. 5074, Ibn Majah no. 3871"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَهَ إِلَّا أَنْتَ",
+        latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant. Allahumma innii a'uudzu bika minal kufri wal faqr, wa a'uudzu bika min 'adzaabil qabr, laa ilaha illaa ant.",
+        translation: {
+            id: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau. Ya Allah, sesungguhnya aku berlindung kepada-Mu dari kekufuran dan kefakiran. Dan aku berlindung kepada-Mu dari siksa kubur. Tidak ada tuhan yang berhak disembah kecuali Engkau.",
+            en: "O Allah, grant well-being to my body. O Allah, grant well-being to my hearing. O Allah, grant well-being to my sight. There is no deity except You. O Allah, I seek refuge in You from disbelief and poverty, and I seek refuge in You from the torment of the grave. There is no deity except You."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5090, Ahmad 5/42",
+            en: "Sunan Abu Dawud no. 5090, Ahmad 5/42"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+        latin: "Bismillahilladzii laa yadhurru ma'asmihi syai-un fil ardhi wa laa fis samaa-i wa huwas samii'ul 'aliim.",
+        translation: {
+            id: "Dengan nama Allah yang dengan nama-Nya tidak ada sesuatu pun di bumi dan di langit yang dapat mendatangkan bahaya, dan Dia Maha Mendengar lagi Maha Mengetahui.",
+            en: "In the name of Allah, with whose name nothing on earth or in the heavens can cause harm, and He is the Hearing, the Knowing."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5088, At-Tirmidzi no. 3388",
+            en: "Sunan Abu Dawud no. 5088, At-Tirmidhi no. 3388"
+        }
+    },
+    {
+        arabic: "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا",
+        latin: "Radhiitu billaahi rabbaa, wa bil-islaami diinaa, wa bi-Muhammadin shallallaahu 'alayhi wa sallama nabiyyaa.",
+        translation: {
+            id: "Aku rela Allah sebagai Tuhanku, Islam sebagai agamaku, dan Muhammad shallallahu 'alaihi wa sallam sebagai nabiku.",
+            en: "I am pleased with Allah as my Lord, with Islam as my religion, and with Muhammad (peace and blessings of Allah be upon him) as my Prophet."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5072, Ahmad 4/337, disahihkan Al-Albani",
+            en: "Sunan Abu Dawud no. 5072, Ahmad 4/337, authenticated by Al-Albani"
+        }
+    },
+    {
+        arabic: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ",
+        latin: "Yaa Hayyu yaa Qayyuum, bi-rahmatika astaghiits, ashlih lii sya'nii kullahu, wa laa takilnii ilaa nafsii tharfata 'ain.",
+        translation: {
+            id: "Wahai Yang Maha Hidup, wahai Yang Berdiri Sendiri tidak membutuhkan segala sesuatu, dengan rahmat-Mu aku memohon pertolongan. Perbaikilah seluruh urusanku, dan janganlah Engkau serahkan aku kepada diriku sendiri walau sekejap mata.",
+            en: "O Ever-Living, O Self-Sustaining, by Your mercy I seek help. Rectify all of my affairs, and do not leave me to myself even for the blink of an eye."
+        },
+        target: 1,
+        reference: {
+            id: "HR. An-Nasa'i As-Sunan Al-Kubra no. 10405, Al-Hakim 1/545",
+            en: "Sunan An-Nasa'i As-Sunan Al-Kubra no. 10405, Al-Hakim 1/545"
+        }
+    },
+    {
+        arabic: "أَصْبَحْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِينَ",
+        latin: "Ashbahnaa 'ala fithratil islaam, wa 'ala kalimatil ikhlaash, wa 'ala diini nabiyyinaa Muhammadin shallallaahu 'alayhi wa sallam, wa 'ala millati abiinaa Ibraahiima haniifam muslimaw wa maa kaana minal musyrikiin.",
+        translation: {
+            id: "Di waktu pagi kami memegang teguh fitrah Islam, kalimat ikhlas (tauhid), agama nabi kami Muhammad shallallahu 'alaihi wa sallam, dan millah (ajaran) bapak kami Ibrahim yang hanif (lurus) lagi berserah diri kepada Allah, dan sekali-kali bukanlah dia termasuk orang-orang musyrik.",
+            en: "We enter upon the morning upon the natural disposition of Islam, the word of sincere faith, the religion of our Prophet Muhammad (peace be upon him), and the faith of our father Abraham, who was true in faith, a Muslim, and was not of the polytheists."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Ahmad 3/406, 407, Sahih Al-Jami' no. 4674",
+            en: "Musnad Ahmad 3/406, 407, Sahih Al-Jami' no. 4674"
+        }
+    },
+    {
+        arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ",
+        latin: "Subhaanallaahi wa bihamdih, 'adada khalqih, wa ridhaa nafsih, wa zinata 'arsyih, wa midaada kalimaatih.",
+        translation: {
+            id: "Maha Suci Allah dan segala puji bagi-Nya, sebanyak bilangan makhluk-Nya, seridha diri-Nya, seberat timbangan 'Arsy-Nya, dan sebanyak tinta kalimat-kalimat-Nya.",
+            en: "Glory be to Allah and all praise is due to Him, by the number of His creation, according to His good pleasure, by the weight of His Throne, and by the ink of His words."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Muslim no. 2726 (Hadits Juwairiyah)",
+            en: "Sahih Muslim no. 2726 (Hadith Juwairiyah)"
+        }
+    },
+    {
+        arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        latin: "Subhaanallaahi wa bihamdih.",
+        translation: {
+            id: "Maha Suci Allah dan segala puji bagi-Nya.",
+            en: "Glory be to Allah and all praise is due to Him."
+        },
+        target: 100,
+        reference: {
+            id: "HR. Muslim no. 2692",
+            en: "Sahih Muslim no. 2692"
+        }
+    },
+    {
+        arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.",
+        translation: {
+            id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.",
+            en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things."
+        },
+        target: 10,
+        reference: {
+            id: "HR. Abu Daud no. 5077",
+            en: "Sunan Abu Dawud no. 5077"
+        }
+    },
+    {
+        arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
+        latin: "Astaghfirullaha wa atuubu ilaih.",
+        translation: {
+            id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.",
+            en: "I seek the forgiveness of Allah and repent to Him."
+        },
+        target: 100,
+        reference: {
+            id: "HR. Al-Bukhari no. 6307, Muslim no. 2702",
+            en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702"
+        }
+    }
 ];
 
 export const dzikirPetang = [
-    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: { id: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", en: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep..." }, target: 1, reference: { id: "HR. Al-Hakim 1/562, disahihkan oleh Al-Albani", en: "Al-Hakim 1/562, authenticated by Al-Albani" } },
-    { arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Amsainaa wa amsal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Kami telah memasuki waktu sore dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "We have reached the evening and dominion belongs to Allah, and all praise is due to Allah. There is no deity except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things." }, target: 1, reference: { id: "HR. Muslim no. 2723", en: "Sahih Muslim no. 2723" } },
-    { arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ", latin: "Allahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir.", translation: { id: "Ya Allah, dengan rahmat-Mu kami memasuki waktu sore, dan dengan rahmat-Mu kami memasuki waktu pagi. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami kembali.", en: "O Allah, by You we enter the evening, and by You we enter the morning. By You we live, and by You we die, and unto You is the return." }, target: 1, reference: { id: "HR. At-Tirmidzi no. 3391", en: "Sunan At-Tirmidhi no. 3391" } },
-    { arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوْءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.", translation: { id: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.", en: "O Allah, You are my Lord; there is no deity except You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for none forgives sins except You." }, target: 1, reference: { id: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)", en: "Sahih Al-Bukhari no. 6306 (Sayyidul Istighfar)" } },
-    { arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ", latin: "Subhanallahi wa bihamdih.", translation: { id: "Maha Suci Allah dan segala puji bagi-Nya.", en: "Glory be to Allah and all praise is due to Him." }, target: 100, reference: { id: "HR. Muslim no. 2692", en: "Sahih Muslim no. 2692" } },
-    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things." }, target: 10, reference: { id: "HR. Abu Daud no. 5077", en: "Sunan Abu Dawud no. 5077" } },
-    { arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي", latin: "Allahumma innii as-alukal 'aafiyata fid dunyaa wal aakhirah, allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii.", translation: { id: "Ya Allah, sesungguhnya aku memohon kepada-Mu kesejahteraan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan kesejahteraan dalam agamaku, duniaku, keluargaku, dan hartaku.", en: "O Allah, I ask You for well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion and worldly affairs, my family, and my wealth." }, target: 1, reference: { id: "HR. Abu Daud no. 5074", en: "Sunan Abu Dawud no. 5074" } },
-    { arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ", latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant.", translation: { id: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau.", en: "O Allah, grant well-being to my body. O Allah, grant well-being to my hearing. O Allah, grant well-being to my sight. There is no deity except You." }, target: 3, reference: { id: "HR. Abu Daud no. 5090", en: "Sunan Abu Dawud no. 5090" } },
-    { arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'uudzu bikalimaatillahit taammaati min syarri maa khalaq.", translation: { id: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk yang Dia ciptakan.", en: "I seek refuge in the perfect words of Allah from the evil of what He has created." }, target: 3, reference: { id: "HR. Muslim no. 2709, At-Tirmidzi no. 3393", en: "Sahih Muslim no. 2709, At-Tirmidhi no. 3393" } },
-    { arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaha wa atuubu ilaih.", translation: { id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.", en: "I seek the forgiveness of Allah and repent to Him." }, target: 100, reference: { id: "HR. Al-Bukhari no. 6307, Muslim no. 2702", en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702" } }
+    {
+        arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+        latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum. Lahuu maa fis samaawaati wa maa fil ardh. Man dzalladzii yasyfa'u 'indahuu illaa bi-idznih. Ya'lamu maa baina aidiihim wa maa khalfahum wa laa yuhiithuuna bisyai-im min 'ilmihii illaa bimaa syaa-a. Wasi'a kursiyyuhus samaawaati wal ardh, wa laa ya-uuduhuu hifzhuhumaa wa huwal 'aliyyul 'adzim.",
+        translation: {
+            id: "Allah, tidak ada tuhan yang berhak disembah selain Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya). Tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tiada yang dapat memberi syafaat di sisi Allah tanpa izin-Nya. Allah mengetahui apa-apa yang di hadapan mereka dan di belakang mereka, dan mereka tidak mengetahui apa-apa dari ilmu Allah melainkan apa yang dikehendaki-Nya. Kursi Allah meliputi langit dan bumi. Dan Allah tidak merasa berat memelihara keduanya, dan Allah Maha Tinggi lagi Maha Besar.",
+            en: "Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great."
+        },
+        target: 1,
+        reference: {
+            id: "HR. An-Nasa'i & Al-Hakim 1/562, disahihkan oleh Al-Albani",
+            en: "Sunan An-Nasa'i & Al-Hakim 1/562, authenticated by Al-Albani"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul huwallaahu ahad. Allaahush-shamad. Lam yalid wa lam yuulad. Wa lam yakun lahuu kufuwan ahad.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, He is Allah, [who is] One. Allah, the Eternal Refuge. He neither begets nor is born, nor is there to Him any equivalent."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5082, At-Tirmidzi no. 3575",
+            en: "Sunan Abu Dawud no. 5082, At-Tirmidhi no. 3575"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul a'uudzu birabbil falaq. Min syarri maa khalaq. Wa min syarri ghaasiqin idzaa waqab. Wa min syarrin-naffaatsaati fil 'uqad. Wa min syarri haasidin idzaa hasad.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan perempuan-perempuan (penyihir) yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, I seek refuge in the Lord of daybreak from the evil of that which He created and from the evil of darkness when it settles and from the evil of the blowers in knots and from the evil of an envier when he envies."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5082, At-Tirmidzi no. 3575",
+            en: "Sunan Abu Dawud no. 5082, At-Tirmidhi no. 3575"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul a'uudzu birabbin-naas. Malikin-naas. Ilaahin-naas. Min syarril waswaasil khannaas. Alladzii yuwaswisu fii shuduurin-naas. Minal jinnati wan-naas.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, Sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, I seek refuge in the Lord of mankind, the Sovereign of mankind, the God of mankind, from the evil of the retreating whisperer who whispers into the breasts of mankind, from among the jinn and mankind."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5082, At-Tirmidzi no. 3575",
+            en: "Sunan Abu Dawud no. 5082, At-Tirmidhi no. 3575"
+        }
+    },
+    {
+        arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. رَبِّ أَسْأَلُكَ خَيْرَ مَا فِي هَذِهِ اللَّيْلَةِ وَخَيْرَ مَا بَعْدَهَا، وَأَعُوذُ بِكَ مِنْ شَرِّ مَا فِي هَذِهِ اللَّيْلَةِ وَشَرِّ مَا بَعْدَهَا، رَبِّ أَعُوذُ بِكَ مِنَ الْكَسَلِ وَسُوءِ الْكِبَرِ، رَبِّ أَعُوذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ",
+        latin: "Amsainaa wa amsal mulku lillah, wal hamdu lillah, laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wal lahul hamdu wa huwa 'ala kulli syai'in qadir. Rabbi as-aluka khaira maa fii haadzihil lailati wa khaira maa ba'dahaa, wa a'uudzu bika min syarri maa fii haadzihil lailati wa syarri maa ba'dahaa. Rabbi a'uudzu bika minal kasali wa suu-il kibar, rabbi a'uudzu bika min 'adzaabin fin naari wa 'adzaabin fil qabr.",
+        translation: {
+            id: "Kami telah memasuki waktu sore dan kerajaan hanya milik Allah, segala puji bagi Allah. Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tiada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu. Wahai Tuhanku, aku memohon kepada-Mu kebaikan di malam ini dan kebaikan sesudahnya. Dan aku berlindung kepada-Mu dari keburukan di malam ini dan keburukan sesudahnya. Wahai Tuhanku, aku berlindung kepada-Mu dari kemalasan dan keburukan di hari tua. Wahai Tuhanku, aku berlindung kepada-Mu dari siksa neraka dan siksa kubur.",
+            en: "We have reached the evening and dominion belongs to Allah, and all praise is due to Allah. There is no deity except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things. My Lord, I ask You for the good of what is in this night and the good of what comes after it, and I seek refuge in You from the evil of what is in this night and the evil of what comes after it. My Lord, I seek refuge in You from laziness and the hardships of old age. My Lord, I seek refuge in You from torment in the Fire and torment in the grave."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Muslim no. 2723",
+            en: "Sahih Muslim no. 2723"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ بِكَ أَمْسَيْنَا وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا وَبِكَ نَمُوتُ، وَإِلَيْكَ الْمَصِيرُ",
+        latin: "Allahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir.",
+        translation: {
+            id: "Ya Allah, dengan rahmat-Mu kami memasuki waktu sore, dan dengan rahmat-Mu kami memasuki waktu pagi. Dengan-Mu kami hidup dan dengan-Mu kami mati. Dan kepada-Mu kami kembali.",
+            en: "O Allah, by You we enter the evening, and by You we enter the morning. By You we live, and by You we die, and unto You is the return."
+        },
+        target: 1,
+        reference: {
+            id: "HR. At-Tirmidzi no. 3391",
+            en: "Sunan At-Tirmidhi no. 3391"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+        latin: "Allahumma anta rabbii laa ilaha illaa ant, khalaqtanii wa anaa 'abduk, wa anaa 'ala 'ahdika wa wa'dika mastatha'tu. A'uudzu bika min syarri maa shana'tu, abuu-u laka bini'matika 'alay, wa abuu-u bizanbii faghfirlii fa innahu laa yaghfirudz dzunuuba illaa ant.",
+        translation: {
+            id: "Ya Allah, Engkau adalah Tuhanku, tidak ada tuhan yang berhak disembah kecuali Engkau. Engkau yang menciptakan aku dan aku adalah hamba-Mu. Aku di atas ikatan dan janji-Mu semampuku. Aku berlindung kepada-Mu dari kejahatan yang aku perbuat. Aku mengakui nikmat-Mu kepadaku dan aku mengakui dosaku, maka ampunilah aku. Sesungguhnya tidak ada yang dapat mengampuni dosa kecuali Engkau.",
+            en: "O Allah, You are my Lord; there is no deity except You. You created me and I am Your servant, and I abide by Your covenant and promise as best I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin, so forgive me, for none forgives sins except You."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Al-Bukhari no. 6306 (Sayyidul Istighfar)",
+            en: "Sahih Al-Bukhari no. 6306 (Sayyidul Istighfar)"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالْآخِرَةِ، اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي دِينِي وَدُنْيَايَ وَأَهْلِي وَمَالِي، اللَّهُمَّ اسْتُرْ عَوْرَاتِي وَآمِنْ رَوْعَاتِي، اللَّهُمَّ احْفَظْنِي مِنْ بَيْنِ يَدَيَّ وَمِنْ خَلْفِي وَعَنْ يَمِينِي وَعَنْ شِمَالِي وَمِنْ فَوْقِي، وَأَعُوذُ بِعَظَمَتِكَ أَنْ أُغْتَالَ مِنْ تَحْتِي",
+        latin: "Allahumma innii as-alukal 'afwa wal 'aafiyata fid dunyaa wal aakhirah. Allahumma innii as-alukal 'afwa wal 'aafiyata fii diinii wa dunyaaya wa ahlii wa maalii. Allahummastur 'auraatii wa aamin rau'aatii. Allahummahfazhnii mim baini yadayya wa min khalfii wa 'an yamiinii wa 'an syimaalii wa min fauqii, wa a'uudzu bi'azhamatika an ughtaala min tahtii.",
+        translation: {
+            id: "Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat. Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan dalam agamaku, duniaku, keluargaku, dan hartaku. Ya Allah, tutupilah auratku (aib dan kelemahanku) dan tenangkanlah rasa takutku. Ya Allah, jagalah aku dari arah depanku, dari belakangku, dari kananku, dari kiriku, dan dari atasku. Dan aku berlindung dengan keagungan-Mu agar aku tidak diserang secara tiba-tiba dari bawahku.",
+            en: "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter. O Allah, I ask You for forgiveness and well-being in my religion, worldly affairs, family, and wealth. O Allah, conceal my faults and calm my fears. O Allah, protect me from in front of me, behind me, on my right, on my left, and from above me. And I seek refuge in Your greatness from being assassinated from beneath me."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Abu Daud no. 5074, Ibnu Majah no. 3871",
+            en: "Sunan Abu Dawud no. 5074, Ibn Majah no. 3871"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، لَا إِلَهَ إِلَّا أَنْتَ. اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَهَ إِلَّا أَنْتَ",
+        latin: "Allahumma 'aafinii fii badanii, allahumma 'aafinii fii sam'ii, allahumma 'aafinii fii basharii, laa ilaha illaa ant. Allahumma innii a'uudzu bika minal kufri wal faqr, wa a'uudzu bika min 'adzaabil qabr, laa ilaha illaa ant.",
+        translation: {
+            id: "Ya Allah, sehatkanlah badanku. Ya Allah, sehatkanlah pendengaranku. Ya Allah, sehatkanlah penglihatanku. Tidak ada tuhan yang berhak disembah kecuali Engkau. Ya Allah, sesungguhnya aku berlindung kepada-Mu dari kekufuran dan kefakiran. Dan aku berlindung kepada-Mu dari siksa kubur. Tidak ada tuhan yang berhak disembah kecuali Engkau.",
+            en: "O Allah, grant well-being to my body. O Allah, grant well-being to my hearing. O Allah, grant well-being to my sight. There is no deity except You. O Allah, I seek refuge in You from disbelief and poverty, and I seek refuge in You from the torment of the grave. There is no deity except You."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5090, Ahmad 5/42",
+            en: "Sunan Abu Dawud no. 5090, Ahmad 5/42"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",
+        latin: "Bismillahilladzii laa yadhurru ma'asmihi syai-un fil ardhi wa laa fis samaa-i wa huwas samii'ul 'aliim.",
+        translation: {
+            id: "Dengan nama Allah yang dengan nama-Nya tidak ada sesuatu pun di bumi dan di langit yang dapat mendatangkan bahaya, dan Dia Maha Mendengar lagi Maha Mengetahui.",
+            en: "In the name of Allah, with whose name nothing on earth or in the heavens can cause harm, and He is the Hearing, the Knowing."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5088, At-Tirmidzi no. 3388",
+            en: "Sunan Abu Dawud no. 5088, At-Tirmidhi no. 3388"
+        }
+    },
+    {
+        arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+        latin: "A'uudzu bikalimaatillahit taammaati min syarri maa khalaq.",
+        translation: {
+            id: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk yang Dia ciptakan.",
+            en: "I seek refuge in the perfect words of Allah from the evil of what He has created."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Muslim no. 2709, At-Tirmidzi no. 3393",
+            en: "Sahih Muslim no. 2709, At-Tirmidhi no. 3393"
+        }
+    },
+    {
+        arabic: "رَضِيتُ بِاللَّهِ رَبًّا، وَبِالْإِسْلَامِ دِينًا، وَبِمُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ نَبِيًّا",
+        latin: "Radhiitu billaahi rabbaa, wa bil-islaami diinaa, wa bi-Muhammadin shallallaahu 'alayhi wa sallama nabiyyaa.",
+        translation: {
+            id: "Aku rela Allah sebagai Tuhanku, Islam sebagai agamaku, dan Muhammad shallallahu 'alaihi wa sallam sebagai nabiku.",
+            en: "I am pleased with Allah as my Lord, with Islam as my religion, and with Muhammad (peace and blessings of Allah be upon him) as my Prophet."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Abu Daud no. 5072, Ahmad 4/337, disahihkan Al-Albani",
+            en: "Sunan Abu Dawud no. 5072, Ahmad 4/337, authenticated by Al-Albani"
+        }
+    },
+    {
+        arabic: "يَا حَيُّ يَا قَيُّومُ بِرَحْمَتِكَ أَسْتَغِيثُ، أَصْلِحْ لِي شَأْنِي كُلَّهُ، وَلَا تَكِلْنِي إِلَى نَفْسِي طَرْفَةَ عَيْنٍ",
+        latin: "Yaa Hayyu yaa Qayyuum, bi-rahmatika astaghiits, ashlih lii sya'nii kullahu, wa laa takilnii ilaa nafsii tharfata 'ain.",
+        translation: {
+            id: "Wahai Yang Maha Hidup, wahai Yang Berdiri Sendiri tidak membutuhkan segala sesuatu, dengan rahmat-Mu aku memohon pertolongan. Perbaikilah seluruh urusanku, dan janganlah Engkau serahkan aku kepada diriku sendiri walau sekejap mata.",
+            en: "O Ever-Living, O Self-Sustaining, by Your mercy I seek help. Rectify all of my affairs, and do not leave me to myself even for the blink of an eye."
+        },
+        target: 1,
+        reference: {
+            id: "HR. An-Nasa'i As-Sunan Al-Kubra no. 10405, Al-Hakim 1/545",
+            en: "Sunan An-Nasa'i As-Sunan Al-Kubra no. 10405, Al-Hakim 1/545"
+        }
+    },
+    {
+        arabic: "أَمْسَيْنَا عَلَى فِطْرَةِ الْإِسْلَامِ، وَعَلَى كَلِمَةِ الْإِخْلَاصِ، وَعَلَى دِينِ نَبِيِّنَا مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ، وَعَلَى مِلَّةِ أَبِينَا إِبْرَاهِيمَ حَنِيفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِينَ",
+        latin: "Amsainaa 'ala fithratil islaam, wa 'ala kalimatil ikhlaash, wa 'ala diini nabiyyinaa Muhammadin shallallaahu 'alayhi wa sallam, wa 'ala millati abiinaa Ibraahiima haniifam muslimaw wa maa kaana minal musyrikiin.",
+        translation: {
+            id: "Di waktu sore kami memegang teguh fitrah Islam, kalimat ikhlas (tauhid), agama nabi kami Muhammad shallallahu 'alaihi wa sallam, dan millah (ajaran) bapak kami Ibrahim yang hanif (lurus) lagi berserah diri kepada Allah, dan sekali-kali bukanlah dia termasuk orang-orang musyrik.",
+            en: "We enter upon the evening upon the natural disposition of Islam, the word of sincere faith, the religion of our Prophet Muhammad (peace be upon him), and the faith of our father Abraham, who was true in faith, a Muslim, and was not of the polytheists."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Ahmad 3/406, 407, Sahih Al-Jami' no. 4674",
+            en: "Musnad Ahmad 3/406, 407, Sahih Al-Jami' no. 4674"
+        }
+    },
+    {
+        arabic: "سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",
+        latin: "Subhaanallaahi wa bihamdih.",
+        translation: {
+            id: "Maha Suci Allah dan segala puji bagi-Nya.",
+            en: "Glory be to Allah and all praise is due to Him."
+        },
+        target: 100,
+        reference: {
+            id: "HR. Muslim no. 2692",
+            en: "Sahih Muslim no. 2692"
+        }
+    },
+    {
+        arabic: "أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",
+        latin: "Astaghfirullaha wa atuubu ilaih.",
+        translation: {
+            id: "Aku memohon ampunan Allah dan bertaubat kepada-Nya.",
+            en: "I seek the forgiveness of Allah and repent to Him."
+        },
+        target: 100,
+        reference: {
+            id: "HR. Al-Bukhari no. 6307, Muslim no. 2702",
+            en: "Sahih Al-Bukhari no. 6307, Muslim no. 2702"
+        }
+    }
 ];
 
 /**

@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.9.1] - 2026-09-29
+
+- **Highlight:** Complete canonical authentic narrations for Morning and Evening Dhikr (*Dzikir Pagi & Petang*) with full untruncated Ayat Kursi, Al-Mu'awwidhat (3 Quls: target 3x), verified Sunnah invocations, enhanced Arabic diacritic typography, and state migration.
+
+### Specific UI & Component Changes
+- **Arabic Diacritic Line-Height Polish (`style.css`):** Raised `.arabic-text` line-height from `1.6` to `1.8` across the player reading surface, ensuring double-stacked Arabic harakat, maddah, and Quranic waqf marks render cleanly on mobile viewports without glyph clipping.
+- **Player Typography & Layout Invariance (`index.html`):** Ensured full 50-word Ayat Kursi scrolls smoothly within `#player-text-container` with bounded overflow while keeping counter and tap action buttons firmly anchored.
+
+### Core Logic & Audio/Haptic Workflows
+- **State Store Migration (`guidedDataVersion: 2`):** Added migration logic in `src/core/store.js` that automatically purges stale, truncated default guided caches from older versions (`rawState.guidedData.pagi` and `petang`) while strictly preserving user-created custom lists in `customList`.
+- **3 Quls Sequential Counting Ergonomics:** Segmented Surah Al-Ikhlas, Al-Falaq, and An-Nas into distinct single-responsibility player pages with exact `target: 3` thresholds.
+
+### Dzikir & Habits Engine
+- **Authentic Morning Adhkar Expansion (`dzikirPagi`):** Upgraded to 16 canonical invocations: full untruncated Ayat Kursi (Al-Baqarah 255), Surah Al-Ikhlas (3x), Surah Al-Falaq (3x), Surah An-Nas (3x), *Ashbahna wa Ashbahal Mulk* (1x), *Allahumma Bika Ashbahna* (1x), *Sayyidul Istighfar* (1x), *Allahumma Inni As'alukal 'Afwa wal 'Afiyah* (1x), *Allahumma 'Afini fi Badani* (3x), *Bismillahilladzi La Yadhurru* (3x), *Radhitu Billahi Rabba* (3x), *Ya Hayyu Ya Qayyum* (1x), *Ashbahna 'ala Fithratil Islam* (1x), *Subhanallahi wa Bihamdihi 'Adada Khalqihi* (3x), *Subhanallahi wa Bihamdihi* (100x), and *Tahlil / Istighfar* (10x / 100x).
+- **Authentic Evening Adhkar Expansion (`dzikirPetang`):** Upgraded to 15 canonical invocations: full untruncated Ayat Kursi (1x), Surah Al-Ikhlas (3x), Surah Al-Falaq (3x), Surah An-Nas (3x), *Amsayna wa Amsal Mulku Lillah* (1x), *Allahumma Bika Amsayna* (1x), *Sayyidul Istighfar* (1x), *Allahumma Inni As'alukal 'Afwa wal 'Afiyah* (1x), *Allahumma 'Afini fi Badani* (3x), *Bismillahilladzi La Yadhurru* (3x), *A'udzu Bikalimatillahit Tammati* (3x), *Radhitu Billahi Rabba* (3x), *Ya Hayyu Ya Qayyum* (1x), *Amsayna 'ala Fithratil Islam* (1x), and *Subhanallahi wa Bihamdihi / Astaghfirullah* (100x).
+- **Bilingual Hadith Citations & Translations:** Every recitation includes verified dual-language `{ id, en }` translations and citations with hadith numbers and authentic gradings (Al-Bukhari, Muslim, Abu Dawud, At-Tirmidhi, An-Nasa'i, Ahmad, Al-Hakim, authenticated by Al-Albani).
+- **Habit-Trigger Integrity:** Preserved identical first-15 character keys for shared azkar to maintain seamless backward compatibility with `checkAndTriggerLinkedHabit()`.
+
+### Test & Verification
+- **Unit Test Suite (`tests/unit/dzikir.test.js`):** Created 12 Vitest tests asserting schema structure, non-truncation of Ayat Kursi, presence of 3 Quls, valid repetition targets, and dual-language localization. Total test suite expanded to 56/56 passing tests (100% pass rate).
+- **Production Compilation (`npm run build`):** Vite production bundle compiled cleanly with 0 errors across 25 modules.
+
 ## [tasbihku-v1.9.0] - 2026-09-25
 
 - **Highlight:** Eyes-Free Zen Counter Mode, Autonomous Multi-Pitch Audio Synthesis, Direct Habit-to-Dzikir Launcher, and Istiqamah 1-Day Streak Grace Recovery.

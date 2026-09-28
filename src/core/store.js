@@ -12,6 +12,7 @@ const DEFAULT_STATE = {
     customList: [],
     customAzkar: [],
     guidedData: {},
+    guidedDataVersion: 2,
     keepScreenOn: false,
     oledMode: false,
     userName: 'SaudaraKu',
@@ -182,6 +183,15 @@ export async function loadState() {
             if (!Array.isArray(rawState.customAzkar)) rawState.customAzkar = [];
             if (!Array.isArray(rawState.activityLog)) rawState.activityLog = [];
             if (!rawState.guidedData) rawState.guidedData = {};
+            if (typeof rawState.guidedDataVersion === 'undefined' || rawState.guidedDataVersion < 2) {
+                if (rawState.guidedData.pagi && rawState.guidedData.pagi.length <= 10) {
+                    delete rawState.guidedData.pagi;
+                }
+                if (rawState.guidedData.petang && rawState.guidedData.petang.length <= 10) {
+                    delete rawState.guidedData.petang;
+                }
+                rawState.guidedDataVersion = 2;
+            }
             if (typeof rawState.appMode === 'undefined') rawState.appMode = 'tasbih';
             if (!Array.isArray(rawState.habits)) rawState.habits = [];
             if (typeof rawState.habitRepetitions !== 'object' || rawState.habitRepetitions === null) rawState.habitRepetitions = {};

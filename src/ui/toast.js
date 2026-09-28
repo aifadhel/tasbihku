@@ -76,9 +76,9 @@ export function hideToast() {
  * Approved In-App Update Broadcast (Section 3.1)
  */
 export const CURRENT_RELEASE_BROADCAST = {
-    id: "tasbihku-v1.8.4-audit-material-3-expressive-un",
-    title: "TasbihKu v1.8.4: Material 3 Expressive Refactor",
-    message: "Pembaruan antarmuka Material 3 Expressive: cincin fokus aksesibilitas universal, target sentuh kalender 48px, tokenisasi kontras mode OLED hitam pekat, serta animasi timer dan getaran tombol yang lebih taktil.",
+    id: "tasbihku-v1.9.1-enrich-guided-morning-and-even",
+    title: "TasbihKu v1.9.1: Pembaruan Dzikir Pagi & Petang Shahih",
+    message: "Dzikir pagi dan petang kini diperbarui lengkap sesuai riwayat sunnah shahih (Ayat Kursi utuh tanpa terpotong, Al-Mu'awwidzat 3 Qul 3x, Sayyidul Istighfar, dan doa perlindungan ma'tsur) dengan harakat jelas dan referensi hadis terverifikasi.",
     priority: "normal"
 };
 
