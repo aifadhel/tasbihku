@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.11.0] - 2026-09-29
+
+- **Highlight:** Comprehensive Google Material 3 (M3) Design system alignment across the TasbihKu dashboard (`#page-dashboard`), featuring canonical elevation tokens, an M3 Connected Button Group for view switching, a centered M3 Assist Chip for streak tracking, an authentic M3 Large FAB primary touch action, and an Outlined Tonal Card for wisdom quotes.
+
+### Specific UI & Component Changes
+- **Material 3 Token Matrix (`style.css`):** Declared official Google Material 3 elevation levels (`--md-sys-elevation-level-0` through `--md-sys-elevation-level-5`), expanded surface container hierarchy (`surface-container-lowest`, `surface-container-highest`, `surface-dim`, `surface-bright`), and added M3 state-layer opacity tokens (`hover 0.08`, `focus 0.10`, `pressed 0.12`).
+- **Top App Bar Standardization (`style.css`, `index.html`):** Standardized top bar height to 64dp with 40dp visual icon button containers and 48dp minimum touch bounds. Aligned `#app-mode-switcher` and menu icon button with M3 state layers.
+- **Streak Assist Chip (`index.html`, `style.css`):** Resolved flex cross-axis stretch bug that expanded the streak badge across 100% of the screen. Converted `#streak-badge` into a centered 32dp M3 Assist Chip (`.streak-chip`) with warm M3 Tertiary Container background (`#564519`), M3 outline border (`rgba(220, 196, 140, 0.25)`), Level 1 elevation, and excised skeuomorphic neon orange glow.
+- **M3 Connected Button Group (`index.html`, `style.css`):** Replaced 3 bulky separated vertical tiles (76px tall) with canonical M3 Connected Button Group (`.connected-button-group`) featuring a unified 40dp height container, continuous 1px outline-variant border, outer pill corners (`border-radius: 9999px`), horizontal inline icon and label, and active selection fill (`var(--md-sys-color-secondary-container)`).
+- **M3 Large Hero FAB (`style.css`, `index.html`):** Modernized the 152px TAP button (`.fab-large`, `.m3-fab-large`) to M3 Large FAB specifications with 36px squircle radius (`--shape-corner-xl`), Level 3 tonal elevation, authentic spring press feedback (`scale(0.95)`), removal of skeuomorphic inset specular highlights, and excision of the obsolete background radar pulse DOM (`#dashboard-fab-ripple`).
+- **Mutiara Hikmah Outlined Tonal Card (`style.css`):** Standardized quote container (`#quote-card`, `.quote-card-m3`) into an M3 Outlined Tonal Card, replacing the dashed outline with a crisp 1px solid `var(--md-sys-color-outline-variant)` border and pill corner radius (`--shape-corner-full`) in collapsed state.
+
+### Core Logic & Audio/Haptic Workflows
+- **Decoupled Dynamic JavaScript Gradients (`src/modules/tasbih.js`, `src/ui/router.js`):** Eliminated all hardcoded `linear-gradient(...)` string injections from `updateStopwatchUI()`, `updateTimerUI()`, and `switchDashboardMode()`. Integrated semantic M3 CSS color tokens (`var(--md-sys-color-primary)`, `var(--md-sys-color-error)`) and `.is-paused` class toggles.
+- **Tactile State Synchronization:** Maintained the proven 60ms physical tap debounce guard in `incrementFree()` alongside M3 spring micro-press animations.
+
+### Dzikir & Habits Engine
+- **Streak Calculation Invariance:** Preserved full compatibility with `calculateStreak()` and `updateStreakBadge()` in `src/modules/habits-ui.js`, seamlessly reflecting user istiqamah days on the newly centered M3 Assist Chip.
+- **View Switching Parity:** Seamless integration between `switchDashboardMode()` and the new Connected Button Group with zero regression across Counting, Stopwatch, and Timer modes.
+
+### Test & Verification
+- **Automated Unit Tests (`npm test`):** 55 passed across 3 test suites (`tests/unit/i18n.test.js`, `tests/unit/dzikir.test.js`, `tests/unit/habits.test.js`) with 100% pass rate.
+- **Production Compilation (`npm run build`):** Clean Vite bundle compilation in 1.31s with zero errors or warnings (25 modules transformed).
+
 ## [tasbihku-v1.10.0] - 2026-09-29
 
 - **Highlight:** Streamlined dashboard counter architecture into an intentional, distraction-free minimalist interface by removing the `.gap-2` action container (`-1`, `Reset`, and `Mode Zen` buttons) and completing a synchronized 7-layer cleanup across markup, core modules, keyboard listeners, touch swipe gestures, stylesheet definitions, and test suites.

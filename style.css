@@ -72,9 +72,14 @@
     --md-sys-color-on-background: #e1e3df;
     
     --md-sys-color-surface: #0e1b15;
+    --md-sys-color-on-surface: #e1e3df;
+    --md-sys-color-surface-dim: #0b1410;
+    --md-sys-color-surface-bright: #35453d;
+    --md-sys-color-surface-container-lowest: #09110d;
     --md-sys-color-surface-container-low: #15201b;
     --md-sys-color-surface-container: #19251f;
     --md-sys-color-surface-container-high: #233029;
+    --md-sys-color-surface-container-highest: #2a3831;
     --md-sys-color-surface-variant: #1e2d25;
     --md-sys-color-on-surface-variant: #c5cfc8;
     
@@ -121,6 +126,20 @@
     --md-sys-motion-duration-medium: 350ms;
     --md-sys-motion-duration-long: 500ms;
 
+    /* Material 3 State Layers */
+    --md-sys-state-hover-opacity: 0.08;
+    --md-sys-state-focus-opacity: 0.10;
+    --md-sys-state-pressed-opacity: 0.12;
+    --md-sys-state-dragged-opacity: 0.16;
+
+    /* Material 3 Tonal & Shadow Elevation Levels */
+    --md-sys-elevation-level-0: none;
+    --md-sys-elevation-level-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level-3: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level-4: 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 6px 10px 4px rgba(0, 0, 0, 0.15);
+    --md-sys-elevation-level-5: 0 4px 4px 0 rgba(0, 0, 0, 0.3), 0 8px 12px 6px rgba(0, 0, 0, 0.15);
+
     /* Dynamic Variables */
     --arabic-font-size: 2.5rem;
 }
@@ -131,9 +150,11 @@ body.oled-mode {
     --md-sys-color-surface: #000000;
     
     /* Kontainer dibuat sangat gelap tapi tetap terlihat sedikit */
+    --md-sys-color-surface-container-lowest: #000000;
     --md-sys-color-surface-container-low: #000000;
     --md-sys-color-surface-container: #0a0a0a; 
     --md-sys-color-surface-container-high: #121212;
+    --md-sys-color-surface-container-highest: #1a1a1a;
     
     /* Menggelapkan varian outline agar tidak terlalu mencolok di background hitam */
     --md-sys-color-outline-variant: #333333;
@@ -360,13 +381,19 @@ body {
         visibility 0s linear 0s;
 }
 
-/* Top Bar */
+/* Top Bar - Material 3 Standard App Bar (64dp) */
 .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 16px;
+    padding: 8px 0 16px 0;
     min-height: 64px;
+}
+
+.top-bar .btn-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
 }
 
 /* Cards */
@@ -395,31 +422,50 @@ body {
     border-radius: var(--shape-corner-lg);
 }
 
-/* NEW: Quote Toggle Styles */
-.quote-toggle-wrapper {
+/* Quote Card -> Material 3 Outlined Tonal Card */
+.quote-toggle-wrapper,
+.quote-card-m3 {
     cursor: pointer;
     overflow: hidden;
     position: relative;
     user-select: none;
+    background-color: var(--md-sys-color-surface-container);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--shape-corner-lg, 24px);
+    transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+                background-color var(--md-sys-motion-duration-short) ease,
+                box-shadow var(--md-sys-motion-duration-short) ease,
+                border-radius var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+                padding var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
 }
-.quote-toggle-wrapper:active {
+
+.quote-toggle-wrapper:hover,
+.quote-card-m3:hover {
+    box-shadow: var(--md-sys-elevation-level-1);
+    border-color: rgba(220, 196, 140, 0.4);
+}
+
+.quote-toggle-wrapper:active,
+.quote-card-m3:active {
+    transform: scale(0.98);
     background-color: var(--md-sys-color-surface-container-high);
 }
 
 .quote-toggle-wrapper.collapsed {
-    padding: 12px 24px; /* Slimmer when collapsed */
-    background: var(--md-sys-color-surface-container-low);
-    border: 1px dashed var(--md-sys-color-outline-variant);
+    padding: 10px 20px;
+    background-color: var(--md-sys-color-surface-container-low);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--shape-corner-full, 9999px);
+    box-shadow: var(--md-sys-elevation-level-0);
 }
 
-
 .quote-box {
-    border-left: 4px solid var(--md-sys-color-tertiary); /* Gold accent */
+    border-left: 3px solid var(--md-sys-color-tertiary); /* Gold accent */
     padding-left: 16px;
     font-style: italic;
     font-weight: 500;
-    background: linear-gradient(90deg, rgba(220, 196, 140, 0.05) 0%, rgba(0,0,0,0) 100%);
-    border-radius: 0 var(--shape-corner-md) var(--shape-corner-md) 0;
+    background: rgba(220, 196, 140, 0.04);
+    border-radius: 0 var(--shape-corner-md, 16px) var(--shape-corner-md, 16px) 0;
     padding: 16px;
     margin: 0;
     transition: opacity 0.3s;
@@ -559,51 +605,59 @@ body {
     border-radius: var(--shape-corner-full);
 }
 
-/* THE TAP BUTTON (FAB) - Expressive & Large (Standardized to 160px) */
+/* THE TAP BUTTON (FAB) - Material 3 Large FAB */
 .fab-container {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    margin: 16px 0;
 }
 
-.fab-large {
-    width: 160px; /* Standardized M3 Expressive FAB size */
-    height: 160px;
-    background: linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%);
+.fab-large,
+.m3-fab-large {
+    width: 152px;
+    height: 152px;
+    background-color: var(--md-sys-color-primary);
     color: var(--md-sys-color-on-primary);
-    border-radius: 48px; /* Squircle shape characteristic of M3 Expressive */
-    font-size: 1.25rem;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 2px 0 rgba(255,255,255,0.2);
+    border-radius: var(--shape-corner-xl, 36px);
+    font-size: 1.15rem;
+    box-shadow: var(--md-sys-elevation-level-3);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     z-index: 2;
+    transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-enter),
+                background-color var(--md-sys-motion-duration-short) ease,
+                color var(--md-sys-motion-duration-short) ease,
+                box-shadow var(--md-sys-motion-duration-short) ease;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.fab-large:active {
-    transform: scale(0.92);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    background: var(--md-sys-color-primary-container);
+.fab-large:hover,
+.m3-fab-large:hover {
+    box-shadow: var(--md-sys-elevation-level-4);
+}
+
+.fab-large:active,
+.m3-fab-large:active {
+    transform: scale(0.95);
+    box-shadow: var(--md-sys-elevation-level-1);
+    background-color: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
 }
 
-/* Ripple effect animation background behind FAB (Proportional to 160px FAB) */
-.fab-ripple-bg {
-    position: absolute;
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--md-sys-color-primary-container) 0%, transparent 70%);
-    opacity: 0.3;
-    z-index: 1;
-    animation: pulse 3s infinite;
+.fab-large.is-paused {
+    background-color: var(--md-sys-color-error) !important;
+    color: var(--md-sys-color-on-error) !important;
 }
 
-@keyframes pulse {
-    0% { transform: scale(0.8); opacity: 0.1; }
-    50% { transform: scale(1.1); opacity: 0.3; }
-    100% { transform: scale(0.8); opacity: 0.1; }
+.fab-large.is-paused:active {
+    background-color: #852221 !important;
+    color: #ffffff !important;
 }
 
 /* Inputs & Selects - Standardized M3 Filled Text Field Pattern */
@@ -927,25 +981,34 @@ input:checked + .slider:before {
     transform: none;
 }
 
-/* Streak Badge */
-.streak-badge {
+/* Streak Badge -> M3 Assist Chip */
+.streak-badge,
+.streak-chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%);
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
+    justify-content: center;
+    align-self: center;
+    width: fit-content;
+    gap: 6px;
+    background-color: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+    border: 1px solid rgba(220, 196, 140, 0.25);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+    padding: 6px 14px;
+    border-radius: var(--shape-corner-sm, 8px);
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
-    animation: badge-glow 2s ease-in-out infinite alternate;
+    box-shadow: var(--md-sys-elevation-level-1);
+    margin: 0 auto 12px auto;
+    transition: background-color var(--md-sys-motion-duration-short) ease,
+                box-shadow var(--md-sys-motion-duration-short) ease,
+                transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
 }
 
-@keyframes badge-glow {
-    0% { box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3); }
-    100% { box-shadow: 0 2px 12px rgba(255, 107, 53, 0.6); }
+.streak-badge:hover,
+.streak-chip:hover {
+    box-shadow: var(--md-sys-elevation-level-2);
 }
 
 /* Arabic Text Font Override */
@@ -964,62 +1027,99 @@ input:checked + .slider:before {
 
 /* --- NEW DASHBOARD MODE STYLES --- */
 
-/* Segmented FAB */
-.segmented-fab-container {
+/* Segmented FAB -> Material 3 Connected Button Group */
+.segmented-fab-container,
+.connected-button-group {
   display: flex;
-  gap: 8px;
-  padding: 8px;
+  flex-direction: row;
+  align-items: stretch;
+  padding: 0;
   background: var(--md-sys-color-surface-container);
-  border-radius: 24px;
-  margin: 0 auto;
-  max-width: 400px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--shape-corner-full, 9999px);
+  margin: 0 auto 16px auto;
+  width: 100%;
+  max-width: 380px;
+  height: 40px;
+  overflow: hidden;
+  box-shadow: var(--md-sys-elevation-level-0);
 }
 
 .segment-btn {
   flex: 1;
+  min-width: 0;
+  height: 100%;
   background: transparent;
   border: none;
-  border-radius: 16px;
-  padding: 12px 16px;
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 0;
+  padding: 0 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  gap: 6px;
   cursor: pointer;
-  transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
-              background-color var(--md-sys-motion-duration-short) ease,
-              color var(--md-sys-motion-duration-short) ease;
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--font-family-base);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color var(--md-sys-motion-duration-short) ease,
+              color var(--md-sys-motion-duration-short) ease,
+              transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
   position: relative;
   overflow: hidden;
-  color: var(--md-sys-color-on-background);
+}
+
+.segment-btn:last-child {
+  border-right: none;
 }
 
 .segment-btn:hover {
-  transform: scale(1.04);
+  transform: none;
+  background-color: rgba(225, 227, 223, var(--md-sys-state-hover-opacity, 0.08));
 }
 
 .segment-btn:active {
-  transform: scale(0.94);
+  transform: scale(0.97);
+  background-color: rgba(225, 227, 223, var(--md-sys-state-pressed-opacity, 0.12));
 }
 
 .segment-btn.active {
-  background: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
+  background: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
   font-weight: 700;
+}
+
+.segment-btn.active .segment-icon {
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 .segment-btn.active .segment-label {
   opacity: 1;
+  color: var(--md-sys-color-on-secondary-container);
 }
 
 .segment-btn.inactive {
   opacity: 0.7;
 }
 
+.segment-icon {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .segment-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  opacity: 0.8;
+  font-size: 0.8125rem;
+  letter-spacing: 0.1px;
+  text-overflow: ellipsis;
+  overflow: hidden;
   transition: opacity 0.2s;
 }
 
@@ -1147,7 +1247,7 @@ input:checked + .slider:before {
     border: none;
     border-radius: var(--shape-corner-full);
     height: 34px;
-    width: 38px;
+    width: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1156,7 +1256,7 @@ input:checked + .slider:before {
     transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
                 background-color var(--md-sys-motion-duration-short) ease,
                 color var(--md-sys-motion-duration-short) ease;
-    color: var(--md-sys-color-on-background);
+    color: var(--md-sys-color-on-surface-variant);
     padding: 0;
     position: relative;
     overflow: hidden;
@@ -1171,9 +1271,9 @@ input:checked + .slider:before {
 }
 
 .mode-btn.active {
-    background: var(--md-sys-color-primary);
-    color: var(--md-sys-color-on-primary);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    box-shadow: var(--md-sys-elevation-level-1);
 }
 
 /* --- HABIT TRACKER STYLES --- */

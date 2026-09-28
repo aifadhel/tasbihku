@@ -208,11 +208,13 @@ export function updateStopwatchUI() {
     if (state.stopwatch.running) {
         emojiEl.innerHTML = SVG_ICONS.pause;
         labelEl.innerText = t('label_pause');
-        btnEl.style.background = 'linear-gradient(135deg, #ffb4ab 0%, #ff897d 100%)';
+        btnEl.style.background = 'var(--md-sys-color-error)';
+        btnEl.classList.add('is-paused');
     } else {
         emojiEl.innerHTML = SVG_ICONS.play;
         labelEl.innerText = t('label_start');
-        btnEl.style.background = 'linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%)';
+        btnEl.style.background = 'var(--md-sys-color-primary)';
+        btnEl.classList.remove('is-paused');
     }
     const stopwatchCounterEl = document.getElementById('stopwatch-counter');
     if (stopwatchCounterEl) {
@@ -348,14 +350,16 @@ export function updateTimerUI() {
     if (state.timer.running) {
         emojiEl.innerHTML = SVG_ICONS.pause;
         labelEl.innerText = t('label_pause');
-        btnEl.style.background = 'linear-gradient(135deg, #ffb4ab 0%, #ff897d 100%)';
+        btnEl.style.background = 'var(--md-sys-color-error)';
+        btnEl.classList.add('is-paused');
         if (setupArea) setupArea.style.display = 'none';
         counterEl.style.fontSize = 'clamp(3.5rem, 12vw, 5.5rem)';
         counterEl.classList.add('timer-running');
     } else {
         emojiEl.innerHTML = SVG_ICONS.play;
         labelEl.innerText = t('label_start');
-        btnEl.style.background = 'linear-gradient(135deg, var(--md-sys-color-primary) 0%, #6bc7a0 100%)';
+        btnEl.style.background = 'var(--md-sys-color-primary)';
+        btnEl.classList.remove('is-paused');
         if (setupArea) setupArea.style.display = 'block';
         counterEl.style.fontSize = 'clamp(2.5rem, 8vw, 3.5rem)';
         counterEl.classList.remove('timer-running');

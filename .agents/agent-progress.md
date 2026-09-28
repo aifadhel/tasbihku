@@ -1,5 +1,24 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-29 (v1.11.0 Google Material 3 Dashboard Redesign)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Declared M3 Elevation Scale (Levels 0–5), complete Surface Container tokens, and M3 State Layer opacity tokens (`style.css`).
+  - [✓] Step 2: Standardized Top App Bar metrics (64dp) and resolved flex-stretch bug on `#streak-badge`, converting it into a centered 32dp M3 Assist Chip with warm tertiary tonal colors (`index.html`, `style.css`).
+  - [✓] Step 3: Refactored Dashboard Mode Switcher from bulky 76px separated vertical tiles into canonical M3 Connected Button Group with 40dp height, continuous 1px outline-variant border, outer pill corners, and horizontal inline icon+label (`index.html`, `style.css`).
+  - [✓] Step 4: Modernized TAP button (`.fab-large`, `.m3-fab-large`) to M3 Large FAB tokens with 36px squircle radius, Level 3 elevation, and spring press feedback, removing skeuomorphic specular and radar pulse DOM. Decoupled all 5 hardcoded JS `linear-gradient` strings across `src/modules/tasbih.js` and `src/ui/router.js` into M3 color tokens and semantic `.is-paused` class toggles.
+  - [✓] Step 5: Refactored Mutiara Hikmah container (`#quote-card`, `.quote-card-m3`) into an M3 Outlined Tonal Card with solid 1px outline-variant border, pill collapsed state, and smooth spring physics (`style.css`).
+  - [✓] Step 6: Zero-trust positive verification — 55/55 unit tests passing (100%), clean production bundle compilation with 25 modules transformed (`npm test && npm run build`).
+  - [✓] Step 7: Automated minor version bump to `v1.11.0`, structured `CHANGELOG.md` enrichment, and In-App Broadcast explicitly skipped per user direction.
+- **Verification Evidence**:
+  - `npm test`: 55 passed across 3 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.73 kB HTML / 80.38 kB CSS / 48.78 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of hardcoded `linear-gradient` in `src/modules/tasbih.js` and `src/ui/router.js`.
+  - [✓] Verified `#streak-badge` has `align-self: center; width: fit-content;`, completely eliminating full-width stretching.
+  - [✓] Verified M3 Connected Button Group integrates seamlessly with `switchDashboardMode()` and keyboard/touch event handlers.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-29 (v1.10.0 Dashboard Action Row & Zen Mode Excise)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
