@@ -7,9 +7,6 @@ import { vibrate, playTapSound, triggerMilestoneFeedback } from '../hardware/med
 import { trackActivity, triggerTimerNotification } from './habits.js';
 import { showModal, animateValue, SVG_ICONS, triggerCelebration } from '../ui/router.js';
 import { t } from '../core/i18n.js';
-import { showToast } from '../ui/toast.js';
-
-let lastFreeCountBeforeReset = 0; // For undo support
 
 // Stopwatch private state variables
 let stopwatchIntervalId = null;
@@ -31,10 +28,6 @@ export function incrementFree() {
 
     state.freeCount++;
     animateValue('free-counter', state.freeCount);
-    if (typeof document !== 'undefined') {
-        const zenCounter = document.getElementById('zen-counter-display');
-        if (zenCounter) zenCounter.innerText = state.freeCount;
-    }
     
     if (state.targetLimit > 0 && state.freeCount % state.targetLimit === 0) {
         triggerCelebration();
@@ -52,60 +45,6 @@ export function incrementFree() {
     
     saveState();
     trackActivity();
-}
-
-export function decrementFree() {
-    if (state.freeCount <= 0) return;
-    state.freeCount--;
-    animateValue('free-counter', state.freeCount);
-    if (typeof document !== 'undefined') {
-        const zenCounter = document.getElementById('zen-counter-display');
-        if (zenCounter) zenCounter.innerText = state.freeCount;
-    }
-    vibrate(25);
-    saveState();
-}
-
-export function toggleZenMode(enable) {
-    if (typeof document === 'undefined') return;
-    const zenOverlay = document.getElementById('zen-counter-overlay');
-    const zenCounter = document.getElementById('zen-counter-display');
-    const zenTarget = document.getElementById('zen-target-display');
-    if (!zenOverlay) return;
-
-    const shouldOpen = typeof enable === 'boolean' ? enable : !zenOverlay.classList.contains('active');
-    if (shouldOpen) {
-        if (zenCounter) zenCounter.innerText = state.freeCount;
-        if (zenTarget) zenTarget.innerText = state.targetLimit > 0 ? `/ ${state.targetLimit}` : '∞';
-        zenOverlay.classList.add('active');
-        vibrate([30, 30]);
-    } else {
-        zenOverlay.classList.remove('active');
-        vibrate(20);
-    }
-}
-
-export function confirmResetFree() {
-    lastFreeCountBeforeReset = state.freeCount;
-    showModal(t('modal_reset_free_title'), t('modal_reset_free_msg'), () => {
-        state.freeCount = 0;
-        const freeCounterEl = document.getElementById('free-counter');
-        if (freeCounterEl) freeCounterEl.innerText = 0;
-        saveState();
-        showToast(t('modal_reset_free_title'), t('btn_undo') || 'Undo', () => {
-            undoFreeReset();
-        });
-    });
-}
-
-export function undoFreeReset() {
-    if (lastFreeCountBeforeReset > 0) {
-        state.freeCount = lastFreeCountBeforeReset;
-        const freeCounterEl = document.getElementById('free-counter');
-        if (freeCounterEl) freeCounterEl.innerText = state.freeCount;
-        saveStateImmediate();
-        vibrate([30, 50, 30]);
-    }
 }
 
 let numberInputCallback = null;

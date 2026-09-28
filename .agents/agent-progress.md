@@ -1,5 +1,24 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-29 (v1.10.0 Dashboard Action Row & Zen Mode Excise)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Removed `.gap-2` action container (`-1`, `Reset`, `Mode Zen`) and `#zen-counter-overlay` markup (`index.html`).
+  - [✓] Step 2: Excised `decrementFree()`, `toggleZenMode()`, `confirmResetFree()`, `undoFreeReset()`, and internal `#zen-counter-display` DOM queries (`src/modules/tasbih.js`).
+  - [✓] Step 3: Excised `handleDashboardReset()`, obsolete imports, `window.*` globals, Zen/decrement keydown branches, Zen `freeCount` subscription sync, and horizontal swipe reset undo (`src/main.js`).
+  - [✓] Step 4: Removed 105 lines of obsolete pitch-black OLED Zen mode CSS rules (`style.css`).
+  - [✓] Step 5: Updated unit test suite to remove `decrementFree` imports and test assertions (`tests/unit/habits.test.js`).
+  - [✓] Step 6: Zero-trust positive verification — 55/55 unit tests passing (100%), clean production bundle compilation with size reductions across HTML, CSS, and JS (`npm test && npm run build`).
+  - [✓] Step 7: Automated minor version bump to `1.10.0`, structured `CHANGELOG.md` enrichment, and In-App Broadcast explicitly skipped per user direction.
+- **Verification Evidence**:
+  - `npm test`: 55 passed across 3 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.67 kB HTML / 79.90 kB CSS / 48.80 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of `gap-2`, `dashboard-decrement-btn`, `btn-open-zen`, `zen-counter-overlay` across markup.
+  - [✓] Verified complete absence of `decrementFree`, `toggleZenMode`, `confirmResetFree`, `undoFreeReset` across modules, scripts, and tests.
+  - [✓] Verified layout stability: `#quote-card` absorbs remaining vertical space via `mt-auto`, keeping primary 160px TAP button centered without visual shift.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-29 (v1.9.1 Authentic Adhkar Expansion)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:

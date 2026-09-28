@@ -195,18 +195,6 @@
                         </button>
                     </div>
 
-                    <div class="gap-2" style="justify-content: center; align-items: center; margin-top: 30px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <button class="btn btn-text" style="color: var(--md-sys-color-primary);" id="dashboard-decrement-btn" onclick="decrementFree()" aria-label="Kurang satu (-1)" data-i18n-aria="btn_decrement">
-                            <span style="font-weight: 700; font-size: 16px; margin-right: 2px;">-1</span>
-                        </button>
-                        <button class="btn btn-text" style="color: var(--md-sys-color-error);" id="dashboard-reset-btn" onclick="handleDashboardReset()" aria-label="Reset">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px; vertical-align: middle;" aria-hidden="true"><use href="#icon-18"></use></svg><span data-i18n="btn_reset">Reset</span>
-                        </button>
-                        <button class="btn btn-tonal" id="btn-open-zen" onclick="toggleZenMode(true)" aria-label="Mode Zen Layar Penuh" style="height: 36px; border-radius: 20px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                            <span class="label-medium" data-i18n="btn_zen_mode">Mode Zen</span>
-                        </button>
-                    </div>
                 </div>
 
                 <!-- QUOTE CARD -->
@@ -1112,27 +1100,6 @@
         </div>
     </div>
 
-    <!-- ZEN MODE FULL-SCREEN OVERLAY -->
-    <div id="zen-counter-overlay" class="zen-overlay" onclick="incrementFree()">
-        <div class="zen-top-bar" onclick="event.stopPropagation()">
-            <div class="zen-title">
-                <span class="label-large" data-i18n="zen_mode_title">Mode Zen</span>
-                <span id="zen-target-display" class="label-medium zen-target">∞</span>
-            </div>
-            <button class="btn btn-icon zen-close-btn" onclick="toggleZenMode(false)" aria-label="Tutup Zen Mode">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-            </button>
-        </div>
-        <div class="zen-center-area">
-            <div id="zen-counter-display" class="zen-counter-number">0</div>
-            <div class="zen-hint label-small" data-i18n="zen_tap_hint">Tap di mana saja untuk menghitung</div>
-        </div>
-        <div class="zen-bottom-bar" onclick="event.stopPropagation()">
-            <button class="btn btn-tonal zen-action-btn" onclick="decrementFree()" aria-label="Kurang satu (-1)">
-                <span style="font-weight: 700; font-size: 18px;">-1</span>
-            </button>
-        </div>
-    </div>
 
     <script type="module" src="/src/main.js"></script>
 </body>

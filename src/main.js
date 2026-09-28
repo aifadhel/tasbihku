@@ -21,8 +21,6 @@ import {
 } from './hardware/system.js';
 import { 
     incrementFree, 
-    confirmResetFree,
-    undoFreeReset, 
     toggleStopwatch, 
     toggleTimer, 
     resetStopwatch, 
@@ -33,8 +31,6 @@ import {
     setTimerPreset,
     promptManualCount,
     promptTargetLimit,
-    decrementFree,
-    toggleZenMode,
     closeNumberInputModal,
     applyNumberInputModal
 } from './modules/tasbih.js';
@@ -106,7 +102,6 @@ window.openEditor = openEditor;
 window.promptCustomTimer = promptCustomTimer;
 window.closeTimeInputModal = closeTimeInputModal;
 window.applyTimeInputModal = applyTimeInputModal;
-window.handleDashboardReset = handleDashboardReset;
 window.setTimerPreset = setTimerPreset;
 window.toggleWakeLock = toggleWakeLock;
 window.togglePagiReminder = togglePagiReminder;
@@ -199,28 +194,10 @@ function handleDashboardMainBtn() {
     }
 }
 
-function handleDashboardReset() {
-    if (state.dashboardMode === 'counting') {
-        const freeCounterEl = document.getElementById('free-counter');
-        const count = freeCounterEl ? parseInt(freeCounterEl.innerText) || 0 : 0;
-        if (count > 0) {
-            // Confirm free counter reset
-            confirmResetFree();
-        }
-    } else if (state.dashboardMode === 'stopwatch') {
-        resetStopwatch();
-    } else if (state.dashboardMode === 'timer') {
-        resetTimer();
-    }
-}
-
 // Bind reset globally for index.html onclick
 window.handleDashboardMainBtn = handleDashboardMainBtn;
-window.handleDashboardReset = handleDashboardReset;
 window.promptManualCount = promptManualCount;
 window.promptTargetLimit = promptTargetLimit;
-window.decrementFree = decrementFree;
-window.toggleZenMode = toggleZenMode;
 window.closeNumberInputModal = closeNumberInputModal;
 window.applyNumberInputModal = applyNumberInputModal;
 
@@ -250,8 +227,6 @@ pageHooks['page-dashboard'] = () => {
 subscribe('freeCount', (state) => {
     const el = document.getElementById('free-counter');
     if (el) el.innerText = state.freeCount;
-    const zenEl = document.getElementById('zen-counter-display');
-    if (zenEl) zenEl.innerText = state.freeCount;
 });
 subscribe('targetLimit', (state) => {
     const el = document.getElementById('free-target-display');
@@ -462,40 +437,17 @@ document.addEventListener('keydown', (e) => {
     // Space or Enter to increment/start/stop
     if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
-        const zenOverlay = document.getElementById('zen-counter-overlay');
-        if (zenOverlay && zenOverlay.classList.contains('active')) {
-            incrementFree();
-        } else if (dashboardActive) {
+        if (dashboardActive) {
             handleDashboardMainBtn();
         } else if (playerActive) {
             incrementPlayer();
         }
     }
 
-    // Escape to close Zen mode
-    if (e.key === 'Escape') {
-        const zenOverlay = document.getElementById('zen-counter-overlay');
-        if (zenOverlay && zenOverlay.classList.contains('active')) {
-            e.preventDefault();
-            toggleZenMode(false);
-        }
-    }
-
-    // Minus or ArrowDown to decrement in counting / zen mode
-    if (e.key === '-' || e.key === 'ArrowDown') {
-        const zenOverlay = document.getElementById('zen-counter-overlay');
-        if ((zenOverlay && zenOverlay.classList.contains('active')) || (dashboardActive && state.dashboardMode === 'counting')) {
-            e.preventDefault();
-            decrementFree();
-        }
-    }
-
     // Ctrl+Z or Cmd+Z to undo
     if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        if (dashboardActive && state.dashboardMode === 'counting') {
-            undoFreeReset();
-        } else if (playerActive) {
+        if (playerActive) {
+            e.preventDefault();
             playerUndo();
         }
     }
@@ -563,12 +515,8 @@ function handleSwipeGesture() {
     const diffY = Math.abs(touchEndY - touchStartY);
     
     if (Math.abs(diffX) > SWIPE_THRESHOLD && diffY < SWIPE_THRESHOLD) {
-        const dashboardActive = document.getElementById('page-dashboard').classList.contains('active');
         const playerActive = document.getElementById('page-player').classList.contains('active');
-        
-        if (dashboardActive && state.dashboardMode === 'counting') {
-            undoFreeReset();
-        } else if (playerActive) {
+        if (playerActive) {
             playerUndo();
         }
     }

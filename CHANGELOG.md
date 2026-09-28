@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.10.0] - 2026-09-29
+
+- **Highlight:** Streamlined dashboard counter architecture into an intentional, distraction-free minimalist interface by removing the `.gap-2` action container (`-1`, `Reset`, and `Mode Zen` buttons) and completing a synchronized 7-layer cleanup across markup, core modules, keyboard listeners, touch swipe gestures, stylesheet definitions, and test suites.
+
+### Specific UI & Component Changes
+- **Dashboard Action Container Excise (`index.html`):** Removed the `.gap-2` flex button row directly below `#dashboard-main-btn` (TAP) containing `#dashboard-decrement-btn` (`-1`), `#dashboard-reset-btn` (`Reset`), and `#btn-open-zen` (`Mode Zen`).
+- **Zen Mode Full-Screen Overlay Removal (`index.html`):** Excised the entire `#zen-counter-overlay` DOM tree including `#zen-top-bar`, `#zen-counter-display`, `#zen-target-display`, and secondary decrement button `.zen-action-btn`.
+- **CSS Architecture Streamlining (`style.css`):** Removed 105 lines of pitch-black OLED Zen mode rules (`.zen-overlay`, `.zen-overlay.active`, `.zen-top-bar`, `.zen-title`, `.zen-target`, `.zen-close-btn`, `.zen-center-area`, `.zen-counter-number`, `.zen-hint`, `.zen-bottom-bar`, `.zen-action-btn`), reducing uncompressed stylesheet footprint by ~2.8 KB and optimizing CSSOM parse time.
+- **Layout Spacing Stability:** The remaining space below `.fab-container` is seamlessly absorbed by `#quote-card` (`mt-auto`), perfectly centering the primary 160px TAP target with clean vertical rhythm.
+
+### Core Logic & Audio/Haptic Workflows
+- **Module Simplification (`src/modules/tasbih.js`):** Removed `decrementFree()`, `toggleZenMode()`, `confirmResetFree()`, and `undoFreeReset()`. Excised dead `#zen-counter-display` DOM queries from `incrementFree()`, eliminating redundant microtasks during high-speed tapping.
+- **Global & Event Harness Cleanup (`src/main.js`):** Removed `handleDashboardReset()`, obsolete module imports, and `window.*` global assignments (`window.handleDashboardReset`, `window.decrementFree`, `window.toggleZenMode`).
+- **Keyboard Shortcuts Polish (`src/main.js`):** Excised Zen overlay checks from Space/Enter, removed Escape listener for Zen dismissal, removed Minus/ArrowDown decrement triggers, and preserved Ctrl+Z undo exclusively for Guided Player mode.
+- **Touch Gesture Integrity (`src/main.js`):** Updated `handleSwipeGesture()` to remove obsolete `undoFreeReset()` on dashboard counting mode, eliminating potential `ReferenceError` crashes on horizontal swipe.
+- **Reactive Subscriptions (`src/main.js`):** Cleaned up `subscribe('freeCount')` to solely synchronize `#free-counter`.
+
+### Dzikir & Habits Engine
+- **Intentional Counter Adjustment:** Users retain full control over their count via `promptManualCount()` by tapping the large count display (`#free-counter`) to enter any value or reset to 0, avoiding accidental resets during recitation. Target configuration remains active via `promptTargetLimit()`.
+- **i18n Token Invariance:** Retained `btn_reset` in `src/core/i18n.js` ensuring full backward compatibility and zero test regression in `tests/unit/i18n.test.js`.
+
+### Test & Verification
+- **Unit Test Suite (`tests/unit/habits.test.js`):** Removed `decrementFree` imports and test assertions. Vitest ran 55/55 tests with 100% pass across all 3 test files.
+- **Production Compilation (`npm run build`):** Vite production build compiled clean in 361ms with 0 errors, reducing bundle size across all assets (HTML gzip: 15.67 kB, CSS gzip: 79.90 kB, JS gzip: 48.80 kB).
+
 ## [tasbihku-v1.9.1] - 2026-09-29
 
 - **Highlight:** Complete canonical authentic narrations for Morning and Evening Dhikr (*Dzikir Pagi & Petang*) with full untruncated Ayat Kursi, Al-Mu'awwidhat (3 Quls: target 3x), verified Sunnah invocations, enhanced Arabic diacritic typography, and state migration.
