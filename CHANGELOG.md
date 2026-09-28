@@ -29,7 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Test & Verification
 - **Unit Test Suite (`npm test`):** 44 unit tests passing cleanly across `tests/unit/i18n.test.js` and `tests/unit/habits.test.js` with 100% pass rate.
-- **Production Compilation (`npm run build`):** Validated clean bundle compilation under Vite 5 and Rollup with zero asset errors.
+- **Production Compilation (`npm run build`):** Validated clean bundle compilation under Vite 5 and Rollup with zero asset errors across both physical canonical and Windows NTFS junction working directories (`root: fs.realpathSync(process.cwd())`).
 
 ## [tasbihku-v1.8.4] - 2026-09-08
 

@@ -16,4 +16,5 @@
   - `npm run build`: 25 modules transformed, 0 errors, gzip 16.27 kB HTML / 80.21 kB CSS / 44.74 kB JS (Exit code 0).
 - **Double-Check Findings (Step 5.5)**:
   - [⚠] double-check caught: Lack of tap debounce timestamp guard in `incrementFree()` permitted ghost/bouncing counts on rapid physical tapping; corrected with 60ms timestamp guard.
+  - [✓] vite junction fix: Resolved Rollup path mismatch when building from Windows NTFS junction `C:\AnimatorBP` by setting `root: fs.realpathSync(process.cwd())` in `vite.config.js`.
 - **Known Regressions / Blockers**: None.
