@@ -587,17 +587,14 @@ export function incrementPlayer() {
         animateValue('player-counter', state.playerCount);
 
         if (state.playerCount >= currentPage.target) {
-            vibrate([50, 100, 50, 100, 100]);
+            vibrate([35, 45, 35]);
             triggerCelebration();
 
-            // Trigger linked habits for individual page (micro-habit completion)
+            // Trigger linked habits silently for individual page (micro-habit completion)
             if (currentPage.arabic) {
                 const libMatch = azkarData.find(a => a.arabic && a.arabic.substring(0, 15) === currentPage.arabic.substring(0, 15));
                 if (libMatch) {
-                    const completed = checkAndTriggerLinkedHabit(`library-${libMatch.id}`);
-                    if (Array.isArray(completed)) {
-                        completed.forEach(name => showStackingCelebrationToast(name));
-                    }
+                    checkAndTriggerLinkedHabit(`library-${libMatch.id}`);
                 }
             }
 
@@ -634,12 +631,24 @@ export function goToNextPlayerPage() {
     if (playerAutoSkipTimeout) clearTimeout(playerAutoSkipTimeout);
     const session = getSessionData(state.playerType, state.playerId);
     const pages = session.pages;
+    const textContainer = document.getElementById('player-text-container');
 
     if (state.playerIndex < pages.length - 1) {
-        state.playerIndex++;
-        state.playerCount = 0;
-        saveState();
-        updatePlayerUI();
+        if (textContainer) {
+            textContainer.style.opacity = '0';
+            setTimeout(() => {
+                state.playerIndex++;
+                state.playerCount = 0;
+                saveState();
+                updatePlayerUI();
+                textContainer.style.opacity = '1';
+            }, 150);
+        } else {
+            state.playerIndex++;
+            state.playerCount = 0;
+            saveState();
+            updatePlayerUI();
+        }
     } else {
         // Trigger guided session or custom list completion (macro-habit completion)
         if (state.playerType === 'pagi' || state.playerType === 'petang' || state.playerType === 'wirid') {

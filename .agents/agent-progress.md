@@ -1,5 +1,41 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-29 (v1.11.1 Calm Dzikir Player Interaction & Micro-Animations)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Replaced `@keyframes heartbeat-ripple` and `.celebrate-heartbeat` with non-scaling progress bar luminance pulse (`.progress-complete-glow`), dampened `@keyframes m3-counter-pop` and `@keyframes expressivePop` max scale from `1.18` to `1.05`, declared `#player-text-container` opacity transition, and added full `@media (prefers-reduced-motion: reduce)` block (`style.css`).
+  - [✓] Step 2: Refactored `triggerCelebration()` in `src/ui/router.js` to target `#player-progress` exclusively with 350ms localized glow pulse, eliminating root `#page-player` viewport deformation (`src/ui/router.js`).
+  - [✓] Step 3: Refactored `incrementPlayer()` and `goToNextPlayerPage()` in `src/modules/dzikir.js`: softened completion haptics from `[50, 100, 50, 100, 100]` to `[35, 45, 35]`; suppressed mid-session `showStackingCelebrationToast()` during active player mode; added 150ms gentle text container fade on auto-advance (`src/modules/dzikir.js`).
+  - [✓] Step 4: Zero-trust positive verification — 55/55 unit tests passing (100%), clean production bundle compilation with 25 modules transformed (`npm test && npm run build`).
+  - [✓] Step 5: Automated patch version bump to `1.11.1`, structured `CHANGELOG.md` enrichment adhering to Keep a Changelog standards (`scripts/bump-version.js`).
+- **Verification Evidence**:
+  - `npm test`: 55 passed across 3 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.68 kB HTML / 80.43 kB CSS / 48.53 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of whole-screen `@keyframes heartbeat-ripple` or `.celebrate-heartbeat` on `#page-player`.
+  - [✓] Verified `triggerCelebration()` scopes exclusively to `#player-progress` with graceful fallback.
+  - [✓] Verified `showStackingCelebrationToast` suppressed during player recitation while habit store tracking remains 100% operational.
+  - [✓] Verified `@media (prefers-reduced-motion: reduce)` block completely disables all scale and glow animations for vestibular accessibility.
+- **Known Regressions / Blockers**: None.
+
+## Session: 2026-09-29 (In-App Update Broadcast & Draft Review Excision)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Excised `CURRENT_RELEASE_BROADCAST` and `checkAndShowReleaseBroadcast()` from `src/ui/toast.js`, restoring pure toast engine functionality (`showToast`, `hideToast`).
+  - [✓] Step 2: Removed broadcast imports, unhooked `#about-release-note` population, removed startup broadcast trigger, and injected passive legacy storage cleanup for `'tasbihku_last_broadcast_id'` (`src/main.js`).
+  - [✓] Step 3: Removed `<p id="about-release-note">` element and its inline styles, cleaning up footer DOM hierarchy (`index.html`).
+  - [✓] Step 4: Excised `slugify()`, `slug`, `broadcastDraft` payload, and Section 3.1 console draft review banner (`scripts/bump-version.js`).
+  - [✓] Step 5: Excised Section 3.1 ("In-App Update Broadcast & Draft Review Rule") and broadcast checklist item (`AGENTS.md`).
+  - [✓] Step 6: Full verification gate passed - 55/55 unit tests passing (100%), clean production bundle compilation with asset size reductions (`npm test && npm run build`).
+- **Verification Evidence**:
+  - `npm test`: 55 passed across 3 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.68 kB HTML / 80.38 kB CSS / 48.46 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of `CURRENT_RELEASE_BROADCAST`, `checkAndShowReleaseBroadcast`, and `aboutReleaseNote` across runtime source code.
+  - [✓] Verified `slugify` dead helper removed from `scripts/bump-version.js` without impacting `--dry-run` or version increments.
+  - [✓] Verified `BroadcastChannel('tasbihku_state_sync')` in `src/core/store.js` untouched and operating normally.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-29 (v1.11.0 Google Material 3 Dashboard Redesign)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
