@@ -55,14 +55,6 @@ function bumpVersion(current, type) {
   return `${major}.${minor}.${patch}`;
 }
 
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-    .slice(0, 30) || 'update';
-}
-
 function preflightCheck() {
   const issues = [];
 
@@ -117,7 +109,6 @@ function run() {
   const newVersion = bumpVersion(oldVersion, bumpType);
   const formattedTag = `tasbihku-v${newVersion}`;
   const today = getTodayString();
-  const slug = slugify(note);
 
   console.log(`\n============================================================`);
   console.log(`TasbihKu Automated Versioning Engine`);
@@ -181,14 +172,6 @@ function run() {
     changelog += '\n' + formattedChangelogEntry;
   }
 
-  // 4. In-App Broadcast Draft (Section 3.1)
-  const broadcastDraft = {
-    id: `tasbihku-v${newVersion}-${slug}`,
-    title: `TasbihKu v${newVersion}: Ringkasan Pembaruan`,
-    message: note,
-    priority: 'normal',
-  };
-
   if (isDryRun) {
     console.log(`[DRY RUN] Pre-flight checks PASSED for all targets:`);
     console.log(`  [✓] package.json -> version "${newVersion}"`);
@@ -209,19 +192,8 @@ function run() {
     fs.writeFileSync(CHANGELOG_PATH, changelog, 'utf-8');
     console.log(`[✓] Updated CHANGELOG.md with entry [${formattedTag}] - ${today}`);
 
-    console.log(`\n[✓] All target files synchronized to ${formattedTag} successfully!`);
+    console.log(`\n[✓] All target files synchronized to ${formattedTag} successfully!\n`);
   }
-
-  // 5. Output In-App Broadcast Draft
-  console.log(`\n============================================================`);
-  console.log(`[DRAFT] IN-APP UPDATE BROADCAST REVIEW GATE (Section 3.1)`);
-  console.log(`============================================================`);
-  console.log(`ID:       ${broadcastDraft.id}`);
-  console.log(`Title:    ${broadcastDraft.title}`);
-  console.log(`Message:  ${broadcastDraft.message}`);
-  console.log(`Priority: ${broadcastDraft.priority}`);
-  console.log(`Action:   Review above copy with user before staging in toast/modal.`);
-  console.log(`============================================================\n`);
 }
 
 run();
