@@ -1,5 +1,6 @@
 # TasbihKu Agent Progress & Session History
 
+<<<<<<< HEAD
 ## Session: 2026-09-29 (v1.11.1 Calm Dzikir Player Interaction & Micro-Animations)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
@@ -18,6 +19,8 @@
   - [✓] Verified `@media (prefers-reduced-motion: reduce)` block completely disables all scale and glow animations for vestibular accessibility.
 - **Known Regressions / Blockers**: None.
 
+=======
+>>>>>>> 19035cfbc6c98999770456b4f45e3731b1512ddb
 ## Session: 2026-09-29 (In-App Update Broadcast & Draft Review Excision)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
