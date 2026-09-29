@@ -135,18 +135,19 @@
 
                 <div class="text-center" style="margin-top: 0; flex-grow: 1; display: flex; flex-direction: column;">
                     
-                    <!-- DASHBOARD MODE SWITCHER (M3 Connected Button Group) -->
-                    <div class="segmented-fab-container connected-button-group" id="dashboard-mode-switcher">
-                      <button class="segment-btn active" data-mode="counting" onclick="switchDashboardMode('counting')">
-                        <svg class="segment-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-5"></use></svg>
+                    <!-- DASHBOARD MODE SWITCHER (Apple HIG Segmented Tab View) -->
+                    <div class="segmented-fab-container apple-tab-view" id="dashboard-mode-switcher" role="tablist" aria-label="Mode Tampilan Tasbih" data-active-index="0" style="--tab-active-index: 0;">
+                      <div class="apple-tab-indicator" aria-hidden="true"></div>
+                      <button class="segment-btn active" id="tab-counting" role="tab" aria-selected="true" aria-controls="counting-display-area" tabindex="0" data-mode="counting" onclick="switchDashboardMode('counting')">
+                        <svg class="segment-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-5"></use></svg>
                         <span class="segment-label" data-i18n="mode_counting">Counting</span>
                       </button>
-                      <button class="segment-btn" data-mode="stopwatch" onclick="switchDashboardMode('stopwatch')">
-                        <svg class="segment-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-6"></use></svg>
+                      <button class="segment-btn" id="tab-stopwatch" role="tab" aria-selected="false" aria-controls="stopwatch-display-area" tabindex="-1" data-mode="stopwatch" onclick="switchDashboardMode('stopwatch')">
+                        <svg class="segment-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-6"></use></svg>
                         <span class="segment-label" data-i18n="mode_stopwatch">Stopwatch</span>
                       </button>
-                      <button class="segment-btn" data-mode="timer" onclick="switchDashboardMode('timer')">
-                        <svg class="segment-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-7"></use></svg>
+                      <button class="segment-btn" id="tab-timer" role="tab" aria-selected="false" aria-controls="timer-display-area" tabindex="-1" data-mode="timer" onclick="switchDashboardMode('timer')">
+                        <svg class="segment-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-7"></use></svg>
                         <span class="segment-label" data-i18n="mode_timer">Timer</span>
                       </button>
                     </div>
@@ -155,7 +156,7 @@
                         <span class="text-sub" id="dashboard-mode-title" data-i18n="title_free_count">Hitungan Bebas</span>
                         
                         <!-- COUNTING DISPLAY -->
-                        <div id="counting-display-area" style="display: block;">
+                        <div id="counting-display-area" role="tabpanel" aria-labelledby="tab-counting" style="display: block;">
                             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
                                 <div id="free-counter" class="display-large" style="cursor: pointer;" onclick="promptManualCount()" aria-label="Edit Hitungan" data-i18n-aria="edit_count">0</div>
                             </div>
@@ -165,12 +166,12 @@
                         </div>
                         
                         <!-- STOPWATCH DISPLAY -->
-                        <div id="stopwatch-display-area" style="display: none;">
+                        <div id="stopwatch-display-area" role="tabpanel" aria-labelledby="tab-stopwatch" style="display: none;">
                             <div id="stopwatch-counter" class="display-medium stopwatch-display" style="margin: 32px 0;">00:00.00</div>
                         </div>
                         
                         <!-- TIMER DISPLAY -->
-                        <div id="timer-display-area" style="display: none;">
+                        <div id="timer-display-area" role="tabpanel" aria-labelledby="tab-timer" style="display: none;">
                             <div id="timer-counter" class="display-medium timer-display" style="margin: 16px 0; cursor: pointer; transition: opacity 0.2s;" onclick="promptCustomTimer()" aria-label="Tap untuk ubah waktu" data-i18n-aria="tap_to_change_time">00:00:00</div>
                             <div id="timer-setup-area" style="margin-bottom: 24px;">
                                 <div class="preset-buttons">

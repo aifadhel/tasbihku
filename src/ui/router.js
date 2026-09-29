@@ -9,7 +9,7 @@ import { stopStopwatch, stopTimer, updateStopwatchUI, updateTimerUI } from '../m
 import { renderHabits } from '../modules/habits.js';
 import { t } from '../core/i18n.js';
 
-export const APP_VERSION = '1.11.2';
+export const APP_VERSION = '1.12.0';
 
 export const SVG_ICONS = {
     tap: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>`,
@@ -48,25 +48,24 @@ export function showPage(pageId, pushToHistory = true) {
 }
 
 // Global popstate back navigation support
-window.addEventListener('popstate', (e) => {
-    internalHistoryStack.pop();
+if (typeof window !== 'undefined') {
+    window.addEventListener('popstate', (e) => {
+        internalHistoryStack.pop();
 
-    if (window.isHabitDetailModalOpen && typeof window.closeHabitDetailModal === 'function') {
-        window.closeHabitDetailModal(true);
-        // If the state pageId matches the current active page, we don't need to re-show it.
-        // But to be safe, we can let it fall through or just return.
-        // Usually, closing the modal is enough because the dashboard is already beneath it.
-        return;
-    }
+        if (window.isHabitDetailModalOpen && typeof window.closeHabitDetailModal === 'function') {
+            window.closeHabitDetailModal(true);
+            return;
+        }
 
-    if (e.state && e.state.pageId) {
-        showPage(e.state.pageId, false);
-    } else if (window.location.pathname.replace(/\/$/, '') === '/about') {
-        showPage('page-about', false);
-    } else {
-        showPage('page-dashboard', false);
-    }
-});
+        if (e.state && e.state.pageId) {
+            showPage(e.state.pageId, false);
+        } else if (window.location.pathname.replace(/\/$/, '') === '/about') {
+            showPage('page-about', false);
+        } else {
+            showPage('page-dashboard', false);
+        }
+    });
+}
 
 export function goBack(fallbackPage = 'page-dashboard') {
     if (internalHistoryStack.length > 0) {
@@ -334,10 +333,25 @@ export function switchAppMode(mode, save = true) {
 }
 
 export function switchDashboardMode(mode) {
-    document.querySelectorAll('.segment-btn').forEach(btn => btn.classList.remove('active'));
+    const DASHBOARD_MODES = ['counting', 'stopwatch', 'timer'];
+    const modeIndex = DASHBOARD_MODES.indexOf(mode);
+    const activeIdx = modeIndex >= 0 ? modeIndex : 0;
 
-    const activeBtn = document.querySelector(`[data-mode="${mode}"]`);
-    if (activeBtn) activeBtn.classList.add('active');
+    const switcher = document.getElementById('dashboard-mode-switcher');
+    if (switcher) {
+        switcher.setAttribute('data-active-index', activeIdx);
+        switcher.style.setProperty('--tab-active-index', activeIdx);
+    }
+
+    document.querySelectorAll('.segment-btn').forEach(btn => {
+        const isActive = btn.getAttribute('data-mode') === mode;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        btn.setAttribute('tabindex', isActive ? '0' : '-1');
+    });
+
+    // Native-grade 12ms selection click haptic
+    vibrate(12);
 
     state.dashboardMode = mode;
     saveState();
@@ -448,17 +462,19 @@ export function applyQuoteState() {
 }
 
 // Bind to window globally for static HTML event listeners
-window.showPage = showPage;
-window.goBack = goBack;
-window.showModal = showModal;
-window.closeModal = closeModal;
-window.switchAppMode = switchAppMode;
-window.switchDashboardMode = switchDashboardMode;
-window.toggleOledMode = toggleOledMode;
-window.toggleSoundMode = toggleSoundMode;
-window.toggleVibrationMode = toggleVibrationMode;
-window.updateArabicFontSize = updateArabicFontSize;
-window.exportData = exportData;
-window.triggerImport = triggerImport;
-window.importDataProcess = importDataProcess;
-window.toggleQuote = toggleQuote;
+if (typeof window !== 'undefined') {
+    window.showPage = showPage;
+    window.goBack = goBack;
+    window.showModal = showModal;
+    window.closeModal = closeModal;
+    window.switchAppMode = switchAppMode;
+    window.switchDashboardMode = switchDashboardMode;
+    window.toggleOledMode = toggleOledMode;
+    window.toggleSoundMode = toggleSoundMode;
+    window.toggleVibrationMode = toggleVibrationMode;
+    window.updateArabicFontSize = updateArabicFontSize;
+    window.exportData = exportData;
+    window.triggerImport = triggerImport;
+    window.importDataProcess = importDataProcess;
+    window.toggleQuote = toggleQuote;
+}

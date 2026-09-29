@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.12.0] - 2026-09-29
+
+- **Highlight:** Replaced rigid dashboard mode switcher with an Apple Human Interface Guidelines-compliant fluid Tab View. Features an inset concentric translucent track ($R_{\text{outer}} = 12\text{px}$, $P = 3\text{px}$), an elevated hardware-accelerated sliding pill thumb ($R_{\text{inner}} = 9\text{px}$) driven by CSS variable `--tab-active-index`, contextual hairline separator suppression, native-grade 12ms selection click haptics, and comprehensive WAI-ARIA APG roving tabindex keyboard navigation.
+
+### Specific UI & Component Changes
+- **Apple HIG Concentric Track (`style.css`):** Replaced `.connected-button-group` with `.apple-tab-view` featuring $12\text{px}$ outer radius, $3\text{px}$ inset padding, neutral translucent track fill (`rgba(118, 118, 128, 0.22)`), $0.5\text{px}$ border, and subtle inner ambient shadow (`inset 0 0.5px 1px rgba(0, 0, 0, 0.25)`).
+- **Elevated Sliding Pill Thumb (`.apple-tab-indicator` in `index.html`, `style.css`):** Hardware-accelerated sliding thumb with concentric $9\text{px}$ radius ($12\text{px} - 3\text{px}$), ambient multi-tier elevation shadow (`0 3px 8px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.16)`), $0.5\text{px}$ specular hairline highlight (`rgba(255, 255, 255, 0.14)`), and GPU transform translation via `--tab-active-index` using Apple spring easing (`cubic-bezier(0.25, 1, 0.5, 1)` over 260ms).
+- **Contextual Hairline Separators (`style.css`):** $1\text{px} \times 16\text{px}$ vertical hairline dividers between unselected peer segments (`rgba(255, 255, 255, 0.16)`) dynamically suppressed adjacent to the active selection via declarative CSS `:nth-of-type()` selectors.
+- **SF Pro Typographic Polish (`style.css`):** Set inactive tabs to `rgba(255, 255, 255, 0.72)` (5.1:1 WCAG AA contrast ratio) with $16\text{px}$ icon and active tabs to `#ffffff` with weight 600. Added $0.97$ active scale spring press feedback and accessible 2px primary focus ring.
+- **Vestibular Motion Accessibility (`style.css`):** Enforced `@media (prefers-reduced-motion: reduce)` override disabling transform transition on the sliding thumb for instantaneous switching.
+
+### Core Logic & Audio/Haptic Workflows
+- **Router State & Thumb Coordination (`src/ui/router.js`):** Updated `switchDashboardMode()` to calculate 0-based mode index, apply `--tab-active-index` and `data-active-index` on `#dashboard-mode-switcher`, toggle `aria-selected="true|false"` and roving `tabindex="0|-1"` across all `.segment-btn` elements, and persist state.
+- **Native Selection Micro-Haptics (`src/ui/router.js`):** Integrated 12ms selection tick haptic (`vibrate(12)`) on tab switches matching native iOS `UISelectionFeedbackGenerator.selectionChanged()` behavior.
+- **Roving Keyboard Navigation (`src/main.js`):** Implemented `handleTablistKeyboard()` scoped to `[role="tablist"] [role="tab"]`. Supports continuous wrap-around navigation via `ArrowLeft` / `ArrowRight` as well as direct boundary navigation via `Home` (Counting) and `End` (Timer).
+
+### Dzikir & Habits Engine
+- **Display Pane Semantics (`index.html`):** Attached `role="tabpanel"` and corresponding `aria-labelledby="tab-[mode]"` to `#counting-display-area`, `#stopwatch-display-area`, and `#timer-display-area`.
+- **Backward Compatibility:** Preserved all existing CSS class hooks (`.segmented-fab-container`, `.segment-btn`), attributes (`data-mode`), and IDs (`#dashboard-mode-switcher`) ensuring zero regression across habits, timers, or counting workflows.
+
+### Test & Verification
+- **Unit Test Suite Expansion (`tests/unit/router.test.js`):** Added 5 unit tests validating mode index calculation, CSS custom property updates, ARIA attributes synchronization, display area toggling, and Arrow/Home/End keyboard navigation.
+- **Vitest Run (`npm test`):** 60/60 tests passing across 4 test files (100% pass rate).
+- **Vite Build (`npm run build`):** Clean compilation with 25 modules transformed, 0 errors, gzip 15.82 kB HTML / 80.82 kB CSS / 48.76 kB JS.
+
 ## [tasbihku-v1.11.2] - 2026-09-29
 
 - **Highlight:** Resolved visibility defect on habit card direct dzikir launcher button (`.habit-launch-dzikir-btn`) by implementing canonical Google Material 3 filled tonal button tokens (`.btn-tonal`) in `style.css`. Corrected dark-on-dark contrast failure, established high-contrast secondary container colors, added pill geometry with micro-elevation, and purged redundant inline JS styles in `src/modules/habits-ui.js`.

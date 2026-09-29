@@ -1,5 +1,24 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-29 (v1.12.0 Apple HIG Tab View Dashboard Mode Switcher)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Upgraded `#dashboard-mode-switcher` in `index.html` to Apple HIG Tab View structure, injecting `.apple-tab-indicator` and attaching complete WAI-ARIA semantics (`role="tablist"`, `role="tab"`, `aria-selected`, `aria-controls`, and `role="tabpanel"` on `#counting-display-area`, `#stopwatch-display-area`, and `#timer-display-area`).
+  - [✓] Step 2: Implemented Apple Tab View styling in `style.css`: concentric radii track ($R_{\text{outer}} = 12\text{px}$, $P = 3\text{px}$), elevated sliding pill thumb ($R_{\text{inner}} = 9\text{px}$) with GPU translate driven by `--tab-active-index` and 260ms Apple spring easing, contextual hairline separator suppression via declarative `:nth-of-type` selectors, tactile spring press feedback, and reduced-motion fallback.
+  - [✓] Step 3: Refactored `switchDashboardMode(mode)` in `src/ui/router.js` to coordinate mode indexing, set `--tab-active-index` and `data-active-index`, toggle `aria-selected` and roving `tabindex="0|-1"` across `.segment-btn` elements, and dispatch native-grade 12ms selection click haptics (`vibrate(12)`).
+  - [✓] Step 4: Implemented `handleTablistKeyboard()` in `src/main.js` supporting continuous wrap-around navigation via `ArrowLeft` / `ArrowRight` and boundary navigation via `Home` / `End` scoped strictly to `[role="tablist"] [role="tab"]`.
+  - [✓] Step 5: Expanded Vitest test suite (`tests/unit/router.test.js`) with 5 unit tests validating tab indexing, ARIA attributes, display visibility, and arrow key navigation. 60/60 tests passing (100%), clean production compilation.
+  - [✓] Step 6: Automated minor version bump to `v1.12.0`, enriched `CHANGELOG.md` adhering to Keep a Changelog standards (`scripts/bump-version.js`).
+- **Verification Evidence**:
+  - `npm test`: 60 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.82 kB HTML / 80.82 kB CSS / 48.76 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of rigid Material 3 connected group styling on the mode switcher.
+  - [✓] Verified concentric optical radius formula ($12\text{px} - 3\text{px} = 9\text{px}$) eliminates corner pinch.
+  - [✓] Verified sliding thumb indicator translates smoothly across Counting, Stopwatch, and Timer modes.
+  - [✓] Verified WAI-ARIA tablist semantics and roving tabindex operate seamlessly without layout shifts or text input collisions.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-29 (v1.11.2 Habit Dzikir Launcher Contrast & M3 Tonal Button Fix)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:

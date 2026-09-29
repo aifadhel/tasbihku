@@ -423,9 +423,49 @@ window.addEventListener('hashchange', () => {
     handleHashRouting();
 });
 
+// --- Apple Tab View Roving Keyboard Navigation ---
+export function handleTablistKeyboard(e) {
+    const tablist = document.getElementById('dashboard-mode-switcher');
+    if (!tablist) return false;
+
+    const focusedTab = document.activeElement ? document.activeElement.closest('#dashboard-mode-switcher [role="tab"]') : null;
+    if (!focusedTab) return false;
+
+    const tabs = Array.from(tablist.querySelectorAll('[role="tab"]'));
+    const currentIndex = tabs.indexOf(focusedTab);
+    if (currentIndex === -1) return false;
+
+    let targetIndex = -1;
+
+    if (e.key === 'ArrowRight') {
+        targetIndex = (currentIndex + 1) % tabs.length;
+    } else if (e.key === 'ArrowLeft') {
+        targetIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    } else if (e.key === 'Home') {
+        targetIndex = 0;
+    } else if (e.key === 'End') {
+        targetIndex = tabs.length - 1;
+    }
+
+    if (targetIndex !== -1) {
+        e.preventDefault();
+        const targetTab = tabs[targetIndex];
+        const mode = targetTab.getAttribute('data-mode');
+        if (mode && typeof switchDashboardMode === 'function') {
+            switchDashboardMode(mode);
+            targetTab.focus();
+        }
+        return true;
+    }
+
+    return false;
+}
+
 // --- Keyboard & Keybindings Orchestration ---
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (handleTablistKeyboard(e)) return;
 
     const dashboardActive = document.getElementById('page-dashboard').classList.contains('active');
     const playerActive = document.getElementById('page-player').classList.contains('active');

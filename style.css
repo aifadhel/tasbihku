@@ -1042,82 +1042,136 @@ input:checked + .slider:before {
 
 /* --- NEW DASHBOARD MODE STYLES --- */
 
-/* Segmented FAB -> Material 3 Connected Button Group */
-.segmented-fab-container,
-.connected-button-group {
+/* --- APPLE HIG TAB VIEW (Dashboard Mode Switcher) --- */
+.segmented-fab-container.apple-tab-view,
+.apple-tab-view {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  padding: 0;
-  background: var(--md-sys-color-surface-container);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--shape-corner-full, 9999px);
+  padding: 3px;
+  background: rgba(118, 118, 128, 0.22);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
   margin: 0 auto 16px auto;
   width: 100%;
-  max-width: 380px;
-  height: 40px;
-  overflow: hidden;
-  box-shadow: var(--md-sys-elevation-level-0);
+  max-width: 360px;
+  height: 38px;
+  box-sizing: border-box;
+  box-shadow: inset 0 0.5px 1px rgba(0, 0, 0, 0.25);
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: visible;
 }
 
-.segment-btn {
+/* Fluid Sliding Elevated Pill Thumb */
+.apple-tab-indicator {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 3);
+  border-radius: 9px; /* Concentric radius: 12px outer - 3px padding */
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.16);
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  transform: translateX(calc(100% * var(--tab-active-index, 0)));
+  transition: transform 0.26s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Tab Segment Buttons */
+.apple-tab-view .segment-btn {
+  position: relative;
+  z-index: 2;
   flex: 1;
   min-width: 0;
   height: 100%;
-  background: transparent;
-  border: none;
-  border-right: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 0;
-  padding: 0 10px;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 9px;
+  padding: 0 6px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
-  color: var(--md-sys-color-on-surface-variant);
-  font-family: var(--font-family-base);
+  color: rgba(255, 255, 255, 0.72);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-family-base);
   font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
   white-space: nowrap;
-  transition: background-color var(--md-sys-motion-duration-short) ease,
-              color var(--md-sys-motion-duration-short) ease,
-              transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
-  position: relative;
+  transition: color 0.2s ease, transform 0.15s ease;
+  overflow: visible;
+  outline: none;
+}
+
+/* Apple Concentric Separator Hairlines */
+.apple-tab-view .segment-btn:not(:first-of-type)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.16);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+/* Contextual Separator Suppression adjacent to Active Segment */
+.apple-tab-view[data-active-index="0"] .segment-btn:nth-of-type(2)::after,
+.apple-tab-view[data-active-index="1"] .segment-btn:nth-of-type(2)::after,
+.apple-tab-view[data-active-index="1"] .segment-btn:nth-of-type(3)::after,
+.apple-tab-view[data-active-index="2"] .segment-btn:nth-of-type(3)::after {
+  opacity: 0;
+}
+
+/* Active Segment Typography */
+.apple-tab-view .segment-btn.active {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.apple-tab-view .segment-btn .segment-icon {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.apple-tab-view .segment-btn.active .segment-icon {
+  opacity: 1;
+  color: #ffffff;
+}
+
+.apple-tab-view .segment-btn .segment-label {
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.segment-btn:last-child {
-  border-right: none;
-}
-
-.segment-btn:hover {
-  transform: none;
-  background-color: rgba(225, 227, 223, var(--md-sys-state-hover-opacity, 0.08));
-}
-
-.segment-btn:active {
+/* Tactile Spring Press Feedback */
+.apple-tab-view .segment-btn:active {
   transform: scale(0.97);
-  background-color: rgba(225, 227, 223, var(--md-sys-state-pressed-opacity, 0.12));
 }
 
-.segment-btn.active {
-  background: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-  font-weight: 700;
+/* Accessible High-Contrast Focus Ring */
+.apple-tab-view .segment-btn:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary, #4caf50);
+  outline-offset: 2px;
 }
 
-.segment-btn.active .segment-icon {
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-.segment-btn.active .segment-label {
-  opacity: 1;
-  color: var(--md-sys-color-on-secondary-container);
-}
-
-.segment-btn.inactive {
-  opacity: 0.7;
+/* Vestibular Accessibility (Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+  .apple-tab-indicator {
+    transition: none !important;
+  }
 }
 
 .segment-icon {
