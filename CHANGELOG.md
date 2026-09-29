@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.11.2] - 2026-09-29
+
+- **Highlight:** Resolved visibility defect on habit card direct dzikir launcher button (`.habit-launch-dzikir-btn`) by implementing canonical Google Material 3 filled tonal button tokens (`.btn-tonal`) in `style.css`. Corrected dark-on-dark contrast failure, established high-contrast secondary container colors, added pill geometry with micro-elevation, and purged redundant inline JS styles in `src/modules/habits-ui.js`.
+
+### Specific UI & Component Changes
+- **Material 3 Filled Tonal Button Token Class (`style.css`):** Introduced `.btn-tonal` styled with M3 secondary container background (`var(--md-sys-color-secondary-container: #334b40)`) and on-secondary-container text (`var(--md-sys-color-on-secondary-container: #cce8da)`). Includes standard M3 state layer transitions (`color-mix` hover lighten) and active spring press physics (`scale(0.95)`).
+- **Habit Launcher Action Pill (`style.css`, `src/modules/habits-ui.js`):** Styled `.habit-launch-dzikir-btn` with pill geometry (`border-radius: var(--shape-corner-full)`), 6px 14px padding, 0.75rem bold typography, Level 1 tonal elevation, and a crisp 1px outline-variant border (`var(--md-sys-color-outline-variant)`). Added subtle hover elevation (`translateY(-1px)`) and active scale feedback (`scale(0.96)`).
+- **Clean Separation of Concerns (`src/modules/habits-ui.js`):** Purged fragmented inline CSS properties (`padding`, `fontSize`, `marginTop`, `borderRadius`, `display`, `alignItems`, `gap`, `width`) from `launchBtn` instantiation, delegating layout and visual presentation cleanly to `style.css`.
+
+### Core Logic & Audio/Haptic Workflows
+- **Non-Destructive Touch Target:** Ensured minimum 32dp vertical touch target and explicit `launchBtn.type = 'button'` to prevent unintentional form submissions or bubbling inside habit card containers.
+- **Dzikir Launch Navigation:** Retained seamless event delegation and `e.stopPropagation()` in `launchLinkedDzikir(habit.linkedDzikirId)` when transitioning from the habit dashboard to the guided dzikir reader.
+
+### Dzikir & Habits Engine
+- **Habit Card Quick Launcher Integrity:** Preserved dynamic localization key binding `t('btn_launch_dzikir') || 'Mulai Dzikir'` with rosary emoji indicator (`📿`).
+- **Store Schema Compatibility:** Zero modifications to existing habit state structures, streak calculations, or completion records.
+
+### Test & Verification
+- **Unit Test Suite (`npm test`):** 55 passed across 3 test files (100% pass rate).
+- **Production Compilation (`npm run build`):** Clean Vite bundle compilation with 25 modules transformed, 0 errors, gzip 15.71 kB HTML / 80.57 kB CSS / 48.47 kB JS.
+
 ## [tasbihku-v1.11.1] - 2026-09-29
 
 - **Highlight:** De-escalate dhikr completion animations in `page-player` from aggressive full-screen viewport ripples and heavy haptics into calm, non-expressive micro-interactions. Scoped visual feedback exclusively to the progress indicator, softened haptic confirmation, dampened counter scale expansion, added smooth card cross-fades, silenced mid-reading toasts, and enforced reduced-motion accessibility overrides.

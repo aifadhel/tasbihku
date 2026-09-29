@@ -557,6 +557,16 @@ body {
     font-size: 1rem;
 }
 
+.btn-tonal {
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font-weight: 700;
+}
+
+.btn-tonal:hover {
+    background-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 88%, var(--md-sys-color-on-secondary-container));
+}
+
 /* Expressive List Item Button */
 .btn-list-item {
     background-color: var(--md-sys-color-surface-container-high);
@@ -1985,6 +1995,35 @@ input:checked + .slider:before {
     opacity: 0.9;
     margin-top: 4px;
     color: var(--md-sys-color-primary);
+}
+
+.habit-launch-dzikir-btn {
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 8px;
+    border-radius: var(--shape-corner-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: var(--md-sys-elevation-level-1, 0 1px 3px rgba(0, 0, 0, 0.2));
+    letter-spacing: 0.2px;
+    transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard),
+                background-color var(--md-sys-motion-duration-short) ease,
+                border-color var(--md-sys-motion-duration-short) ease,
+                box-shadow var(--md-sys-motion-duration-short) ease;
+}
+
+.habit-launch-dzikir-btn:hover {
+    border-color: var(--md-sys-color-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.habit-launch-dzikir-btn:active {
+    transform: scale(0.96);
 }
 
 .habit-day-bubble.partial .day-circle {

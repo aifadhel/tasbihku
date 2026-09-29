@@ -497,15 +497,8 @@ export function renderHabits() {
 
         if (habit.linkedDzikirId) {
             const launchBtn = document.createElement('button');
+            launchBtn.type = 'button';
             launchBtn.className = 'btn btn-tonal habit-launch-dzikir-btn';
-            launchBtn.style.padding = '4px 10px';
-            launchBtn.style.fontSize = '0.75rem';
-            launchBtn.style.marginTop = '6px';
-            launchBtn.style.borderRadius = '12px';
-            launchBtn.style.display = 'inline-flex';
-            launchBtn.style.alignItems = 'center';
-            launchBtn.style.gap = '4px';
-            launchBtn.style.width = 'fit-content';
             launchBtn.innerHTML = `📿 ${t('btn_launch_dzikir') || 'Mulai Dzikir'}`;
             launchBtn.onclick = (e) => {
                 e.stopPropagation();
