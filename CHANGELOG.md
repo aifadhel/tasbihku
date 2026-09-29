@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.11.1] - 2026-09-29
+
+- **Highlight:** De-escalate dhikr completion animations in `page-player` from aggressive full-screen viewport ripples and heavy haptics into calm, non-expressive micro-interactions. Scoped visual feedback exclusively to the progress indicator, softened haptic confirmation, dampened counter scale expansion, added smooth card cross-fades, silenced mid-reading toasts, and enforced reduced-motion accessibility overrides.
+
+### Specific UI & Component Changes
+- **Abolished Viewport Scale Ripple (`style.css`):** Completely removed `@keyframes heartbeat-ripple` and `.celebrate-heartbeat` which previously scaled the root `#page-player` viewport container to `1.05` and spiked brightness to `1.2`. Eliminated violent screen shaking during sacred Arabic recitation.
+- **Scoped Progress Luminance Glow (`style.css`, `src/ui/router.js`):** Implemented `.progress-complete-glow` with `@keyframes progress-complete-glow` (`filter: brightness(1.25) drop-shadow(0 0 8px var(--md-sys-color-primary))`, 350ms duration). Refactored `triggerCelebration()` in `src/ui/router.js` to target `#player-progress` exclusively with zero root container deformation.
+- **Counter Micro-Scale Dampening (`style.css`):** Reduced `@keyframes m3-counter-pop` and `@keyframes expressivePop` maximum scale surge from an aggressive `1.18` (18% jump) down to a subtle, calm `1.05` (5%) micro-pulse with standard easing, eliminating visual jitter during rapid counting.
+- **Card Transition Dissolve (`style.css`, `src/modules/dzikir.js`):** Added `transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1)` to `#player-text-container`. Softened page-advance in `goToNextPlayerPage()` with a 150ms opacity dissolve, eliminating jarring text cuts when advancing between adhkar.
+- **Accessibility & Reduced Motion (`style.css`):** Declared an explicit `@media (prefers-reduced-motion: reduce)` block neutralizing all transforms, animations, and opacity transitions across counter, progress, timer, and text containers in full compliance with WCAG 2.2 Criterion 2.3.3.
+
+### Core Logic & Audio/Haptic Workflows
+- **Calm Haptic Confirmation (`src/modules/dzikir.js`):** Replaced the aggressive 5-burst `[50, 100, 50, 100, 100]` (400ms) completion buzzer with an understated, gentle dual-tap `vibrate([35, 45, 35])` (115ms total), mimicking traditional physical wooden tasbih beads.
+- **Mid-Session Habit Toast Suppression (`src/modules/dzikir.js`):** Silenced intrusive `showStackingCelebrationToast()` floating card popups during individual page completions inside `page-player`. Habit tracking state (`checkAndTriggerLinkedHabit`) remains fully updated in the store while preserving uninterrupted recitation focus.
+
+### Dzikir & Habits Engine
+- **Macro-Completion Integrity:** Preserved single consolidated completion celebration modal and macro-habit tracking upon completing the entire guided session (pagi, petang, wirid) or custom list.
+- **Router API Stability:** Retained backward-compatible `triggerCelebration()` signature with graceful DOM fallbacks.
+
+### Test & Verification
+- **Unit Test Suite (`npm test`):** 55 passed across 3 test files (100% pass rate).
+- **Production Compilation (`npm run build`):** Clean Vite bundle compilation with 25 modules transformed, zero syntax errors, and optimized CSS/JS assets.
+
 ## [tasbihku-v1.11.0] - 2026-09-29
 
 - **Highlight:** Comprehensive Google Material 3 (M3) Design system alignment across the TasbihKu dashboard (`#page-dashboard`), featuring canonical elevation tokens, an M3 Connected Button Group for view switching, a centered M3 Assist Chip for streak tracking, an authentic M3 Large FAB primary touch action, and an Outlined Tonal Card for wisdom quotes.

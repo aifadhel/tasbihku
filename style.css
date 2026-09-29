@@ -751,6 +751,11 @@ textarea::placeholder { color: var(--md-sys-color-outline); font-weight: 400; }
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Player Text Container Transition */
+#player-text-container {
+    transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* Arabic Text */
 .arabic-text {
     font-family: 'Amiri', serif; /* Fallback font */
@@ -1207,28 +1212,24 @@ input:checked + .slider:before {
   z-index: 2;
 }
 /* --- ANIMATIONS --- */
-@keyframes heartbeat-ripple {
-  0% { transform: scale(1); filter: brightness(1); }
-  15% { transform: scale(1.05); filter: brightness(1.2); }
-  30% { transform: scale(1); filter: brightness(1); }
-  45% { transform: scale(1.03); filter: brightness(1.1); }
-  100% { transform: scale(1); filter: brightness(1); }
+@keyframes progress-complete-glow {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.25) drop-shadow(0 0 8px var(--md-sys-color-primary)); }
+  100% { filter: brightness(1); }
 }
 
-.celebrate-heartbeat {
-  animation: heartbeat-ripple 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+.progress-complete-glow {
+  animation: progress-complete-glow 0.35s var(--md-sys-motion-easing-standard);
 }
 
 @keyframes m3-counter-pop {
   0% { transform: scale(1); }
-  35% { transform: scale(1.18); }
-  60% { transform: scale(0.96); }
-  85% { transform: scale(1.02); }
+  40% { transform: scale(1.05); }
   100% { transform: scale(1); }
 }
 
 .count-pop-animation {
-  animation: m3-counter-pop var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-enter);
+  animation: m3-counter-pop var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* --- APP MODE SWITCHER --- */
@@ -2552,16 +2553,15 @@ button:focus-visible {
     margin-bottom: var(--spacing-sm);
 }
 
-/* --- MATERIAL 3 EXPRESSIVE MICRO-ANIMATIONS & TOAST SYSTEM --- */
+/* --- MATERIAL 3 CALM MICRO-ANIMATIONS & TOAST SYSTEM --- */
 @keyframes expressivePop {
     0% { transform: scale(1); }
-    40% { transform: scale(1.18); color: var(--md-sys-color-tertiary); }
-    70% { transform: scale(0.95); }
+    40% { transform: scale(1.05); color: var(--md-sys-color-tertiary); }
     100% { transform: scale(1); }
 }
 
 .expressive-pop {
-    animation: expressivePop 0.45s var(--md-sys-motion-easing-spring-enter);
+    animation: expressivePop 0.35s var(--md-sys-motion-easing-standard);
 }
 
 /* M3 Expressive Snackbar / Toast Component */
@@ -2632,6 +2632,22 @@ button:focus-visible {
 .modal-box .btn-list-item,
 .modal-box .dzikir-row-content {
     border-radius: calc(var(--shape-corner-lg) - 12px);
+}
+
+/* --- ACCESSIBILITY: REDUCED MOTION --- */
+@media (prefers-reduced-motion: reduce) {
+    .count-pop-animation,
+    .expressive-pop,
+    .progress-complete-glow,
+    .timer-running {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+    }
+    #player-text-container,
+    .progress-fill {
+        transition: none !important;
+    }
 }
 
 
