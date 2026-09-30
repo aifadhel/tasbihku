@@ -103,8 +103,6 @@ export const translations = {
 
         // Player Page
         "player_title_default": "Dzikir",
-        "stealth_mode_aria": "Mode Privasi (Sembunyikan Teks)",
-        "fullscreen_aria": "Layar Penuh",
         "restart_dzikir_aria": "Ulangi dzikir dari awal",
         "undo_aria": "Undo hitungan terakhir",
         "player_target_format": "Target: {target}x",
@@ -477,8 +475,6 @@ export const translations = {
 
         // Player Page
         "player_title_default": "Dzikir",
-        "stealth_mode_aria": "Privacy Mode (Hide Text)",
-        "fullscreen_aria": "Full Screen",
         "restart_dzikir_aria": "Restart dzikir from beginning",
         "undo_aria": "Undo last count",
         "player_target_format": "Target: {target}x",

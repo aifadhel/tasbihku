@@ -1,4 +1,7 @@
 import { describe, it, expect, beforeEach, beforeAll, vi } from 'vitest';
+import fs from 'fs';
+import path from 'path';
+import { t } from '../../src/core/i18n.js';
 
 let switchDashboardMode;
 let handleTablistKeyboard;
@@ -235,5 +238,32 @@ describe('Apple HIG Tab View & Dashboard Router Unit Tests', () => {
         const homeEvent = { key: 'Home', preventDefault: vi.fn() };
         handleTablistKeyboard(homeEvent);
         expect(tabCounting.focus).toHaveBeenCalled();
+    });
+});
+
+describe('Player Top-Bar Excision & Clean Scope Unit Tests', () => {
+    it('should have window.toggleFullscreen and window.toggleStealthMode undefined on global scope', () => {
+        expect(global.window.toggleFullscreen).toBeUndefined();
+        expect(global.window.toggleStealthMode).toBeUndefined();
+    });
+
+    it('should confirm stealth and fullscreen keys return fallback in i18n', () => {
+        expect(t('stealth_mode_aria')).toBe('stealth_mode_aria');
+        expect(t('fullscreen_aria')).toBe('fullscreen_aria');
+    });
+
+    it('should confirm index.html contains no references to excised buttons or SVG symbols', () => {
+        const indexPath = path.resolve(__dirname, '../../index.html');
+        const indexHtml = fs.readFileSync(indexPath, 'utf8');
+        expect(indexHtml).not.toContain('toggleStealthMode');
+        expect(indexHtml).not.toContain('toggleFullscreen');
+        expect(indexHtml).not.toContain('id="icon-16"');
+        expect(indexHtml).not.toContain('id="icon-17"');
+    });
+
+    it('should confirm style.css contains no stealth-mode selectors', () => {
+        const cssPath = path.resolve(__dirname, '../../style.css');
+        const css = fs.readFileSync(cssPath, 'utf8');
+        expect(css).not.toContain('.stealth-mode');
     });
 });

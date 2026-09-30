@@ -1,5 +1,25 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-30 (v1.12.1 Excision of Privacy Mode & Fullscreen from Page-Player)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Excised stealth mode & fullscreen buttons from `#page-player .top-bar` in `index.html`.
+  - [✓] Step 2: Excised unused SVG sprite symbols `#icon-16` and `#icon-17` from `index.html`.
+  - [✓] Step 3: Excised `.stealth-mode` CSS class rules (14 lines) from `style.css`.
+  - [✓] Step 4: Excised `window.toggleFullscreen` and `window.toggleStealthMode` function bindings from `src/main.js` and added defensive startup DOM cleanup (`document.body.classList.remove('stealth-mode')`).
+  - [✓] Step 5: Removed `stealth_mode_aria` and `fullscreen_aria` dictionary keys in Indonesian and English from `src/core/i18n.js`.
+  - [✓] Step 6: Expanded Vitest test suite (`tests/unit/router.test.js`) with 4 regression unit tests validating absence of excised globals, fallback behavior of keys, and zero stealth/fullscreen tokens in HTML/CSS. 64/64 tests passing (100%).
+  - [✓] Step 7: Clean Vite build (`npm run build`) resulting in net asset size reductions across HTML (-1.38 kB), CSS (-0.24 kB), and JS (-0.37 kB).
+  - [✓] Step 8: Automated patch version bump to `v1.12.1` and detailed `CHANGELOG.md` enrichment (`scripts/bump-version.js`).
+- **Verification Evidence**:
+  - `npm test`: 64 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.39 kB HTML / 80.76 kB CSS / 48.63 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete bilateral 1:1 symmetry in `#page-player .top-bar` (40px Back on left, centered `#player-title`, 40px Restart on right).
+  - [✓] Verified complete absence of `toggleStealthMode`, `toggleFullscreen`, `id="icon-16"`, `id="icon-17"`, and `.stealth-mode` across all runtime codebase.
+  - [✓] Verified Web App Manifest `display: standalone` provides native fullscreen without brittle web APIs.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-29 (v1.12.0 Apple HIG Tab View Dashboard Mode Switcher)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:

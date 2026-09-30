@@ -2144,19 +2144,7 @@ input:checked + .slider:before {
     border-color: var(--md-sys-color-primary);
 }
 
-/* --- STEALTH MODE --- */
-.stealth-mode #player-text-container,
-.stealth-mode #player-counter,
-.stealth-mode #player-target-display,
-.stealth-mode #player-reading-info,
-.stealth-mode #player-reference {
-    opacity: 0.05;
-    transition: opacity 0.3s;
-}
 
-.stealth-mode .progress-fill {
-    opacity: 0.2;
-}
 
 /* --- MATERIAL 3 EXPRESSIVE UPGRADES --- */
 

@@ -263,6 +263,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         refreshAllHabitMetricsCache();
     }
 
+    // Defensive cleanup of legacy stealth mode class on body
+    if (document.body && document.body.classList.contains('stealth-mode')) {
+        document.body.classList.remove('stealth-mode');
+    }
+
     window.addEventListener('languageChanged', () => {
         applyTranslations();
         renderCustomList();
@@ -558,19 +563,4 @@ function handleSwipeGesture() {
     }
 }
 
-// --- Stealth Mode & Fullscreen ---
-window.toggleFullscreen = function() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            console.warn(`Error attempting to enable fullscreen: ${err.message}`);
-        });
-    } else {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        }
-    }
-};
 
-window.toggleStealthMode = function() {
-    document.body.classList.toggle('stealth-mode');
-};

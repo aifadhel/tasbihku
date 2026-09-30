@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.12.1] - 2026-09-30
+
+- **Highlight:** Complete excision of "Privacy Mode" (Stealth Mode) and "Full Screen" buttons from `page-player`. Achieves bilateral 1:1 visual symmetry in the player top-bar, eliminates accidental recitation dimming and inconsistent web fullscreen prompts in favor of native PWA standalone display mode, purges dead SVG sprites, CSSOM rules, and global JavaScript window bindings, and expands automated regression test coverage.
+
+### Specific UI & Component Changes
+- **Player Top-Bar Excision (`index.html`):** Excised `<button onclick="toggleStealthMode()">` and `<button onclick="toggleFullscreen()">` from `#page-player .top-bar`, leaving only the navigation back button and restart button.
+- **Top-Bar Bilateral 1:1 Symmetry:** Restored true geometric centering to `#player-title` (`flex-grow: 1; text-align: center;`). Previously, the 40px left button vs 120px right button cluster skewed the title leftward; the layout now has symmetrical 40px icon buttons flanking the title.
+- **SVG Sprite Sheet Pruning (`index.html`):** Removed unused SVG symbol definitions `<g id="icon-16">` (privacy eye-slash) and `<g id="icon-17">` (expand corners), reducing initial critical path HTML payload.
+- **CSSOM Streamlining (`style.css`):** Removed 14 lines of obsolete `.stealth-mode` styles (`.stealth-mode #player-text-container`, `.stealth-mode #player-counter`, `.stealth-mode #player-target-display`, `.stealth-mode #player-reading-info`, `.stealth-mode #player-reference`, `.stealth-mode .progress-fill`), saving ~0.24 kB in stylesheet size.
+
+### Core Logic & Audio/Haptic Workflows
+- **Global Scope De-Pollution (`src/main.js`):** Excised `window.toggleFullscreen` and `window.toggleStealthMode` function bindings. Eliminates inconsistent browser fullscreen permission popups and iOS Safari failure cases.
+- **Defensive Startup DOM Cleanup (`src/main.js`):** Added `document.body.classList.remove('stealth-mode')` check during `DOMContentLoaded` initialization to sanitize any lingering body class on warm PWA reloads or cached DOM states.
+- **Native PWA Standalone Invariance:** Relies cleanly on Web App Manifest `display: standalone` (`public/manifest.json`) for seamless, OS-level edge-to-edge recitation immersion without manual UI toggles.
+
+### Dzikir & Habits Engine
+- **Localization Dictionary Cleanup (`src/core/i18n.js`):** Removed unused ARIA translation keys `stealth_mode_aria` and `fullscreen_aria` across both Indonesian (`id`) and English (`en`) translation maps.
+- **Recitation State Integrity:** Maintained 100% functionality of core recitation engine, auto-advance mechanics, undo history, calm celebration micro-animations, and habit tracking hooks.
+
+### Test & Verification
+- **Automated Regression Suite (`tests/unit/router.test.js`):** Added 4 unit test assertions validating:
+  1. `global.window.toggleFullscreen` and `global.window.toggleStealthMode` are undefined.
+  2. Deprecated i18n keys return fallback raw string without throwing.
+  3. `index.html` contains 0 instances of `toggleStealthMode`, `toggleFullscreen`, `id="icon-16"`, or `id="icon-17"`.
+  4. `style.css` contains 0 `.stealth-mode` selectors.
+- **Vitest Verification:** 64/64 unit tests passing (100% pass rate across 4 test suites, Exit code 0).
+- **Production Compilation:** Clean Vite build (`npm run build`) with 25 modules transformed and net asset reductions across HTML (-1.38 kB), CSS (-0.24 kB), and JS (-0.37 kB).
+
 ## [tasbihku-v1.12.0] - 2026-09-29
 
 - **Highlight:** Replaced rigid dashboard mode switcher with an Apple Human Interface Guidelines-compliant fluid Tab View. Features an inset concentric translucent track ($R_{\text{outer}} = 12\text{px}$, $P = 3\text{px}$), an elevated hardware-accelerated sliding pill thumb ($R_{\text{inner}} = 9\text{px}$) driven by CSS variable `--tab-active-index`, contextual hairline separator suppression, native-grade 12ms selection click haptics, and comprehensive WAI-ARIA APG roving tabindex keyboard navigation.
