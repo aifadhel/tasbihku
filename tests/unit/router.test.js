@@ -267,3 +267,52 @@ describe('Player Top-Bar Excision & Clean Scope Unit Tests', () => {
         expect(css).not.toContain('.stealth-mode');
     });
 });
+
+describe('Docked Viewport Player Architecture Unit Tests', () => {
+    const indexPath = path.resolve(__dirname, '../../index.html');
+    const indexHtml = fs.readFileSync(indexPath, 'utf8');
+    const cssPath = path.resolve(__dirname, '../../style.css');
+    const css = fs.readFileSync(cssPath, 'utf8');
+    const dzikirJsPath = path.resolve(__dirname, '../../src/modules/dzikir.js');
+    const dzikirJs = fs.readFileSync(dzikirJsPath, 'utf8');
+
+    it('should confirm index.html contains #player-scroll-viewport and #player-bottom-bar', () => {
+        expect(indexHtml).toContain('id="player-scroll-viewport"');
+        expect(indexHtml).toContain('id="player-bottom-bar"');
+        expect(indexHtml).toContain('class="player-scroll-viewport"');
+        expect(indexHtml).toContain('class="player-bottom-bar"');
+    });
+
+    it('should confirm reading elements are nested within #player-scroll-viewport', () => {
+        const viewportSection = indexHtml.split('id="player-scroll-viewport"')[1].split('id="player-bottom-bar"')[0];
+        expect(viewportSection).toContain('id="player-text-container"');
+        expect(viewportSection).toContain('id="player-arabic"');
+        expect(viewportSection).toContain('id="player-latin"');
+        expect(viewportSection).toContain('id="player-translation"');
+        expect(viewportSection).toContain('id="player-reference"');
+    });
+
+    it('should confirm repetition controls are docked within #player-bottom-bar', () => {
+        const bottomBarSection = indexHtml.split('id="player-bottom-bar"')[1].split('<!-- UNIFIED EDITOR PAGE -->')[0];
+        expect(bottomBarSection).toContain('id="player-progress"');
+        expect(bottomBarSection).toContain('id="player-undo-btn"');
+        expect(bottomBarSection).toContain('id="player-counter"');
+        expect(bottomBarSection).toContain('id="player-target-display"');
+        expect(bottomBarSection).toContain('id="player-main-btn"');
+    });
+
+    it('should confirm style.css defines layout rules for docked player and independent scroll viewport', () => {
+        expect(css).toContain('#page-player');
+        expect(css).toContain('.player-scroll-viewport');
+        expect(css).toContain('.player-bottom-bar');
+        expect(css).toContain('.player-deck-tap-btn');
+        expect(css).toContain('.player-deck-btn-undo');
+        expect(css).toContain('overscroll-behavior-y: contain');
+    });
+
+    it('should confirm dzikir.js contains automated scroll reset and tap debounce guard', () => {
+        expect(dzikirJs).toContain('scrollViewport.scrollTop = 0');
+        expect(dzikirJs).toContain('lastPlayerTapTime');
+        expect(dzikirJs).toContain('now - lastPlayerTapTime < 60');
+    });
+});

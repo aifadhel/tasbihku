@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.12.2] - 2026-09-30
+
+- **Highlight:** Transform `page-player` from a monolithic scroll container into an ergonomic Three-Tier Docked Viewport Architecture. Fixes the long-dhikr recitation paradox by isolating reading recitations into an independently scrollable sanctuary (`#player-scroll-viewport`) and pinning repetition controls into an elevated, thumb-zone docked action console (`#player-bottom-bar`). Relocates the repetition progress track to the bottom console lip for unified visual feedback, enforces automated scroll reset upon reading advance, injects a 60ms hardware tap debounce guard, and expands automated regression test coverage.
+
+### Specific UI & Component Changes
+- **Docked Viewport Layout (`index.html`, `style.css`):** Overhauled `#page-player` from global column scrolling into a fixed-viewport container (`overflow: hidden; height: 100%; display: flex; flex-direction: column;`).
+- **Independent Reading Sanctuary (`#player-scroll-viewport`):** Extracted Arabic calligraphy (`#player-arabic`), Latin transliteration (`#player-latin`), translation (`#player-translation`), and Hadith reference (`#player-reference`) into a dedicated scrollable card with `-webkit-overflow-scrolling: touch; overscroll-behavior-y: contain;` and `calc(110px + env(safe-area-inset-bottom))` bottom clearance to guarantee zero text occlusion behind docked controls.
+- **Docked Repetition Action Console (`#player-bottom-bar`):** Created a fixed, elevated M3 Surface Container console (`--md-sys-color-surface-container`) with glassmorphism blur (`backdrop-filter: blur(16px)`), Level 2 elevation shadow, and safe-area padding (`padding-bottom: max(12px, env(safe-area-inset-bottom))`).
+- **Unified Progress Bar Lip (`#player-progress`):** Relocated the repetition progress track directly onto the upper edge of `#player-bottom-bar`, bridging the numeric counter, target indicator, and TAP button into a unified "Repetition Cockpit" directly adjacent to the thumb.
+- **Ergonomic Controls Deck (`.player-controls-deck`):** Arranged the Undo button (`#player-undo-btn`, 48px round button with M3 outline), Counter & Target badge (`#player-counter` in 1.85rem tabular numbers with `#player-target-display`), and Main Tap Button (`#player-main-btn`, wide pill squircle with 56px height, level 3 elevation, and spring press feedback) horizontally across the natural thumb arc for left- and right-handed worshippers.
+- **Accessibility & Reduced Motion:** Added full reduced-motion overrides for `.player-deck-tap-btn`, `.player-deck-btn-undo`, and `.player-scroll-viewport` under `@media (prefers-reduced-motion: reduce)`.
+
+### Core Logic & Audio/Haptic Workflows
+- **Automated Scroll Reset on Page Advance (`src/modules/dzikir.js`):** In `updatePlayerUI()`, introduced automatic `scrollViewport.scrollTop = 0` whenever `state.playerIndex` changes, eliminating the scroll position bleed defect where the next reading started scrolled halfway down.
+- **Hardware Tap Debounce Guard (`src/modules/dzikir.js`):** Injected a 60ms timestamp guard (`Date.now() - lastPlayerTapTime < 60`) into `incrementPlayer()`, preventing hardware double-triggering or ghost counts from rapid physical tapping or simultaneous touchstart/click event dispatching.
+- **Full Gesture & Keyboard Invariance (`src/main.js`):** Preserved double-tap counting, 800ms long-press menu return, horizontal swipe-to-undo (`handleSwipeGesture`), and keyboard triggers (`Space`, `Enter`, `Ctrl+Z`) binding seamlessly to `#player-main-btn` and `#player-undo-btn`.
+
+### Dzikir & Habits Engine
+- **Preserved Authentic Narrations:** 100% data integrity preserved across `dzikirPagi`, `dzikirPetang`, `wiridReadings`, and custom user azkar sets.
+- **Silent Micro-Habit Tracking:** Maintained `checkAndTriggerLinkedHabit()` micro-habit completion triggers upon reaching target counts without distracting toasts.
+
+### Test & Verification
+- **Automated Regression Suite (`tests/unit/router.test.js`):** Expanded Vitest unit tests with 5 comprehensive assertions verifying presence of `#player-scroll-viewport` and `#player-bottom-bar`, correct element nesting, CSS layout rules, and presence of tap debounce & scroll reset guards.
+- **Vitest Run (`npm test`):** 69/69 unit tests passing (100%) across 4 test suites with 0 regressions.
+- **Production Compilation (`npm run build`):** Clean Vite bundle compilation with 25 modules transformed in 350ms, generating optimized gzip-compressed distribution assets.
+
 ## [tasbihku-v1.12.1] - 2026-09-30
 
 - **Highlight:** Complete excision of "Privacy Mode" (Stealth Mode) and "Full Screen" buttons from `page-player`. Achieves bilateral 1:1 visual symmetry in the player top-bar, eliminates accidental recitation dimming and inconsistent web fullscreen prompts in favor of native PWA standalone display mode, purges dead SVG sprites, CSSOM rules, and global JavaScript window bindings, and expands automated regression test coverage.

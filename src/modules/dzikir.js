@@ -476,6 +476,8 @@ export let editorType = null;
 export let editorId = null;
 
 let playerAutoSkipTimeout = null;
+let lastRenderedPlayerIndex = -1;
+let lastPlayerTapTime = 0;
 
 export function getSessionData(type, id) {
     let rawPages = [];
@@ -498,6 +500,7 @@ export function getSessionData(type, id) {
 
 export function startPlayer(type, id = null) {
     trackActivity();
+    lastRenderedPlayerIndex = -1;
     state.playerType = type;
     state.playerId = id;
     state.playerIndex = 0;
@@ -522,6 +525,12 @@ export function updatePlayerUI() {
     if (state.playerIndex >= pages.length) state.playerIndex = pages.length - 1;
 
     const currentPage = pages[state.playerIndex];
+
+    const scrollViewport = document.getElementById('player-scroll-viewport');
+    if (scrollViewport && state.playerIndex !== lastRenderedPlayerIndex) {
+        scrollViewport.scrollTop = 0;
+        lastRenderedPlayerIndex = state.playerIndex;
+    }
 
     const titleEl = document.getElementById('player-title');
     const infoEl = document.getElementById('player-reading-info');
@@ -572,6 +581,10 @@ export function updatePlayerUI() {
 }
 
 export function incrementPlayer() {
+    const now = Date.now();
+    if (now - lastPlayerTapTime < 60) return;
+    lastPlayerTapTime = now;
+
     const session = getSessionData(state.playerType, state.playerId);
     if (!session || !session.pages || session.pages.length === 0) return;
 

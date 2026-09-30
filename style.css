@@ -766,6 +766,171 @@ textarea::placeholder { color: var(--md-sys-color-outline); font-weight: 400; }
     transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* --- DOCKED VIEWPORT PLAYER ARCHITECTURE --- */
+#page-player {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#page-player .top-bar {
+    padding: max(8px, env(safe-area-inset-top)) 16px 8px 16px;
+    flex-shrink: 0;
+    z-index: 10;
+    background: var(--md-sys-color-surface);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Independent Scrollable Reading Viewport */
+.player-scroll-viewport {
+    flex: 1 1 0%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding: 16px 20px calc(110px + env(safe-area-inset-bottom)) 20px;
+    scroll-behavior: smooth;
+    text-align: center;
+}
+
+.player-scroll-viewport::-webkit-scrollbar {
+    width: 4px;
+}
+.player-scroll-viewport::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border-radius: 4px;
+}
+
+/* Docked Bottom Control Console (Fixed above safe area) */
+.player-bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--md-sys-color-surface-container);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.35);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* Controls Deck Row inside Bottom Bar */
+.player-controls-deck {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    min-height: 72px;
+}
+
+/* Undo Button in Bottom Deck */
+.player-deck-btn-undo {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: var(--shape-corner-full);
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface-variant);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    transition: transform var(--md-sys-motion-duration-short) ease,
+                background-color var(--md-sys-motion-duration-short) ease,
+                opacity var(--md-sys-motion-duration-short) ease;
+}
+.player-deck-btn-undo:active:not(:disabled) {
+    transform: scale(0.92);
+}
+.player-deck-btn-undo:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Counter & Target Badge */
+.player-counter-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 72px;
+    user-select: none;
+}
+.player-counter-digits {
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--md-sys-color-primary);
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-family-mono), var(--font-family-base);
+}
+.player-target-chip {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--md-sys-color-outline);
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+}
+
+/* Ergonomic Tap Button in Deck */
+.player-deck-fab-container {
+    flex: 1;
+    max-width: 220px;
+    display: flex;
+    justify-content: flex-end;
+}
+.player-deck-tap-btn {
+    width: 100% !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    border-radius: var(--shape-corner-full) !important;
+    padding: 0 20px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    background: var(--md-sys-color-primary) !important;
+    color: var(--md-sys-color-on-primary) !important;
+    box-shadow: var(--md-sys-elevation-level-3) !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1),
+                box-shadow 0.12s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.2s ease !important;
+}
+.player-deck-tap-btn:active {
+    transform: scale(0.96) !important;
+    box-shadow: var(--md-sys-elevation-level-1) !important;
+}
+.player-deck-emoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0 !important;
+}
+.player-deck-label {
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    font-size: 1.05rem;
+}
+
 /* Arabic Text */
 .arabic-text {
     font-family: 'Amiri', serif; /* Fallback font */
@@ -2720,14 +2885,18 @@ button:focus-visible {
     .count-pop-animation,
     .expressive-pop,
     .progress-complete-glow,
-    .timer-running {
+    .timer-running,
+    .player-deck-tap-btn,
+    .player-deck-btn-undo {
         animation: none !important;
         transform: none !important;
         transition: none !important;
     }
     #player-text-container,
-    .progress-fill {
+    .progress-fill,
+    .player-scroll-viewport {
         transition: none !important;
+        scroll-behavior: auto !important;
     }
 }
 

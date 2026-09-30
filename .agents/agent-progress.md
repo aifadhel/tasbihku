@@ -1,5 +1,24 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-30 (v1.12.2 Page-Player Docked Viewport & Repetition Console)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Restructured `#page-player` markup in `index.html`: isolated recitation reading text (`#player-reading-info`, `#player-text-container`, `#player-arabic`, `#player-latin`, `#player-translation`, `#player-reference`) into `#player-scroll-viewport`, and pinned repetition controls (`#player-progress`, `#player-undo-btn`, `#player-counter`, `#player-target-display`, `#player-main-btn`) into `#player-bottom-bar`.
+  - [✓] Step 2: Implemented ergonomic docked viewport CSS in `style.css`: `#page-player` fixed-viewport shell, `#player-scroll-viewport` with momentum scrolling and 110px safe bottom padding, elevated M3 Surface Container `#player-bottom-bar` with glassmorphism blur and Level 2 shadow, and `.player-controls-deck` horizontal thumb-zone layout.
+  - [✓] Step 3: Integrated logic in `src/modules/dzikir.js`: automatic `scrollViewport.scrollTop = 0` on reading page transitions, and 60ms timestamp debounce guard in `incrementPlayer()` to prevent hardware bounce double-counts.
+  - [✓] Step 4: Expanded Vitest test suite (`tests/unit/router.test.js`) with 5 unit tests validating viewport containment, docked controls, CSS layout rules, and debounce guard. 69/69 tests passing (100%).
+  - [✓] Step 5: Verified zero-trust verification gate: 69/69 unit tests passing (100%), clean production bundle compilation with 25 modules transformed.
+  - [✓] Step 6: Automated patch version bump to `v1.12.2` and comprehensive `CHANGELOG.md` enrichment (`scripts/bump-version.js`).
+- **Verification Evidence**:
+  - `npm test`: 69 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.60 kB HTML / 81.35 kB CSS / 48.72 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete isolation between recitation scrolling and docked repetition controls: users can scroll long Arabic text freely while the TAP button and counter remain 100% accessible in the thumb zone.
+  - [✓] Verified `#player-progress` anchored on bottom bar lip unites visual progress with counter digits directly above the thumb.
+  - [✓] Verified 60ms debounce guard prevents ghost counts on rapid physical tapping.
+  - [✓] Verified Web App Manifest standalone mode and safe-area insets (`env(safe-area-inset-bottom)`) prevent OS gesture bar collisions.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-30 (v1.12.1 Excision of Privacy Mode & Fullscreen from Page-Player)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
