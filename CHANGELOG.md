@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.12.3] - 2026-09-30
+
+- **Highlight:** Resolved the dashboard reset capability defect by introducing an ergonomic, mode-aware Material 3 Tonal Reset Button (`#dashboard-reset-btn`) within a symmetrical `.fab-action-dock` flanking the primary Large FAB. Restores full, intuitive stop/reset operational control to Counting, Stopwatch, and Timer modes with safety modal confirmations for tasbih counting, instant haptic resets for paused timekeeping, dynamic state synchronization, and a global desktop keyboard shortcut (`KeyR`).
+
+### Specific UI & Component Changes
+- **Symmetric Controls Deck (`index.html`, `style.css`):** Replaced standalone `.fab-container` with `.fab-action-dock` (`max-width: 320px`, centered flex layout with 16px gap), flanking the 152px Large FAB (`#dashboard-main-btn`) with a 48dp secondary M3 Tonal Reset Button (`#dashboard-reset-btn`) on the left and an invisible 48dp optical balance anchor (`.fab-dock-balance-anchor`) on the right, ensuring the primary TAP button remains mathematically and optically 100% centered across all mobile viewport widths (down to 320px).
+- **M3 Tonal Button Tokens (`style.css`):** Styled `.btn-reset-tonal` with 48dp circular geometry (`border-radius: var(--shape-corner-full)`), `--md-sys-color-secondary-container` background, `--md-sys-color-on-secondary-container` icon fill, 1px outline-variant border, Level 1 elevation shadow, and spring active press scaling (`transform: scale(0.92)`).
+- **Declarative Disabled States (`style.css`):** Declared `.btn-reset-tonal.is-disabled` and `:disabled` rules (`opacity: 0.35`, `pointer-events: none`, grayscale filter, muted border), preventing layout shifts during zero/idle states.
+
+### Core Logic & Audio/Haptic Workflows
+- **Restored Free Counter Reset (`src/modules/tasbih.js`):** Implemented and exported `resetFree()` with `modal_reset_free_title` confirmation dialog, safe count zeroing, reactive UI synchronization, and 25ms tactile haptic feedback (`vibrate(25)`).
+- **Stopwatch & Timer Reset Enhancements (`src/modules/tasbih.js`):** Connected `resetStopwatch()` and `resetTimer()` to the unified reset trigger with 20ms tactile haptic feedback (`vibrate(20)`), interval termination, elapsed/target duration clearing, setup area restoration, and immediate disabled state updating.
+- **Unified Action Dispatcher & Keyboard Harness (`src/main.js`):** Implemented `handleDashboardReset()`, bound global window APIs (`window.handleDashboardReset`, `window.resetFree`, `window.resetStopwatch`, `window.resetTimer`), and wired desktop `KeyR` keyboard event listener with `.modal.active` and input-focus guards to suppress background triggers during open dialogs.
+- **Dynamic Mode Reactivity (`src/ui/router.js`):** Implemented `updateResetButtonState()`, synchronizing disabled states and contextual WAI-ARIA labels (`aria-label` / `title`) across Counting (`freeCount > 0`), Stopwatch (`elapsedTime > 0` or `running`), and Timer (`targetDuration !== null` or `remainingTime !== null` or `running`). Hooked into `switchDashboardMode()`, `updateStopwatchUI()`, `updateTimerUI()`, and reactive store subscriptions (`subscribe('freeCount')`).
+
+### Dzikir & Habits Engine
+- **Protection Against Accidental Reset:** Retained dual-layer protection for dhikr recitations where resetting count requires intentional confirmation via `modal_reset_free_title`, preventing accidental destruction of dhikr counts during high-cadence tapping.
+- **Bilingual i18n Verification:** Re-verified complete Indonesian and English localization strings (`modal_reset_free_title`, `modal_reset_stopwatch_title`, `modal_reset_timer_title`, `btn_reset`).
+
+### Test & Verification
+- **Automated Unit Tests (`npm test`):** 75/75 unit tests passing (100% pass rate) across 4 test suites (`tests/unit/router.test.js`, `tests/unit/habits.test.js`, `tests/unit/dzikir.test.js`, `tests/unit/i18n.test.js`), including 6 new tests asserting reset button DOM structure, M3 styling rules, state synchronization, and keyboard handling.
+- **Production Compilation (`npm run build`):** Clean Vite bundle compilation in 345ms with 0 errors or warnings (25 modules transformed).
+
 ## [tasbihku-v1.12.2] - 2026-09-30
 
 - **Highlight:** Transform `page-player` from a monolithic scroll container into an ergonomic Three-Tier Docked Viewport Architecture. Fixes the long-dhikr recitation paradox by isolating reading recitations into an independently scrollable sanctuary (`#player-scroll-viewport`) and pinning repetition controls into an elevated, thumb-zone docked action console (`#player-bottom-bar`). Relocates the repetition progress track to the bottom console lip for unified visual feedback, enforces automated scroll reset upon reading advance, injects a 60ms hardware tap debounce guard, and expands automated regression test coverage.

@@ -21,6 +21,7 @@ import {
 } from './hardware/system.js';
 import { 
     incrementFree, 
+    resetFree,
     toggleStopwatch, 
     toggleTimer, 
     resetStopwatch, 
@@ -68,6 +69,7 @@ import {
     importDataProcess, 
     toggleQuote, 
     applyQuoteState, 
+    updateResetButtonState,
     APP_VERSION 
 } from './ui/router.js';
 import { showToast, hideToast } from './ui/toast.js';
@@ -194,8 +196,23 @@ function handleDashboardMainBtn() {
     }
 }
 
+function handleDashboardReset() {
+    trackActivity();
+    if (state.dashboardMode === 'counting') {
+        resetFree();
+    } else if (state.dashboardMode === 'stopwatch') {
+        resetStopwatch();
+    } else if (state.dashboardMode === 'timer') {
+        resetTimer();
+    }
+}
+
 // Bind reset globally for index.html onclick
 window.handleDashboardMainBtn = handleDashboardMainBtn;
+window.handleDashboardReset = handleDashboardReset;
+window.resetFree = resetFree;
+window.resetStopwatch = resetStopwatch;
+window.resetTimer = resetTimer;
 window.promptManualCount = promptManualCount;
 window.promptTargetLimit = promptTargetLimit;
 window.closeNumberInputModal = closeNumberInputModal;
@@ -221,12 +238,14 @@ pageHooks['page-dashboard'] = () => {
         renderHabits();
     }
     renderStats();
+    updateResetButtonState();
 };
 
 // --- Reactive State Subscriptions ---
 subscribe('freeCount', (state) => {
     const el = document.getElementById('free-counter');
     if (el) el.innerText = state.freeCount;
+    updateResetButtonState();
 });
 subscribe('targetLimit', (state) => {
     const el = document.getElementById('free-target-display');
@@ -470,6 +489,9 @@ export function handleTablistKeyboard(e) {
 document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
+    const activeModal = document.querySelector('.modal.active');
+    if (activeModal) return;
+
     if (handleTablistKeyboard(e)) return;
 
     const dashboardActive = document.getElementById('page-dashboard').classList.contains('active');
@@ -482,6 +504,14 @@ document.addEventListener('keydown', (e) => {
             handleDashboardMainBtn();
         } else if (playerActive) {
             incrementPlayer();
+        }
+    }
+
+    // 'r' or 'R' to trigger dashboard reset when on dashboard
+    if ((e.key === 'r' || e.key === 'R' || e.code === 'KeyR') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        if (dashboardActive) {
+            e.preventDefault();
+            handleDashboardReset();
         }
     }
 

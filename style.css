@@ -670,6 +670,72 @@ body {
     color: #ffffff !important;
 }
 
+/* Dashboard Action Console & Mode-Aware Reset Button */
+.fab-action-dock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    margin: 16px auto;
+    gap: 16px;
+}
+
+.btn-reset-tonal {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: var(--shape-corner-full);
+    background-color: var(--md-sys-color-secondary-container, #334b40);
+    color: var(--md-sys-color-on-secondary-container, #cce8da);
+    border: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.12));
+    box-shadow: var(--md-sys-elevation-level-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1),
+                background-color 0.2s ease,
+                color 0.2s ease,
+                opacity 0.2s ease,
+                box-shadow 0.12s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-reset-tonal:hover:not(.is-disabled):not(:disabled) {
+    box-shadow: var(--md-sys-elevation-level-2);
+    filter: brightness(1.08);
+}
+
+.btn-reset-tonal:active:not(.is-disabled):not(:disabled) {
+    transform: scale(0.92);
+    box-shadow: var(--md-sys-elevation-level-0);
+    filter: brightness(0.95);
+}
+
+.btn-reset-tonal.is-disabled,
+.btn-reset-tonal:disabled {
+    opacity: 0.35 !important;
+    pointer-events: none !important;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 0.06) !important;
+    cursor: default !important;
+}
+
+.fab-dock-balance-anchor {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    visibility: hidden;
+    flex-shrink: 0;
+    pointer-events: none;
+}
+
 /* Inputs & Selects - Standardized M3 Filled Text Field Pattern */
 input[type="text"], input[type="number"], input[type="date"], input[type="time"], select {
     width: 100%;

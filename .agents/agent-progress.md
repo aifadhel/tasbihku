@@ -1,5 +1,27 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-09-30 (v1.12.3 Dashboard Mode-Aware Reset Button & Symmetrical Action Dock)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Upgraded `#page-dashboard` controls deck in `index.html` to `.fab-action-dock`, embedding a secondary 48dp M3 Tonal Reset Button (`#dashboard-reset-btn`) with `#icon-18`, centered Large FAB (`#dashboard-main-btn`), and invisible 48dp optical balance anchor (`.fab-dock-balance-anchor`).
+  - [✓] Step 2: Implemented M3 Tonal button and dock CSS in `style.css`: `.fab-action-dock` centered flex geometry (280px width, 16px gap), `.btn-reset-tonal` 48dp circular styling with M3 secondary container tokens and spring active press scaling, and `.is-disabled` zero-layout-shift rules.
+  - [✓] Step 3: Restored and exported `resetFree()` in `src/modules/tasbih.js` with `modal_reset_free_title` confirmation modal protection, state persistence, and 25ms tactile haptic feedback (`vibrate(25)`). Connected `resetStopwatch()` and `resetTimer()` with 20ms tactile haptic feedback (`vibrate(20)`).
+  - [✓] Step 4: Implemented `updateResetButtonState()` in `src/ui/router.js` and hooked into `switchDashboardMode()`, `updateStopwatchUI()`, `updateTimerUI()`, and reactive store subscriptions (`subscribe('freeCount')`).
+  - [✓] Step 5: Implemented `handleDashboardReset()` dispatcher in `src/main.js`, exposed global window bindings (`window.handleDashboardReset`, `window.resetFree`, `window.resetStopwatch`, `window.resetTimer`), and mapped desktop `KeyR` keyboard event listener with input guards.
+  - [✓] Step 6: Expanded Vitest test suite (`tests/unit/router.test.js`) with 6 unit tests covering dock DOM structure, M3 CSS rules, module exports, disabled state synchronization across counting/stopwatch/timer modes, and `KeyR` shortcut mapping. 75/75 tests passing (100%).
+  - [✓] Step 7: Automated patch version bump to `v1.12.3` and structured `CHANGELOG.md` enrichment adhering to Keep a Changelog standards (`scripts/bump-version.js`).
+- **Verification Evidence**:
+  - `npm test`: 75 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.68 kB HTML / 81.55 kB CSS / 49.11 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Re-verified all deliverables against the original task requirements: fully operational reset/stop workflows for Counting, Stopwatch, and Timer modes.
+  - [⚠] double-check caught: Keyboard event listener in `src/main.js` lacked active modal suppression; added `document.querySelector('.modal.active')` guard to prevent background resets while any dialog or input modal is displayed.
+  - [✓] Verified complete operational stop/reset capability across Counting, Stopwatch, and Timer modes without re-introducing clutter.
+  - [✓] Verified `#dashboard-main-btn` remains 100% mathematically centered via 48dp optical balance anchor (`.fab-dock-balance-anchor`).
+  - [✓] Verified dhikr counting retains confirmation modal protection against accidental resets.
+  - [✓] Verified disabled states maintain static DOM layout without visual jumps or reflows.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-30 (v1.12.2 Page-Player Docked Viewport & Repetition Console)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:

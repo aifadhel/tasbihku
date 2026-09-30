@@ -4,6 +4,7 @@ import path from 'path';
 import { t } from '../../src/core/i18n.js';
 
 let switchDashboardMode;
+let updateResetButtonState;
 let handleTablistKeyboard;
 let mockElements = {};
 
@@ -63,6 +64,7 @@ beforeAll(async () => {
 
     const routerModule = await import('../../src/ui/router.js');
     switchDashboardMode = routerModule.switchDashboardMode;
+    updateResetButtonState = routerModule.updateResetButtonState;
 
     const mainModule = await import('../../src/main.js');
     handleTablistKeyboard = mainModule.handleTablistKeyboard;
@@ -75,6 +77,7 @@ function createMockElement(id, initialAttrs = {}) {
 
     const el = {
         id,
+        disabled: initialAttrs.disabled || false,
         classList: {
             contains: (c) => classList.has(c),
             add: (c) => classList.add(c),
@@ -140,7 +143,12 @@ describe('Apple HIG Tab View & Dashboard Router Unit Tests', () => {
             'dashboard-mode-title': createMockElement('dashboard-mode-title'),
             'dashboard-main-emoji': createMockElement('dashboard-main-emoji'),
             'dashboard-main-label': createMockElement('dashboard-main-label'),
-            'dashboard-main-btn': createMockElement('dashboard-main-btn')
+            'dashboard-main-btn': createMockElement('dashboard-main-btn'),
+            'dashboard-reset-btn': createMockElement('dashboard-reset-btn', {
+                class: 'btn btn-reset-tonal is-disabled',
+                disabled: true,
+                'aria-disabled': 'true'
+            })
         };
         mockElements['dashboard-mode-switcher'].querySelectorAll = (sel) => {
             if (sel.includes('[role="tab"]')) {
@@ -314,5 +322,88 @@ describe('Docked Viewport Player Architecture Unit Tests', () => {
         expect(dzikirJs).toContain('scrollViewport.scrollTop = 0');
         expect(dzikirJs).toContain('lastPlayerTapTime');
         expect(dzikirJs).toContain('now - lastPlayerTapTime < 60');
+    });
+});
+
+describe('Dashboard Mode-Aware Reset Button & Dock Console Unit Tests', () => {
+    const indexPath = path.resolve(__dirname, '../../index.html');
+    const indexHtml = fs.readFileSync(indexPath, 'utf8');
+    const cssPath = path.resolve(__dirname, '../../style.css');
+    const css = fs.readFileSync(cssPath, 'utf8');
+
+    it('should confirm #dashboard-reset-btn is declared inside .fab-action-dock with optical balance anchor in index.html', () => {
+        expect(indexHtml).toContain('id="dashboard-reset-btn"');
+        expect(indexHtml).toContain('class="fab-container fab-action-dock"');
+        expect(indexHtml).toContain('class="fab-dock-balance-anchor"');
+        expect(indexHtml).toContain('handleDashboardReset()');
+        expect(indexHtml).toContain('#icon-18');
+    });
+
+    it('should confirm style.css defines layout rules for .fab-action-dock, .btn-reset-tonal, and .fab-dock-balance-anchor', () => {
+        expect(css).toContain('.fab-action-dock');
+        expect(css).toContain('.btn-reset-tonal');
+        expect(css).toContain('.fab-dock-balance-anchor');
+        expect(css).toContain('--md-sys-color-secondary-container');
+    });
+
+    it('should confirm tasbih.js exports resetFree, resetStopwatch, and resetTimer', async () => {
+        const tasbihModule = await import('../../src/modules/tasbih.js');
+        expect(typeof tasbihModule.resetFree).toBe('function');
+        expect(typeof tasbihModule.resetStopwatch).toBe('function');
+        expect(typeof tasbihModule.resetTimer).toBe('function');
+    });
+
+    it('should confirm main.js defines handleDashboardReset and exposes global reset bindings', async () => {
+        const mainModule = await import('../../src/main.js');
+        expect(global.window.handleDashboardReset).toBeDefined();
+        expect(global.window.resetFree).toBeDefined();
+        expect(global.window.resetStopwatch).toBeDefined();
+        expect(global.window.resetTimer).toBeDefined();
+    });
+
+    it('should synchronize #dashboard-reset-btn disabled state across modes', async () => {
+        const { state } = await import('../../src/core/store.js');
+        const resetBtn = mockElements['dashboard-reset-btn'];
+
+        // Counting mode: disabled when freeCount is 0
+        state.dashboardMode = 'counting';
+        state.freeCount = 0;
+        updateResetButtonState();
+        expect(resetBtn.disabled).toBe(true);
+        expect(resetBtn.classList.contains('is-disabled')).toBe(true);
+
+        // Counting mode: enabled when freeCount > 0
+        state.freeCount = 10;
+        updateResetButtonState();
+        expect(resetBtn.disabled).toBe(false);
+        expect(resetBtn.classList.contains('is-disabled')).toBe(false);
+
+        // Stopwatch mode: disabled when elapsedTime is 0 and not running
+        state.dashboardMode = 'stopwatch';
+        state.stopwatch = { running: false, elapsedTime: 0 };
+        updateResetButtonState();
+        expect(resetBtn.disabled).toBe(true);
+
+        // Stopwatch mode: enabled when elapsedTime > 0
+        state.stopwatch = { running: false, elapsedTime: 15000 };
+        updateResetButtonState();
+        expect(resetBtn.disabled).toBe(false);
+
+        // Timer mode: disabled when remainingTime is null and targetDuration is null
+        state.dashboardMode = 'timer';
+        state.timer = { running: false, remainingTime: null, targetDuration: null };
+        updateResetButtonState();
+        expect(resetBtn.disabled).toBe(true);
+
+        // Timer mode: enabled when targetDuration is set
+        state.timer = { running: false, remainingTime: 300, targetDuration: 300 };
+        updateResetButtonState();
+        expect(resetBtn.disabled).toBe(false);
+    });
+
+    it('should confirm KeyR shortcut is mapped to handleDashboardReset in main.js', () => {
+        const mainJs = fs.readFileSync(path.resolve(__dirname, '../../src/main.js'), 'utf-8');
+        expect(mainJs).toContain("e.code === 'KeyR'");
+        expect(mainJs).toContain('handleDashboardReset()');
     });
 });

@@ -184,13 +184,17 @@
 
                     </div>
                     
-                    <div class="fab-container">
+                    <div class="fab-container fab-action-dock">
+                        <button class="btn btn-reset-tonal is-disabled" id="dashboard-reset-btn" onclick="handleDashboardReset()" aria-label="Reset" data-i18n-aria="btn_reset" disabled>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-18"></use></svg>
+                        </button>
                         <button class="btn fab-large m3-fab-large" id="dashboard-main-btn" onclick="handleDashboardMainBtn()" aria-label="Tap">
                             <span id="dashboard-main-emoji" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;" aria-hidden="true">
                                 <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-8"></use></svg>
                             </span>
                             <span id="dashboard-main-label" style="font-weight: 800; letter-spacing: 1px;" data-i18n="btn_tap">TAP</span>
                         </button>
+                        <div class="fab-dock-balance-anchor" aria-hidden="true"></div>
                     </div>
 
                 </div>

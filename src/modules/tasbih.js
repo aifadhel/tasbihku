@@ -5,7 +5,7 @@
 import { state, saveState, saveStateImmediate } from '../core/store.js';
 import { vibrate, playTapSound, triggerMilestoneFeedback } from '../hardware/media.js';
 import { trackActivity, triggerTimerNotification } from './habits.js';
-import { showModal, animateValue, SVG_ICONS, triggerCelebration } from '../ui/router.js';
+import { showModal, animateValue, SVG_ICONS, triggerCelebration, updateResetButtonState } from '../ui/router.js';
 import { t } from '../core/i18n.js';
 
 // Stopwatch private state variables
@@ -45,6 +45,18 @@ export function incrementFree() {
     
     saveState();
     trackActivity();
+    if (typeof updateResetButtonState === 'function') updateResetButtonState();
+}
+
+export function resetFree() {
+    if (state.freeCount === 0) return;
+    showModal(t('modal_reset_free_title'), t('modal_reset_free_msg'), () => {
+        state.freeCount = 0;
+        animateValue('free-counter', 0);
+        if (typeof updateResetButtonState === 'function') updateResetButtonState();
+        saveState();
+        vibrate(25);
+    });
 }
 
 let numberInputCallback = null;
@@ -188,6 +200,7 @@ export function stopStopwatch() {
 }
 
 export function resetStopwatch() {
+    if (state.stopwatch.elapsedTime === 0 && !state.stopwatch.running) return;
     showModal(t('modal_reset_stopwatch_title'), t('modal_reset_stopwatch_msg'), () => {
         if (state.stopwatch.running) stopStopwatch();
         state.stopwatch.elapsedTime = 0;
@@ -195,7 +208,9 @@ export function resetStopwatch() {
         if (stopwatchCounterEl) {
             stopwatchCounterEl.innerText = formatTime(0);
         }
+        if (typeof updateResetButtonState === 'function') updateResetButtonState();
         saveState();
+        vibrate(20);
     });
 }
 
@@ -221,6 +236,7 @@ export function updateStopwatchUI() {
         stopwatchCounterEl.innerText = formatTime(state.stopwatch.elapsedTime || 0);
         stopwatchCounterEl.classList.toggle('timer-running', !!state.stopwatch.running);
     }
+    if (typeof updateResetButtonState === 'function') updateResetButtonState();
 }
 
 // --- Timer Logic ---
@@ -330,12 +346,15 @@ export function completeTimer() {
 }
 
 export function resetTimer() {
+    if (state.timer.targetDuration === null && state.timer.remainingTime === null && !state.timer.running) return;
     showModal(t('modal_reset_timer_title'), t('modal_reset_timer_msg'), () => {
         if (state.timer.running) stopTimer();
         state.timer.targetDuration = null;
         state.timer.remainingTime = null;
         updateTimerUI();
+        if (typeof updateResetButtonState === 'function') updateResetButtonState();
         saveState();
+        vibrate(20);
     });
 }
 
@@ -370,4 +389,5 @@ export function updateTimerUI() {
     } else {
         counterEl.innerText = '00:00';
     }
+    if (typeof updateResetButtonState === 'function') updateResetButtonState();
 }
