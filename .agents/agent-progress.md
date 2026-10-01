@@ -1,5 +1,21 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-10-01 (v1.12.5 Defensive Startup DOM Purge for Stale PWA Caches)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Added defensive startup DOM query and removal targeting `#quote-card` and `.quote-toggle-wrapper` in `src/main.js` on `DOMContentLoaded` prior to `applyTranslations()` execution.
+  - [✓] Step 2: Expanded Vitest test suite (`tests/unit/router.test.js`) with unit test asserting defensive DOM cleanup logic in `src/main.js`. 81/81 tests passing (100%).
+  - [✓] Step 3: Incremented cache name in `public/sw.js` to `tasbihku-v1.12.5` to force Service Worker invalidation on client browsers and installed PWAs.
+  - [✓] Step 4: Automated patch bump to `v1.12.5`, enriched `CHANGELOG.md`, and compiled clean production bundle via Vite (`npm run build`).
+- **Verification Evidence**:
+  - `npm test`: 81 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.39 kB HTML / 81.35 kB CSS / 48.91 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified live remote server (`https://tasbihku.web.app`) serves updated HTML without `#quote-card`.
+  - [✓] Verified defensive startup DOM purge immediately neutralizes stale cached HTML shells if loaded from offline PWA caches before `applyTranslations()` runs.
+  - [✓] Confirmed 81/81 unit tests passing and clean Vite bundle compilation.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-10-01 (v1.12.4 Complete Excision of Quote Card Component & Associated Architecture)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
@@ -224,3 +240,10 @@
   - [⚠] double-check caught: Lack of tap debounce timestamp guard in `incrementFree()` permitted ghost/bouncing counts on rapid physical tapping; corrected with 60ms timestamp guard.
   - [✓] vite junction fix: Resolved Rollup path mismatch when building from Windows NTFS junction `C:\AnimatorBP` by setting `root: fs.realpathSync(process.cwd())` in `vite.config.js`.
 - **Known Regressions / Blockers**: None.
+
+## STATE
+- **Active plan**: None (Completed)
+- **Current Version**: tasbihku-v1.12.5
+- **Unit Tests**: 81/81 passing (100%)
+- **Production Build**: Clean (25 modules transformed)
+

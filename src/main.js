@@ -274,6 +274,13 @@ subscribe('vibrationEnabled', (state) => {
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Initial State Loading
     await loadState();
+
+    // Defensive cleanup of legacy quote card in stale PWA service worker caches
+    const staleQuoteCard = document.getElementById('quote-card') || document.querySelector('.quote-toggle-wrapper');
+    if (staleQuoteCard) {
+        staleQuoteCard.remove();
+    }
+
     applyTranslations();
     if (typeof refreshAllHabitMetricsCache === 'function') {
         refreshAllHabitMetricsCache();

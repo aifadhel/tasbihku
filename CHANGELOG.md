@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.12.5] - 2026-10-01
+
+- **Highlight:** Resolved client-side PWA stale service worker cache artifact where historical cached HTML shells continued to render `#quote-card` with fallback translation keys (`quote_default`, `quote_source`). Implemented defensive startup DOM purging in `src/main.js` and bumped cache name to `tasbihku-v1.12.5`.
+
+### Specific UI & Component Changes
+- **Defensive Startup DOM Excision (`src/main.js`):** Added synchronous DOM query and removal targeting `#quote-card` and `.quote-toggle-wrapper` directly on `DOMContentLoaded` prior to `applyTranslations()` execution. Ensures that even when a mobile/desktop browser or installed PWA serves a stale cached HTML shell from prior offline storage, the quote card is completely stripped from the visual DOM before any text interpolation occurs.
+
+### Core Logic & Audio/Haptic Workflows
+- **PWA Cache Invalidation (`public/sw.js`):** Incremented cache name to `tasbihku-v1.12.5` to trigger browser Service Worker `updatefound` lifecycle events, purge legacy caches (`caches.delete(cacheName)`), and claim active clients immediately (`self.clients.claim()`).
+
+### Dzikir & Habits Engine
+- Preserved all habit tracking, azkar sequences, and timer/stopwatch state invariants with zero regressions.
+
+### Test & Verification
+- **Unit Test Suite (`tests/unit/router.test.js`):** Added regression assertion validating defensive DOM cleanup existence in `src/main.js`. 81/81 unit tests passing (100%).
+- **Production Compilation (`npm run build`):** Clean Vite production build with 25 modules transformed and 0 errors.
+
 ## [tasbihku-v1.12.4] - 2026-10-01
 
 - **Highlight:** Completely excised the `#quote-card` component and all associated architecture from the dashboard across frontend and data layers. Streamlines viewport ergonomics and removes visual distraction beneath `.fab-action-dock`, while purging orphaned SVG symbols, M3 state layer styling, router methods, reactive store state, persistence hydration fallbacks, and localization keys.

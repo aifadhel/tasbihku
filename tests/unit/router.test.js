@@ -451,5 +451,11 @@ describe('Dashboard Mode-Aware Reset Button & Dock Console Unit Tests', () => {
             expect(t('quote_source')).toBe('quote_source');
             expect(t('pearl_of_wisdom')).toBe('pearl_of_wisdom');
         });
+
+        it('should confirm main.js defines defensive startup DOM cleanup for stale quote card caches', () => {
+            const mainJs = fs.readFileSync(path.resolve(__dirname, '../../src/main.js'), 'utf-8');
+            expect(mainJs).toContain("staleQuoteCard = document.getElementById('quote-card')");
+            expect(mainJs).toContain("staleQuoteCard.remove()");
+        });
     });
 });
