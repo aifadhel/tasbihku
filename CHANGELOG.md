@@ -6,6 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.12.4] - 2026-10-01
+
+- **Highlight:** Completely excised the `#quote-card` component and all associated architecture from the dashboard across frontend and data layers. Streamlines viewport ergonomics and removes visual distraction beneath `.fab-action-dock`, while purging orphaned SVG symbols, M3 state layer styling, router methods, reactive store state, persistence hydration fallbacks, and localization keys.
+
+### Specific UI & Component Changes
+- **Excised Quote Card Container (`index.html`):** Removed `#quote-card`, `#quote-content`, `#quote-collapsed-msg`, and inline `toggleQuote()` trigger from `#tasbih-dashboard-view`, letting the central counting area expand and vertically center the primary display without bottom obstruction.
+- **Excised Orphaned SVG Sprite (`index.html`):** Purged `<g id="icon-9">` (sparkle icon) from SVG definition pool, which was exclusively utilized for the collapsed quote state.
+- **Excised Card & State Layer CSS (`style.css`):** Removed `.quote-toggle-wrapper`, `.quote-card-m3`, `.quote-box`, and `.quote-toggle-wrapper.collapsed` class definitions (~50 lines).
+- **Pruned M3 State Layer Selectors (`style.css`):** Excised `.quote-toggle-wrapper` selectors from standard state layer (`::before`), hover (`:hover::before`), active (`:active::before`), and active scale transform (`:active`) rules without breaking trailing commas.
+
+### Core Logic & Audio/Haptic Workflows
+- **Purged Router Methods (`src/ui/router.js`):** Removed `toggleQuote()` and `applyQuoteState()` exports and excised `window.toggleQuote` global binding.
+- **Cleaned Main Entry Point (`src/main.js`):** Excised `toggleQuote` and `applyQuoteState` imports, purged `window.toggleQuote` assignment, and removed `applyQuoteState()` from the `initApp()` application boot sequence.
+- **Active State Hydration Purge (`src/core/store.js`):** Excised `quoteCollapsed: false` from `DEFAULT_STATE`. Replaced legacy fallback assignment with an explicit active deletion guard (`if (typeof rawState.quoteCollapsed !== 'undefined') delete rawState.quoteCollapsed;`), ensuring stored IndexedDB and localStorage states from prior sessions are automatically sanitized on load.
+
+### Dzikir & Habits Engine
+- **Purged Localization Keys (`src/core/i18n.js`):** Removed `quote_default`, `quote_source`, and `pearl_of_wisdom` from both Indonesian (`id`) and English (`en`) dictionaries.
+- **PWA Service Worker Update (`public/sw.js`):** Automated cache name bump to `tasbihku-v1.12.4` ensuring clean offline cache invalidation and client claiming.
+
+### Test & Verification
+- **Unit Test Suite (`tests/unit/router.test.js`):** Added 5 dedicated regression assertions verifying negative presence of `#quote-card`, `#icon-9`, `.quote-toggle-wrapper`, `toggleQuote`, `applyQuoteState`, `state.quoteCollapsed`, and localization keys. 80/80 tests passing (100%).
+- **Production Compilation (`npm run build`):** Clean Vite build with 25 modules transformed, 0 errors, achieving net asset reductions across HTML (-0.29 kB gzip), CSS (-0.20 kB gzip), and JS (-0.22 kB gzip).
+
 ## [tasbihku-v1.12.3] - 2026-09-30
 
 - **Highlight:** Resolved the dashboard reset capability defect by introducing an ergonomic, mode-aware Material 3 Tonal Reset Button (`#dashboard-reset-btn`) within a symmetrical `.fab-action-dock` flanking the primary Large FAB. Restores full, intuitive stop/reset operational control to Counting, Stopwatch, and Timer modes with safety modal confirmations for tasbih counting, instant haptic resets for paused timekeeping, dynamic state synchronization, and a global desktop keyboard shortcut (`KeyR`).

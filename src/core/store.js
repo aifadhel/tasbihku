@@ -16,7 +16,6 @@ const DEFAULT_STATE = {
     keepScreenOn: false,
     oledMode: false,
     userName: 'SaudaraKu',
-    quoteCollapsed: false,
     activityLog: [],
     playerType: null,
     playerId: null,
@@ -178,7 +177,7 @@ export async function loadState() {
             if (typeof rawState.vibrationInterval === 'undefined') rawState.vibrationInterval = 0;
             if (typeof rawState.arabicFontSize === 'undefined') rawState.arabicFontSize = 2.5;
             if (typeof rawState.userName === 'undefined' || rawState.userName === '') rawState.userName = 'SaudaraKu';
-            if (typeof rawState.quoteCollapsed === 'undefined') rawState.quoteCollapsed = false;
+            if (typeof rawState.quoteCollapsed !== 'undefined') delete rawState.quoteCollapsed;
             if (typeof rawState.targetLimit === 'undefined') rawState.targetLimit = 0;
             if (!Array.isArray(rawState.customAzkar)) rawState.customAzkar = [];
             if (!Array.isArray(rawState.activityLog)) rawState.activityLog = [];

@@ -1,5 +1,25 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-10-01 (v1.12.4 Complete Excision of Quote Card Component & Associated Architecture)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Excised `#quote-card` DOM structure (`#quote-content`, `#quote-collapsed-msg`, inline `toggleQuote()`) and orphaned `<g id="icon-9">` sparkle SVG sprite in `index.html`.
+  - [✓] Step 2: Excised `.quote-toggle-wrapper`, `.quote-card-m3`, `.quote-box`, and `.quote-toggle-wrapper.collapsed` CSS rules, and cleanly pruned `.quote-toggle-wrapper` selectors from all M3 State Layer rules (`::before`, `:hover::before`, `:active::before`, `:active`) in `style.css`.
+  - [✓] Step 3: Excised `toggleQuote()` and `applyQuoteState()` functions and global `window.toggleQuote` binding from `src/ui/router.js`.
+  - [✓] Step 4: Excised quote imports, global `window.toggleQuote` assignment, and `applyQuoteState()` initialization call from `src/main.js`.
+  - [✓] Step 5: Excised `quoteCollapsed: false` from `DEFAULT_STATE` in `src/core/store.js` and added proactive hydration migration guard (`if (typeof rawState.quoteCollapsed !== 'undefined') delete rawState.quoteCollapsed;`) to purge persisted legacy user state from IndexedDB/localStorage.
+  - [✓] Step 6: Excised `quote_default`, `quote_source`, and `pearl_of_wisdom` translation keys in Indonesian and English from `src/core/i18n.js`.
+  - [✓] Step 7: Expanded Vitest unit test suite in `tests/unit/router.test.js` with 5 negative assertions validating complete absence of quote DOM elements, CSS classes, router functions, store keys, and i18n dictionary entries. 80/80 tests passing (100%).
+  - [✓] Step 8: Automated patch bump to `v1.12.4`, enriched `CHANGELOG.md` with Keep a Changelog details, and verified clean Vite bundle build (`npm run build`).
+- **Verification Evidence**:
+  - `npm test`: 80 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 15.39 kB HTML / 81.35 kB CSS / 48.89 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of `#quote-card`, `.quote-card-m3`, `toggleQuote`, `applyQuoteState`, `icon-9`, and `quoteCollapsed` across the entire project.
+  - [✓] Verified `.fab-action-dock` centered position and viewport aesthetics with zero collision or layout reflow.
+  - [✓] Verified active store hydration purge safely cleans existing local IndexedDB instances without data corruption.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-09-30 (v1.12.3 Dashboard Mode-Aware Reset Button & Symmetrical Action Dock)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:

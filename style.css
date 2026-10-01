@@ -422,55 +422,6 @@ body {
     border-radius: var(--shape-corner-lg);
 }
 
-/* Quote Card -> Material 3 Outlined Tonal Card */
-.quote-toggle-wrapper,
-.quote-card-m3 {
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    user-select: none;
-    background-color: var(--md-sys-color-surface-container);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    border-radius: var(--shape-corner-lg, 24px);
-    transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
-                background-color var(--md-sys-motion-duration-short) ease,
-                box-shadow var(--md-sys-motion-duration-short) ease,
-                border-radius var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
-                padding var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
-}
-
-.quote-toggle-wrapper:hover,
-.quote-card-m3:hover {
-    box-shadow: var(--md-sys-elevation-level-1);
-    border-color: rgba(220, 196, 140, 0.4);
-}
-
-.quote-toggle-wrapper:active,
-.quote-card-m3:active {
-    transform: scale(0.98);
-    background-color: var(--md-sys-color-surface-container-high);
-}
-
-.quote-toggle-wrapper.collapsed {
-    padding: 10px 20px;
-    background-color: var(--md-sys-color-surface-container-low);
-    border: 1px solid var(--md-sys-color-outline-variant);
-    border-radius: var(--shape-corner-full, 9999px);
-    box-shadow: var(--md-sys-elevation-level-0);
-}
-
-.quote-box {
-    border-left: 3px solid var(--md-sys-color-tertiary); /* Gold accent */
-    padding-left: 16px;
-    font-style: italic;
-    font-weight: 500;
-    background: rgba(220, 196, 140, 0.04);
-    border-radius: 0 var(--shape-corner-md, 16px) var(--shape-corner-md, 16px) 0;
-    padding: 16px;
-    margin: 0;
-    transition: opacity 0.3s;
-}
-
 /* Buttons */
 .btn {
     border: none;
@@ -494,7 +445,6 @@ body {
 .mode-btn::before,
 .segment-btn::before,
 .day-circle::before,
-.quote-toggle-wrapper::before,
 .color-picker-dot::before,
 .day-chk-bubble::before,
 .routine-section-header::before,
@@ -513,7 +463,6 @@ body {
 .mode-btn:hover::before,
 .segment-btn:hover::before,
 .day-circle:hover::before,
-.quote-toggle-wrapper:hover::before,
 .color-picker-dot:hover::before,
 .day-chk-bubble:hover::before,
 .routine-section-header:hover::before,
@@ -525,7 +474,6 @@ body {
 .mode-btn:active::before,
 .segment-btn:active::before,
 .day-circle:active::before,
-.quote-toggle-wrapper:active::before,
 .color-picker-dot:active::before,
 .day-chk-bubble:active::before,
 .routine-section-header:active::before,
@@ -537,7 +485,6 @@ body {
 .mode-btn:active,
 .segment-btn:active,
 .day-circle:active,
-.quote-toggle-wrapper:active,
 .color-picker-dot:active,
 .day-chk-bubble:active,
 .routine-section-header:active,

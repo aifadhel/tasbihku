@@ -406,4 +406,50 @@ describe('Dashboard Mode-Aware Reset Button & Dock Console Unit Tests', () => {
         expect(mainJs).toContain("e.code === 'KeyR'");
         expect(mainJs).toContain('handleDashboardReset()');
     });
+
+    describe('Excision of Quote Card & Associated Artifacts', () => {
+        it('should verify complete absence of quote-card DOM elements and icon-9 in index.html', () => {
+            const indexHtml = fs.readFileSync(path.resolve(__dirname, '../../index.html'), 'utf-8');
+            expect(indexHtml).not.toContain('id="quote-card"');
+            expect(indexHtml).not.toContain('id="quote-content"');
+            expect(indexHtml).not.toContain('id="quote-collapsed-msg"');
+            expect(indexHtml).not.toContain('toggleQuote()');
+            expect(indexHtml).not.toContain('id="icon-9"');
+            expect(indexHtml).not.toContain('#icon-9');
+        });
+
+        it('should verify complete absence of quote classes and state layers in style.css', () => {
+            const css = fs.readFileSync(path.resolve(__dirname, '../../style.css'), 'utf-8');
+            expect(css).not.toContain('.quote-toggle-wrapper');
+            expect(css).not.toContain('.quote-card-m3');
+            expect(css).not.toContain('.quote-box');
+            expect(css).not.toContain('.quote-toggle-wrapper.collapsed');
+        });
+
+        it('should confirm router.js and main.js do not export or bind toggleQuote or applyQuoteState', async () => {
+            const routerModule = await import('../../src/ui/router.js');
+            expect(routerModule.toggleQuote).toBeUndefined();
+            expect(routerModule.applyQuoteState).toBeUndefined();
+            expect(global.window.toggleQuote).toBeUndefined();
+
+            const mainJs = fs.readFileSync(path.resolve(__dirname, '../../src/main.js'), 'utf-8');
+            expect(mainJs).not.toContain('toggleQuote');
+            expect(mainJs).not.toContain('applyQuoteState');
+        });
+
+        it('should confirm store.js DEFAULT_STATE does not declare quoteCollapsed and prunes it upon hydration', async () => {
+            const storeModule = await import('../../src/core/store.js');
+            expect(storeModule.state.quoteCollapsed).toBeUndefined();
+
+            const storeJs = fs.readFileSync(path.resolve(__dirname, '../../src/core/store.js'), 'utf-8');
+            expect(storeJs).not.toContain('quoteCollapsed: false');
+            expect(storeJs).toContain('delete rawState.quoteCollapsed');
+        });
+
+        it('should confirm i18n dictionaries do not declare quote or pearl of wisdom keys', () => {
+            expect(t('quote_default')).toBe('quote_default');
+            expect(t('quote_source')).toBe('quote_source');
+            expect(t('pearl_of_wisdom')).toBe('pearl_of_wisdom');
+        });
+    });
 });

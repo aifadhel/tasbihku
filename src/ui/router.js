@@ -9,7 +9,7 @@ import { stopStopwatch, stopTimer, updateStopwatchUI, updateTimerUI } from '../m
 import { renderHabits } from '../modules/habits.js';
 import { t } from '../core/i18n.js';
 
-export const APP_VERSION = '1.12.3';
+export const APP_VERSION = '1.12.4';
 
 export const SVG_ICONS = {
     tap: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>`,
@@ -463,31 +463,6 @@ export function importDataProcess(file) {
     if (importFileEl) importFileEl.value = '';
 }
 
-// --- Quote Collapsible Card ---
-export function toggleQuote() {
-    state.quoteCollapsed = !state.quoteCollapsed;
-    saveState();
-    applyQuoteState();
-    vibrate(10);
-}
-
-export function applyQuoteState() {
-    const quoteContent = document.getElementById('quote-content');
-    const quoteCollapsedMsg = document.getElementById('quote-collapsed-msg');
-    const quoteCard = document.getElementById('quote-card');
-
-    if (!quoteContent || !quoteCollapsedMsg || !quoteCard) return;
-
-    if (state.quoteCollapsed) {
-        quoteContent.style.display = 'none';
-        quoteCollapsedMsg.style.display = 'flex';
-        quoteCard.classList.add('collapsed');
-    } else {
-        quoteContent.style.display = 'block';
-        quoteCollapsedMsg.style.display = 'none';
-        quoteCard.classList.remove('collapsed');
-    }
-}
 
 // Bind to window globally for static HTML event listeners
 if (typeof window !== 'undefined') {
@@ -504,5 +479,4 @@ if (typeof window !== 'undefined') {
     window.exportData = exportData;
     window.triggerImport = triggerImport;
     window.importDataProcess = importDataProcess;
-    window.toggleQuote = toggleQuote;
 }

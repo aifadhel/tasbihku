@@ -67,8 +67,6 @@ import {
     exportData, 
     triggerImport, 
     importDataProcess, 
-    toggleQuote, 
-    applyQuoteState, 
     updateResetButtonState,
     APP_VERSION 
 } from './ui/router.js';
@@ -98,7 +96,6 @@ window.updateArabicFontSize = updateArabicFontSize;
 window.exportData = exportData;
 window.triggerImport = triggerImport;
 window.importDataProcess = importDataProcess;
-window.toggleQuote = toggleQuote;
 window.startPlayer = startPlayer;
 window.openEditor = openEditor;
 window.promptCustomTimer = promptCustomTimer;
@@ -373,7 +370,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyOledMode(state.oledMode);
     applyVibrationCapability();
     updateArabicFontSize(state.arabicFontSize, false);
-    applyQuoteState();
 
     // 5. Initial App Mode & Dashboard Mode Setup
     switchDashboardMode(state.dashboardMode || 'counting');

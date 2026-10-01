@@ -35,9 +35,6 @@ export const translations = {
         "zen_mode_title": "Mode Zen Layar Penuh",
         "zen_tap_hint": "Tap di mana saja untuk menghitung",
         "btn_launch_dzikir": "Mulai Dzikir",
-        "quote_default": '"Maka ingatlah kepada-Ku, Aku pun akan ingat kepadamu."',
-        "quote_source": "— QS. Al-Baqarah: 152",
-        "pearl_of_wisdom": "Mutiara Hikmah",
 
         // Habit Dashboard
         "habit_today_progress": "Kemajuan Hari Ini",
@@ -407,9 +404,6 @@ export const translations = {
         "zen_mode_title": "Full-Screen Zen Mode",
         "zen_tap_hint": "Tap anywhere to count",
         "btn_launch_dzikir": "Recite Dzikir",
-        "quote_default": '"So remember Me; I will remember you."',
-        "quote_source": "— Surah Al-Baqarah: 152",
-        "pearl_of_wisdom": "Pearl of Wisdom",
 
         // Habit Dashboard
         "habit_today_progress": "Today's Progress",
