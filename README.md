@@ -151,10 +151,50 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is open source and licensed under the [MIT License](LICENSE).
 
-## 🙏 Acknowledgments
+## 📜 Open Source Licenses & Attributions
 
-- Dzikir content sourced from authentic Hadith collections
-- Design inspired by [Material Design 3 Expressive](https://m3.material.io/)
-- Arabic typography by [Amiri Font](https://fonts.google.com/specimen/Amiri)
+TasbihKu is built upon open-source software, standards, and community contributions. We gratefully acknowledge the following open-source resources, libraries, typefaces, and assets:
+
+### 📦 Runtime Dependencies & Libraries
+
+| Resource / Package | Version | License | Creator / Maintainer | Role / Purpose |
+|--------------------|---------|---------|----------------------|----------------|
+| [`idb-keyval`](https://github.com/nicedoc/idb-keyval) | `6.2.5` | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) | Jake Archibald / nicedoc | Lightweight key-value storage engine powered by IndexedDB for offline persistence |
+
+### 🔤 Typography & Fonts
+
+| Font Family | Package / Distribution | License | Author / Foundry | Role / Purpose |
+|-------------|------------------------|---------|------------------|----------------|
+| **Google Sans Flex** | [`@fontsource-variable/google-sans-flex`](https://fontsource.org/fonts/google-sans-flex) (`5.2.3`) | [OFL-1.1](https://openfontlicense.org/) | Google / Fontsource | Primary interface variable typeface |
+| **Google Sans Code** | [`@fontsource/google-sans-code`](https://fontsource.org/fonts/google-sans-code) (`5.2.4`) | [OFL-1.1](https://openfontlicense.org/) | Google / Fontsource | Monospace numbers, counters, and digital stopwatch displays |
+| **Amiri & Amiri Quran** | [Google Fonts](https://fonts.google.com/specimen/Amiri) | [OFL-1.1](https://openfontlicense.org/) | Khaled Hosny, Sebastian Kosch | Classical Naskh typeface for Quranic and Hadith Arabic recitations |
+
+### 🎨 Design System & Iconography
+
+| Asset / System | License | Creator / Source | Description |
+|----------------|---------|------------------|-------------|
+| **Material Design 3 (M3 Expressive)** | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) / [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) | Google | Modern design language, tonal color palette, elevation system, and state layers |
+| **Google Material Symbols & Icons** | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) | Google | System iconography across navigation, actions, and buttons |
+| **Lucide Icons** | [ISC License](https://github.com/lucide-icons/lucide/blob/main/LICENSE) | Lucide Contributors | Stroke icons for book, sun, database, and moon symbols |
+| **GitHub Octicons** | [MIT License](https://github.com/primer/octicons/blob/main/LICENSE) | GitHub | GitHub mark SVG icon in About header |
+
+### 🔊 Audio & Feedback Assets
+
+| Asset / Pack | License | Origin / Maintainer | Description |
+|--------------|---------|---------------------|-------------|
+| **Mechvibes Soundpack** ("CherryMX Red - PBT keycaps") | [MIT License](https://github.com/hainguyents/mechvibes) | hainguyents | Mechanical keyboard tap sound sprite (`sound.ogg`, `config.json`) |
+
+### 🛠️ Build & Testing Tooling
+
+| Tool | Version | License | Maintainer | Description |
+|------|---------|---------|------------|-------------|
+| [`vite`](https://vitejs.dev/) | `^5.0.0` | [MIT](https://github.com/vitejs/vite/blob/main/LICENSE) | Evan You & Vite Contributors | Modern ESM frontend bundler and dev server |
+| [`vitest`](https://vitest.dev/) | `^1.0.0` | [MIT](https://github.com/vitest-dev/vitest/blob/main/LICENSE) | Vitest Contributors | Blazing fast unit testing framework |
+| [`@playwright/test`](https://playwright.dev/) | `^1.60.0` | [Apache-2.0](https://github.com/microsoft/playwright/blob/main/LICENSE) | Microsoft | Cross-browser end-to-end testing suite |
+
+### 🙏 Acknowledgments & Sacred Texts
+
+- **Dzikir & Hadith Texts**: Sourced from authentic Hadith collections (Sahih Al-Bukhari, Sahih Muslim, Sunan Abu Dawud, Jami' At-Tirmidhi, Sunan An-Nasa'i, Musnad Ahmad) with Indonesian translations referenced from Kementerian Agama Republik Indonesia (Kemenag RI).
+- Design inspired by the Islamic digital art aesthetic and Google Material 3 Expressive guidelines.

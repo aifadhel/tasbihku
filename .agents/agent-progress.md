@@ -1,5 +1,23 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-10-02 (v1.13.0 Open Source Licenses & Attributions)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Documented open-source licenses and third-party attributions in a dedicated structured table and section in `README.md`.
+  - [✓] Step 2: Added i18n translation keys in Indonesian and English for all open-source license resource names, categories, and descriptions in `src/core/i18n.js`.
+  - [✓] Step 3: Added Material 3 styled Open Source Licenses section into `#page-about` (`tasbihku.web.app/about`) with responsive cards, license badges, and upstream external links in `index.html`.
+  - [✓] Step 4: Added component styles for open-source license list and license chips adhering to M3 tokens and OLED dark theme in `style.css`.
+  - [✓] Step 5: Expanded Vitest unit tests in `tests/unit/i18n.test.js` and `tests/unit/router.test.js` to assert presence and correctness of license keys, DOM elements, and CSS classes. 83/83 tests passing (100%).
+  - [✓] Step 6: Automated minor version bump to `v1.13.0`, updated Service Worker cache name to `tasbihku-v1.13.0`, enriched `CHANGELOG.md`, and compiled clean production bundle via Vite (`npm run build`).
+- **Verification Evidence**:
+  - `npm test`: 83 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 16.66 kB HTML / 81.72 kB CSS / 49.80 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified open-source licenses listed clearly in `README.md` and live `#page-about` (`/about`) with accurate licensing (Apache-2.0, OFL-1.1, MIT, ISC, CC BY 4.0, Sunnah Heritage).
+  - [✓] Verified full bilingual i18n support in ID and EN without hardcoded strings or layout shifts.
+  - [✓] Verified clean production compilation and 83/83 unit test suite passing.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-10-01 (v1.12.5 Defensive Startup DOM Purge for Stale PWA Caches)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
@@ -243,7 +261,7 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Current Version**: tasbihku-v1.12.5
-- **Unit Tests**: 81/81 passing (100%)
+- **Current Version**: tasbihku-v1.13.0
+- **Unit Tests**: 83/83 passing (100%)
 - **Production Build**: Clean (25 modules transformed)
 

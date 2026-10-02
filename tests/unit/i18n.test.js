@@ -78,10 +78,16 @@ describe('i18n Translation System Unit Tests', () => {
         expect(t('about_title')).toBe('Tentang TasbihKu');
         expect(t('about_chip_pwa')).toBe('PWA Ready');
         expect(t('about_features_title')).toBe('Fitur Utama');
+        expect(t('about_licenses_title')).toBe('Lisensi Open Source & Atribusi');
+        expect(t('about_license_idb_desc')).toBe('Penyimpanan data lokal berbasis IndexedDB berkecepatan tinggi.');
+        expect(t('about_license_category_sources')).toBe('Sumber Dzikir & Hadits');
 
         setLanguage('en');
         expect(t('about_title')).toBe('About TasbihKu');
         expect(t('about_chip_pwa')).toBe('PWA Ready');
         expect(t('about_features_title')).toBe('Main Features');
+        expect(t('about_licenses_title')).toBe('Open Source Licenses & Attributions');
+        expect(t('about_license_idb_desc')).toBe('High-performance local IndexedDB storage engine.');
+        expect(t('about_license_category_sources')).toBe('Dzikir & Hadith Sources');
     });
 });

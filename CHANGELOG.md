@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.13.0] - 2026-10-02
+
+- **Highlight:** Added a comprehensive Open Source Licenses & Attributions section to both `README.md` and the in-app About page (`tasbihku.web.app/about` / `#page-about`), honoring all open-source libraries, typefaces, iconography, design systems, soundpacks, and sacred text sources used in the project with Material 3 responsive styling and complete bilingual (ID/EN) internationalization.
+
+### Specific UI & Component Changes
+- **About Page Open Source Section (`index.html`):** Injected `.about-licenses-section` and `.about-licenses-container` into `#page-about` featuring dedicated cards for `idb-keyval`, Google Sans Flex & Code, Amiri & Amiri Quran, Material Design 3, Google Material Symbols, Lucide Icons, GitHub Octicons, Mechvibes Soundpack, and Vite/Vitest/Playwright tooling.
+- **M3 License Badges & Responsive Grid (`style.css`):** Declared CSS rules for `.about-licenses-container` (auto-fit responsive grid with 280px minimum column width), `.about-license-item` tonal cards with M3 surface elevation and hover states, and semantic license badge chips (`.badge-apache`, `.badge-ofl`, `.badge-mit`, `.badge-isc`, `.badge-cc`, `.badge-heritage`) with distinct color themes.
+- **Documentation Overhaul (`README.md`):** Restructured and expanded the license and acknowledgments section into a comprehensive, multi-table breakdown categorizing runtime dependencies, typography & fonts, design system & iconography, audio assets, developer & testing tooling, and sacred Hadith sources.
+
+### Core Logic & Audio/Haptic Workflows
+- **PWA Cache Invalidation (`public/sw.js`):** Bumped cache name to `tasbihku-v1.13.0` to force Service Worker invalidation on client browsers and installed PWAs.
+- Preserved core counter state, audio synthesis, and haptic vibration engine invariants with zero regressions.
+
+### Dzikir & Habits Engine
+- **i18n Translation Dictionary Expansion (`src/core/i18n.js`):** Added 20 new localization keys across Indonesian and English dictionaries (`about_licenses_title`, `about_licenses_subtitle`, `about_license_category_*`, `about_license_*_desc`), ensuring seamless language switching without raw English or Indonesian fallback leakage.
+
+### Test & Verification
+- **Unit Test Suite (`tests/unit/i18n.test.js` & `tests/unit/router.test.js`):** Expanded Vitest unit tests to assert presence and accurate bilingual translation of new license keys in both ID and EN, and added structural assertions for `#about-licenses-container` DOM elements and M3 CSS badge classes. 83/83 unit tests passing (100%).
+- **Production Compilation (`npm run build`):** Clean Vite production build with 25 modules transformed, 0 bundle warnings, and 0 errors.
+
 ## [tasbihku-v1.12.5] - 2026-10-01
 
 - **Highlight:** Resolved client-side PWA stale service worker cache artifact where historical cached HTML shells continued to render `#quote-card` with fallback translation keys (`quote_default`, `quote_source`). Implemented defensive startup DOM purging in `src/main.js` and bumped cache name to `tasbihku-v1.12.5`.

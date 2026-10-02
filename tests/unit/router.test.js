@@ -458,4 +458,25 @@ describe('Dashboard Mode-Aware Reset Button & Dock Console Unit Tests', () => {
             expect(mainJs).toContain("staleQuoteCard.remove()");
         });
     });
+
+    describe('About Page Open Source Licenses Section', () => {
+        it('should verify open source licenses container and items exist in index.html', () => {
+            const html = fs.readFileSync(path.resolve(__dirname, '../../index.html'), 'utf-8');
+            expect(html).toContain('id="about-licenses-container"');
+            expect(html).toContain('about-licenses-section');
+            expect(html).toContain('idb-keyval');
+            expect(html).toContain('Google Sans Flex & Code');
+            expect(html).toContain('Amiri & Amiri Quran');
+            expect(html).toContain('Mechvibes Soundpack');
+        });
+
+        it('should verify open source license CSS rules and badges exist in style.css', () => {
+            const css = fs.readFileSync(path.resolve(__dirname, '../../style.css'), 'utf-8');
+            expect(css).toContain('.about-licenses-container');
+            expect(css).toContain('.about-license-item');
+            expect(css).toContain('.badge-apache');
+            expect(css).toContain('.badge-ofl');
+            expect(css).toContain('.badge-mit');
+        });
+    });
 });
