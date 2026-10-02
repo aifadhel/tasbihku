@@ -1,5 +1,23 @@
 # TasbihKu Agent Progress & Session History
 
+## Session: 2026-10-03 (v1.13.1 Authentic Post-Prayer Wirid Expansion & Store Migration v3)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Expanded Vitest test suite (`tests/unit/dzikir.test.js`) with 5 specifications asserting complete schema compliance, untruncated Ayat Kursi, presence of 3 Quls with target 1, presence of Tahlils/Duas, and store version 3.
+  - [✓] Step 2: Replaced incomplete 7-item `wiridReadings` with 14 canonical authentic Sunnah narrations from Hisnul Muslim (Chapter 25) with full Tashkeel, Latin transliteration, bilingual ID/EN translations, and Hadith citations (`src/modules/dzikir.js`).
+  - [✓] Step 3: Incremented store `guidedDataVersion` to `3`, exported `DEFAULT_STATE`, and implemented safe hydration migration to purge legacy incomplete wirid arrays (`<= 7` items) while preserving custom user lists (`src/core/store.js`).
+  - [✓] Step 4: Executed full test suite and production build: 88/88 unit tests passing (100%), clean production Vite bundle compilation (`npm test && npm run build`).
+  - [✓] Step 5: Automated patch version bump to `v1.13.1`, incremented Service Worker cache name to `tasbihku-v1.13.1`, and enriched `CHANGELOG.md` adhering to Keep a Changelog standards.
+- **Verification Evidence**:
+  - `npm test`: 88 passed across 4 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 16.66 kB HTML / 81.72 kB CSS / 51.15 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified complete absence of truncated `...` in Ayat Kursi across all datasets (`dzikirPagi`, `dzikirPetang`, and `wiridReadings`).
+  - [✓] Verified 3 Quls (Al-Ikhlas, Al-Falaq, An-Nas) have `target: 1` in `wiridReadings` per HR. Abu Daud 1523, distinct from `target: 3` in Morning/Evening Adhkar.
+  - [✓] Verified store hydration migration safely invalidates stale `guidedData.wirid` arrays without touching custom user azkar lists.
+  - [✓] Verified 88/88 unit tests passing and clean Vite bundle compilation.
+- **Known Regressions / Blockers**: None.
+
 ## Session: 2026-10-02 (v1.13.0 Open Source Licenses & Attributions)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
 - **Milestones Completed**:
@@ -261,7 +279,7 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Current Version**: tasbihku-v1.13.0
-- **Unit Tests**: 83/83 passing (100%)
+- **Current Version**: tasbihku-v1.13.1
+- **Unit Tests**: 88/88 passing (100%)
 - **Production Build**: Clean (25 modules transformed)
 

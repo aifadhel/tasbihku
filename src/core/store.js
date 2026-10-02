@@ -6,13 +6,13 @@ import { get as idbGet, set as idbSet } from 'idb-keyval';
 
 const STORAGE_KEY = 'tasbihKuState';
 
-const DEFAULT_STATE = {
+export const DEFAULT_STATE = {
     freeCount: 0,
     targetLimit: 0,
     customList: [],
     customAzkar: [],
     guidedData: {},
-    guidedDataVersion: 2,
+    guidedDataVersion: 3,
     keepScreenOn: false,
     oledMode: false,
     userName: 'SaudaraKu',
@@ -182,14 +182,17 @@ export async function loadState() {
             if (!Array.isArray(rawState.customAzkar)) rawState.customAzkar = [];
             if (!Array.isArray(rawState.activityLog)) rawState.activityLog = [];
             if (!rawState.guidedData) rawState.guidedData = {};
-            if (typeof rawState.guidedDataVersion === 'undefined' || rawState.guidedDataVersion < 2) {
+            if (typeof rawState.guidedDataVersion === 'undefined' || rawState.guidedDataVersion < 3) {
                 if (rawState.guidedData.pagi && rawState.guidedData.pagi.length <= 10) {
                     delete rawState.guidedData.pagi;
                 }
                 if (rawState.guidedData.petang && rawState.guidedData.petang.length <= 10) {
                     delete rawState.guidedData.petang;
                 }
-                rawState.guidedDataVersion = 2;
+                if (rawState.guidedData.wirid && rawState.guidedData.wirid.length <= 7) {
+                    delete rawState.guidedData.wirid;
+                }
+                rawState.guidedDataVersion = 3;
             }
             if (typeof rawState.appMode === 'undefined') rawState.appMode = 'tasbih';
             if (!Array.isArray(rawState.habits)) rawState.habits = [];

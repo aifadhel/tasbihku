@@ -12,13 +12,188 @@ import { showToast } from '../ui/toast.js';
 
 // Hardcoded Guided Readings Datasets
 export const wiridReadings = [
-    { arabic: "أَسْتَغْفِرُ اللَّهَ", latin: "Astaghfirullah.", translation: { id: "Aku memohon ampun kepada Allah.", en: "I seek forgiveness from Allah." }, target: 3, reference: { id: "HR. Muslim no. 591", en: "Sahih Muslim no. 591" } },
-    { arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", latin: "Allahumma antas salam, wa minkas salam, tabarakta ya dzal jalali wal ikram.", translation: { id: "Ya Allah, Engkau adalah Pemberi keselamatan, dan dari-Mu keselamatan, Maha Suci Engkau wahai Pemilik Keagungan dan Kemuliaan.", en: "O Allah, You are Peace, and from You comes peace. Blessed are You, O Owner of Majesty and Honor." }, target: 1, reference: { id: "HR. Muslim no. 591", en: "Sahih Muslim no. 591" } },
-    { arabic: "اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ...", latin: "Allahu laa ilaaha illaa huwal hayyul qayyum. Laa ta'khudzuhuu sinatuw wa laa naum...", translation: { id: "Allah, tidak ada tuhan yang berhak disembah melainkan Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya)...", en: "Allah, there is no deity except Him, the Ever-Living, the Sustainer of all existence. Neither drowsiness overtakes Him nor sleep..." }, target: 1, reference: { id: "HR. An-Nasa'i no. 100, disahihkan oleh Al-Albani", en: "Sunan An-Nasa'i no. 100, authenticated by Al-Albani" } },
-    { arabic: "سُبْحَانَ اللَّهِ", latin: "Subhanallah.", translation: { id: "Maha Suci Allah.", en: "Glory be to Allah." }, target: 33, reference: { id: "HR. Muslim no. 597", en: "Sahih Muslim no. 597" } },
-    { arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillah.", translation: { id: "Segala puji bagi Allah.", en: "All praise is due to Allah." }, target: 33, reference: { id: "HR. Muslim no. 597", en: "Sahih Muslim no. 597" } },
-    { arabic: "اللَّهُ أَكْبَرُ", latin: "Allahu Akbar.", translation: { id: "Allah Maha Besar.", en: "Allah is the Greatest." }, target: 33, reference: { id: "HR. Muslim no. 597", en: "Sahih Muslim no. 597" } },
-    { arabic: "لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaha illallahu wahdahu laa syarikalah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir.", translation: { id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.", en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things." }, target: 1, reference: { id: "HR. Muslim no. 597 (Penggenap 100)", en: "Sahih Muslim no. 597 (Completing 100)" } }
+    {
+        arabic: "أَسْتَغْفِرُ اللَّهَ",
+        latin: "Astaghfirullah.",
+        translation: {
+            id: "Aku memohon ampun kepada Allah.",
+            en: "I seek forgiveness from Allah."
+        },
+        target: 3,
+        reference: {
+            id: "HR. Muslim no. 591",
+            en: "Sahih Muslim no. 591"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ",
+        latin: "Allahumma antas-salam, wa minkas-salam, tabarakta ya dzal-jalali wal-ikram.",
+        translation: {
+            id: "Ya Allah, Engkau adalah Maha Sejahtera (Pemberi keselamatan), dan dari-Mu keselamatan, Maha Berkah Engkau wahai Pemilik Keagungan dan Kemuliaan.",
+            en: "O Allah, You are Peace, and from You comes peace. Blessed are You, O Owner of Majesty and Honor."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Muslim no. 591",
+            en: "Sahih Muslim no. 591"
+        }
+    },
+    {
+        arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، اللَّهُمَّ لَا مَانِعَ لِمَا أَعْطَيْتَ، وَلَا مُعْطِيَ لِمَا مَنَعْتَ، وَلَا يَنْفَعُ ذَا الْجَدِّ مِنْكَ الْجَدُّ",
+        latin: "Laa ilaha illallahu wahdahu laa syariika lah, lahul-mulku wa lahul-hamdu wa huwa 'alaa kulli syai-in qadiir. Allahumma laa maani'a limaa a'thaita, wa laa mu'thiya limaa mana'ta, wa laa yanfa'u dzal-jaddi minkal-jadd.",
+        translation: {
+            id: "Tidak ada tuhan yang berhak disembah selain Allah Yang Maha Esa, tiada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala puji, dan Dia Maha Kuasa atas segala sesuatu. Ya Allah, tidak ada yang dapat menghalangi apa yang Engkau berikan, dan tidak ada yang dapat memberi apa yang Engkau halangi, dan tidak bermanfaat kekayaan/kemuliaan bagi orang yang memilikinya dari (siksa)-Mu.",
+            en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things. O Allah, none can withhold what You give, none can give what You withhold, and the fortune of the wealthy cannot benefit them against You."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Al-Bukhari no. 844, Muslim no. 593",
+            en: "Sahih Al-Bukhari no. 844, Sahih Muslim no. 593"
+        }
+    },
+    {
+        arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ. لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَلَا نَعْبُدُ إِلَّا إِيَّاهُ، لَهُ النِّعْمَةُ وَلَهُ الْفَضْلُ وَلَهُ الثَّنَاءُ الْحَسَنُ، لَا إِلَهَ إِلَّا اللَّهُ مُخْلِصِينَ لَهُ الدِّينَ وَلَوْ كَرِهَ الْكَافِرُونَ",
+        latin: "Laa ilaha illallahu wahdahu laa syariika lah, lahul-mulku wa lahul-hamdu wa huwa 'alaa kulli syai-in qadiir. Laa hawla wa laa quwwata illaa billah, laa ilaha illallahu wa laa na'budu illaa iyyaah, lahun-ni'matu wa lahul-fadhlu wa lahuts-tsanaa-ul-hasan, laa ilaha illallahu mukhlishiina lahud-diina wa law karihal-kaafiruun.",
+        translation: {
+            id: "Tidak ada tuhan yang berhak disembah selain Allah Yang Maha Esa, tiada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala puji, dan Dia Maha Kuasa atas segala sesuatu. Tidak ada daya dan kekuatan kecuali dengan (pertolongan) Allah. Tidak ada tuhan selain Allah, dan kami tidak menyembah kecuali hanya kepada-Nya. Bagi-Nya segala nikmat, anugerah, dan pujian yang baik. Tidak ada tuhan selain Allah dengan memurnikan ketaatan kepada-Nya meskipun orang-orang kafir membenci.",
+            en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion and to Him is all praise, and He is capable of all things. There is no power and no strength except with Allah. There is no deity except Allah, and we worship none but Him. To Him belong all blessings, grace, and worthy praise. There is no deity except Allah, sincere to Him in religion, even if the disbelievers detest it."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Muslim no. 594",
+            en: "Sahih Muslim no. 594"
+        }
+    },
+    {
+        arabic: "سُبْحَانَ اللَّهِ",
+        latin: "Subhanallah.",
+        translation: {
+            id: "Maha Suci Allah.",
+            en: "Glory be to Allah."
+        },
+        target: 33,
+        reference: {
+            id: "HR. Muslim no. 597",
+            en: "Sahih Muslim no. 597"
+        }
+    },
+    {
+        arabic: "الْحَمْدُ لِلَّهِ",
+        latin: "Alhamdulillah.",
+        translation: {
+            id: "Segala puji bagi Allah.",
+            en: "All praise is due to Allah."
+        },
+        target: 33,
+        reference: {
+            id: "HR. Muslim no. 597",
+            en: "Sahih Muslim no. 597"
+        }
+    },
+    {
+        arabic: "اللَّهُ أَكْبَرُ",
+        latin: "Allahu Akbar.",
+        translation: {
+            id: "Allah Maha Besar.",
+            en: "Allah is the Greatest."
+        },
+        target: 33,
+        reference: {
+            id: "HR. Muslim no. 597",
+            en: "Sahih Muslim no. 597"
+        }
+    },
+    {
+        arabic: "لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+        latin: "Laa ilaha illallahu wahdahu laa syariika lah, lahul-mulku wa lahul-hamdu wa huwa 'alaa kulli syai-in qadiir.",
+        translation: {
+            id: "Tidak ada tuhan yang berhak disembah kecuali Allah Yang Maha Esa, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian, dan Dia Maha Kuasa atas segala sesuatu.",
+            en: "There is no deity worthy of worship except Allah alone, without partner. To Him belongs the dominion, to Him belongs all praise, and He is capable of all things."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Muslim no. 597 (Penggenap 100)",
+            en: "Sahih Muslim no. 597 (Completing 100)"
+        }
+    },
+    {
+        arabic: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+        latin: "Allahu laa ilaaha illaa huwal-hayyul-qayyum. Laa ta'khudzuhuu sinatuw wa laa naum. Lahuu maa fis-samaawaati wa maa fil-ardh. Man dzalladzii yasyfa'u 'indahuu illaa bi-idznih. Ya'lamu maa baina aidiihim wa maa khalfahum wa laa yuhiithuuna bisyai-im min 'ilmihii illaa bimaa syaa-a. Wasi'a kursiyyuhus-samaawaati wal-ardh, wa laa ya-uuduhuu hifzhuhumaa wa huwal-'aliyyul-'adzim.",
+        translation: {
+            id: "Allah, tidak ada tuhan yang berhak disembah selain Dia Yang Hidup kekal lagi terus menerus mengurus (makhluk-Nya). Tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan apa yang ada di bumi. Tiada yang dapat memberi syafaat di sisi Allah tanpa izin-Nya. Allah mengetahui apa-apa yang di hadapan mereka dan di belakang mereka, dan mereka tidak mengetahui apa-apa dari ilmu Allah melainkan apa yang dikehendaki-Nya. Kursi Allah meliputi langit dan bumi. Dan Allah tidak merasa berat memelihara keduanya, dan Allah Maha Tinggi lagi Maha Besar.",
+            en: "Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great."
+        },
+        target: 1,
+        reference: {
+            id: "HR. An-Nasa'i As-Sunan Al-Kubra no. 9928, disahihkan Ibnu Hibban & Al-Albani",
+            en: "Sunan An-Nasa'i & Al-Mu'jam Al-Kabir, authenticated by Al-Albani"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul huwallaahu ahad. Allaahush-shamad. Lam yalid wa lam yuulad. Wa lam yakun lahuu kufuwan ahad.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah (Muhammad), Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu. (Allah) tidak beranak dan tidak pula diperanakkan. Dan tidak ada sesuatu yang setara dengan Dia.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, He is Allah, [who is] One. Allah, the Eternal Refuge. He neither begets nor is born, nor is there to Him any equivalent."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Abu Daud no. 1523, An-Nasa'i no. 1336",
+            en: "Sunan Abu Dawud no. 1523, Sunan An-Nasa'i no. 1336"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul a'uudzu birabbil-falaq. Min syarri maa khalaq. Wa min syarri ghaasiqin idzaa waqab. Wa min syarrin-naffaatsaati fil-'uqad. Wa min syarri haasidin idzaa hasad.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah, Aku berlindung kepada Tuhan yang menguasai subuh (fajar), dari kejahatan (makhluk yang) Dia ciptakan, dan dari kejahatan malam apabila telah gelap gulita, dan dari kejahatan perempuan-perempuan (penyihir) yang meniup pada buhul-buhul (talinya), dan dari kejahatan orang yang dengki apabila dia dengki.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, I seek refuge in the Lord of daybreak from the evil of that which He created and from the evil of darkness when it settles and from the evil of the blowers in knots and from the evil of an envier when he envies."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Abu Daud no. 1523, An-Nasa'i no. 1336",
+            en: "Sunan Abu Dawud no. 1523, Sunan An-Nasa'i no. 1336"
+        }
+    },
+    {
+        arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ۝ قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ",
+        latin: "Bismillahir-rahmaanir-rahiim. Qul a'uudzu birabbin-naas. Malikin-naas. Ilaahin-naas. Min syarril-waswaasil-khannaas. Alladzii yuwaswisu fii shuduurin-naas. Minal-jinnati wan-naas.",
+        translation: {
+            id: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang. Katakanlah, Aku berlindung kepada Tuhannya manusia, Raja manusia, Sembahan manusia, dari kejahatan (bisikan) setan yang bersembunyi, yang membisikkan (kejahatan) ke dalam dada manusia, dari (golongan) jin dan manusia.",
+            en: "In the name of Allah, the Entirely Merciful, the Especially Merciful. Say, I seek refuge in the Lord of mankind, the Sovereign of mankind, the God of mankind, from the evil of the retreating whisperer who whispers into the breasts of mankind, from among the jinn and mankind."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Abu Daud no. 1523, An-Nasa'i no. 1336",
+            en: "Sunan Abu Dawud no. 1523, Sunan An-Nasa'i no. 1336"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
+        latin: "Allahumma a'innii 'ala dzikrika wa syukrika wa husni 'ibadatik.",
+        translation: {
+            id: "Ya Allah, tolonglah aku untuk selalu berdzikir kepada-Mu, bersyukur kepada-Mu, dan memperbagus ibadah kepada-Mu.",
+            en: "O Allah, help me to remember You, to give You thanks, and to worship You in an excellent manner."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Abu Daud no. 1522, An-Nasa'i no. 1303, disahihkan Al-Albani",
+            en: "Sunan Abu Dawud no. 1522, Sunan An-Nasa'i no. 1303, authenticated by Al-Albani"
+        }
+    },
+    {
+        arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا، وَرِزْقًا طَيِّبًا، وَعَمَلًا مُتَقَبَّلًا",
+        latin: "Allahumma innii as-aluka 'ilman naafi'aa, wa rizqan thayyibaa, wa 'amalan mutaqabbalaa.",
+        translation: {
+            id: "Ya Allah, sesungguhnya aku memohon kepada-Mu ilmu yang bermanfaat, rezeki yang halal dan baik, serta amalan yang diterima.",
+            en: "O Allah, I ask You for beneficial knowledge, good and lawful provision, and accepted deeds."
+        },
+        target: 1,
+        reference: {
+            id: "HR. Ibnu Majah no. 925, Ahmad 6/294 (Khusus Ba'da Subuh)",
+            en: "Sunan Ibn Majah no. 925, Musnad Ahmad 6/294 (Recited after Fajr)"
+        }
+    }
 ];
 
 export const dzikirPagi = [

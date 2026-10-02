@@ -15,6 +15,7 @@ vi.mock('../../src/ui/router.js', () => ({
 }));
 
 import { dzikirPagi, dzikirPetang, wiridReadings, getLocalizedText } from '../../src/modules/dzikir.js';
+import { DEFAULT_STATE } from '../../src/core/store.js';
 
 describe('Dzikir Module Dataset & Helper Unit Tests', () => {
     describe('Dataset Schema & Integrity Constraints', () => {
@@ -26,6 +27,11 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
         it('dzikirPetang should contain at least 14 authentic items', () => {
             expect(Array.isArray(dzikirPetang)).toBe(true);
             expect(dzikirPetang.length).toBeGreaterThanOrEqual(14);
+        });
+
+        it('wiridReadings should contain at least 14 authentic items', () => {
+            expect(Array.isArray(wiridReadings)).toBe(true);
+            expect(wiridReadings.length).toBeGreaterThanOrEqual(14);
         });
 
         it('every item in dzikirPagi should have complete schema fields', () => {
@@ -77,12 +83,38 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
                 expect(item.reference.en.trim().length, `dzikirPetang[${index}].reference.en non-empty`).toBeGreaterThan(0);
             });
         });
+
+        it('every item in wiridReadings should have complete schema fields', () => {
+            wiridReadings.forEach((item, index) => {
+                expect(typeof item.arabic, `wiridReadings[${index}].arabic`).toBe('string');
+                expect(item.arabic.trim().length, `wiridReadings[${index}].arabic non-empty`).toBeGreaterThan(0);
+
+                expect(typeof item.latin, `wiridReadings[${index}].latin`).toBe('string');
+                expect(item.latin.trim().length, `wiridReadings[${index}].latin non-empty`).toBeGreaterThan(0);
+
+                expect(typeof item.target, `wiridReadings[${index}].target`).toBe('number');
+                expect(item.target, `wiridReadings[${index}].target > 0`).toBeGreaterThan(0);
+
+                expect(typeof item.translation, `wiridReadings[${index}].translation`).toBe('object');
+                expect(typeof item.translation.id, `wiridReadings[${index}].translation.id`).toBe('string');
+                expect(item.translation.id.trim().length, `wiridReadings[${index}].translation.id non-empty`).toBeGreaterThan(0);
+                expect(typeof item.translation.en, `wiridReadings[${index}].translation.en`).toBe('string');
+                expect(item.translation.en.trim().length, `wiridReadings[${index}].translation.en non-empty`).toBeGreaterThan(0);
+
+                expect(typeof item.reference, `wiridReadings[${index}].reference`).toBe('object');
+                expect(typeof item.reference.id, `wiridReadings[${index}].reference.id`).toBe('string');
+                expect(item.reference.id.trim().length, `wiridReadings[${index}].reference.id non-empty`).toBeGreaterThan(0);
+                expect(typeof item.reference.en, `wiridReadings[${index}].reference.en`).toBe('string');
+                expect(item.reference.en.trim().length, `wiridReadings[${index}].reference.en non-empty`).toBeGreaterThan(0);
+            });
+        });
     });
 
     describe('Authentic Narrations & Textual Precision', () => {
-        it('Ayat Kursi must be full and untruncated in both morning and evening sets', () => {
+        it('Ayat Kursi must be full and untruncated in morning, evening, and wirid sets', () => {
             const pagiKursi = dzikirPagi[0];
             const petangKursi = dzikirPetang[0];
+            const wiridKursi = wiridReadings.find(item => item.arabic.includes('الْحَيُّ الْقَيُّومُ'));
 
             expect(pagiKursi.arabic).not.toContain('...');
             expect(pagiKursi.arabic).toContain('وَسِعَ كُرْسِيُّهُ');
@@ -93,9 +125,15 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
             expect(petangKursi.arabic).toContain('وَسِعَ كُرْسِيُّهُ');
             expect(petangKursi.arabic).toContain('وَلَا يَئُودُهُ حِفْظُهُمَا');
             expect(petangKursi.target).toBe(1);
+
+            expect(wiridKursi).toBeDefined();
+            expect(wiridKursi.arabic).not.toContain('...');
+            expect(wiridKursi.arabic).toContain('وَسِعَ كُرْسِيُّهُ');
+            expect(wiridKursi.arabic).toContain('وَلَا يَئُودُهُ حِفْظُهُمَا');
+            expect(wiridKursi.target).toBe(1);
         });
 
-        it('Al-Muawwidhat (3 Quls) must be present in both sets with target 3 each', () => {
+        it('Al-Muawwidhat (3 Quls) must be present in both sets with target 3 each and wirid with target 1', () => {
             const pagiIkhlas = dzikirPagi.find(item => item.arabic.includes('قُلْ هُوَ اللَّهُ أَحَدٌ'));
             const pagiFalaq = dzikirPagi.find(item => item.arabic.includes('قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ'));
             const pagiNas = dzikirPagi.find(item => item.arabic.includes('قُلْ أَعُوذُ بِرَبِّ النَّاسِ'));
@@ -117,6 +155,37 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
             expect(petangFalaq.target).toBe(3);
             expect(petangNas).toBeDefined();
             expect(petangNas.target).toBe(3);
+
+            const wiridIkhlas = wiridReadings.find(item => item.arabic.includes('قُلْ هُوَ اللَّهُ أَحَدٌ'));
+            const wiridFalaq = wiridReadings.find(item => item.arabic.includes('قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ'));
+            const wiridNas = wiridReadings.find(item => item.arabic.includes('قُلْ أَعُوذُ بِرَبِّ النَّاسِ'));
+
+            expect(wiridIkhlas).toBeDefined();
+            expect(wiridIkhlas.target).toBe(1);
+            expect(wiridFalaq).toBeDefined();
+            expect(wiridFalaq.target).toBe(1);
+            expect(wiridNas).toBeDefined();
+            expect(wiridNas.target).toBe(1);
+        });
+
+        it('wiridReadings must include Tahlil Al-Mughirah and Tahlil Ibn Az-Zubair', () => {
+            const mughirah = wiridReadings.find(item => item.arabic.includes('لَا مَانِعَ لِمَا أَعْطَيْتَ'));
+            const zubair = wiridReadings.find(item => item.arabic.includes('لَهُ النِّعْمَةُ وَلَهُ الْفَضْلُ'));
+
+            expect(mughirah).toBeDefined();
+            expect(mughirah.target).toBe(1);
+            expect(zubair).toBeDefined();
+            expect(zubair.target).toBe(1);
+        });
+
+        it('wiridReadings must include Doa Muadz bin Jabal and Doa Ilmu Nafi', () => {
+            const muadz = wiridReadings.find(item => item.arabic.includes('أَعِنِّي عَلَى ذِكْرِكَ'));
+            const ilmuNafi = wiridReadings.find(item => item.arabic.includes('عِلْمًا نَافِعًا'));
+
+            expect(muadz).toBeDefined();
+            expect(muadz.target).toBe(1);
+            expect(ilmuNafi).toBeDefined();
+            expect(ilmuNafi.target).toBe(1);
         });
 
         it('Bismillahilladzi la yadhurru must be present in both morning and evening with target 3', () => {
@@ -149,6 +218,10 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
             const audzu = dzikirPetang.find(item => item.arabic.includes('أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ'));
             expect(audzu).toBeDefined();
             expect(audzu.target).toBe(3);
+        });
+
+        it('store DEFAULT_STATE must define guidedDataVersion === 3', () => {
+            expect(DEFAULT_STATE.guidedDataVersion).toBe(3);
         });
     });
 

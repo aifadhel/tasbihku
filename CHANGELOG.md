@@ -6,6 +6,42 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.13.1] - 2026-10-03
+
+- **Highlight:** Expanded the guided post-prayer wirid dataset (`wiridReadings`) from 7 incomplete recitations to 14 canonical Sunnah narrations adhering to *Hisnul Muslim* (Chapter 25) with full untruncated Ayat Kursi, Al-Mu'awwidhat (3 Quls), complete Tahlil narrations, and closing supplications, supported by store migration `guidedDataVersion: 3` and 88 unit tests.
+
+### Specific UI & Component Changes
+- **Recitation Viewport Integration (`src/modules/dzikir.js`):** Connected the 14-item `wiridReadings` canonical dataset to `#page-player`, utilizing the docked scrolling viewport (`#player-scroll-viewport`) and fixed bottom repetition bar (`#player-bottom-bar`) to allow comfortable full-verse scrolling of untruncated Ayat Kursi and Surah recitations without occluding repetition controls or the primary TAP FAB.
+- **Tashkeel & Diacritic Typography:** Formatted all 14 Arabic recitations with complete Tashkeel/harakat and proper verse stop glyphs (`۝`), verified against Amiri font rendering and `line-height: 1.8` line spacing to prevent diacritic clipping.
+
+### Core Logic & Audio/Haptic Workflows
+- **Store Hydration Migration v3 (`src/core/store.js`):** Incremented `DEFAULT_STATE.guidedDataVersion` to `3` and added a defensive client storage migration that automatically purges stale, incomplete legacy wirid arrays (`rawState.guidedData.wirid.length <= 7`) while strictly preserving any customized user lists.
+- **Store Default State Export (`src/core/store.js`):** Exported `DEFAULT_STATE` to provide centralized immutable state contract inspection for modules and automated test harnesses.
+- **Service Worker Cache Rotation (`public/sw.js`):** Incremented offline application cache bucket to `tasbihku-v1.13.1` to force immediate Service Worker invalidation and asset freshness across installed PWAs.
+
+### Dzikir & Habits Engine
+- **Canonical 14-Item Post-Prayer Dataset (`src/modules/dzikir.js`):**
+  1. *Istighfar* (3x, HR. Muslim no. 591)
+  2. *Allahumma Antas Salam* (1x, HR. Muslim no. 591)
+  3. *Tahlil & Qadar / Al-Mughirah bin Syu'bah* (1x, HR. Al-Bukhari no. 844, Muslim no. 593)
+  4. *Tahlil & Ikhlas / Abdullah bin Az-Zubair* (1x, HR. Muslim no. 594)
+  5. *Tasbih (Subhanallah)* (33x, HR. Muslim no. 597)
+  6. *Tahmid (Alhamdulillah)* (33x, HR. Muslim no. 597)
+  7. *Takbir (Allahu Akbar)* (33x, HR. Muslim no. 597)
+  8. *Tahlil Penggenap 100* (1x, HR. Muslim no. 597)
+  9. *Ayat Kursi (Full 50-word verse, untruncated)* (1x, HR. An-Nasa'i As-Sunan Al-Kubra no. 9928, disahihkan Ibnu Hibban & Al-Albani)
+  10. *Surah Al-Ikhlas* (1x, HR. Abu Daud no. 1523, An-Nasa'i no. 1336)
+  11. *Surah Al-Falaq* (1x, HR. Abu Daud no. 1523, An-Nasa'i no. 1336)
+  12. *Surah An-Nas* (1x, HR. Abu Daud no. 1523, An-Nasa'i no. 1336)
+  13. *Doa Mu'adz bin Jabal (Allahumma a'inni 'ala dzikrika...)* (1x, HR. Abu Daud no. 1522, An-Nasa'i no. 1303)
+  14. *Doa Ilmu Nafi' (Khusus Ba'da Shalat Subuh)* (1x, HR. Ibnu Majah no. 925, Ahmad 6/294)
+- **Bilingual Localization & Authentic References:** Provided full Indonesian and English translations alongside verified Hadith citations for every recitation item.
+
+### Test & Verification
+- **Unit Test Suite Expansion (`tests/unit/dzikir.test.js`):** Added 5 new test specifications asserting schema completeness across all 14 items, presence of untruncated Ayat Kursi, presence of Al-Mu'awwidhat (3 Quls) with `target: 1`, presence of Tahlil variations and Du'as, and `DEFAULT_STATE.guidedDataVersion === 3`.
+- **Vitest Suite (`npm test`):** 88/88 unit tests passing across 4 test suites (100% pass rate).
+- **Production Compilation (`npm run build`):** Verified clean Vite compilation; 25 modules transformed into production bundle with 0 errors.
+
 ## [tasbihku-v1.13.0] - 2026-10-02
 
 - **Highlight:** Added a comprehensive Open Source Licenses & Attributions section to both `README.md` and the in-app About page (`tasbihku.web.app/about` / `#page-about`), honoring all open-source libraries, typefaces, iconography, design systems, soundpacks, and sacred text sources used in the project with Material 3 responsive styling and complete bilingual (ID/EN) internationalization.
