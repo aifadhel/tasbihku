@@ -390,7 +390,29 @@ export const translations = {
         "custom_azkar_latin_placeholder": "Teks Latin...",
         "custom_azkar_target_label": "Target Default",
         "custom_azkar_trans_lang_id": "Bahasa Indonesia (ID)",
-        "custom_azkar_trans_lang_en": "English (EN)"
+        "custom_azkar_trans_lang_en": "English (EN)",
+
+        // Share & Receive Dzikir
+        "btn_share_dzikir": "Bagikan",
+        "btn_receive_dzikir": "+ Terima Dzikir",
+        "share_dzikir_title": "Bagikan Rangkaian Dzikir",
+        "share_dzikir_desc": "Bagikan rangkaian dzikir ini melalui tautan atau salin kodenya.",
+        "share_link_label": "Tautan Berbagi",
+        "share_code_label": "Kode Dzikir",
+        "btn_copy_link": "Salin Tautan",
+        "btn_copy_code": "Salin Kode",
+        "toast_share_link_copied": "Tautan dzikir berhasil disalin!",
+        "toast_share_code_copied": "Kode dzikir berhasil disalin!",
+        "toast_share_error": "Gagal membagikan dzikir.",
+        "receive_dzikir_title": "Terima Dzikir",
+        "receive_dzikir_desc": "Tempel tautan atau kode dzikir yang dibagikan untuk menambahkannya ke koleksi Anda.",
+        "receive_input_placeholder": "Tempel tautan atau kode dzikir di sini...",
+        "btn_preview_dzikir": "Pratinjau",
+        "receive_preview_title": "Pratinjau Dzikir",
+        "receive_preview_subtitle": "{pages} Halaman • Total Target: {target}x",
+        "btn_save_received_dzikir": "Simpan ke Koleksi",
+        "toast_dzikir_imported": 'Dzikir "{name}" berhasil ditambahkan!',
+        "modal_invalid_dzikir_code": "Kode atau tautan dzikir tidak valid atau rusak."
     },
     en: {
         // Top Bar & Dashboard
@@ -777,7 +799,29 @@ export const translations = {
         "custom_azkar_latin_placeholder": "Latin text...",
         "custom_azkar_target_label": "Default Target",
         "custom_azkar_trans_lang_id": "Indonesian (ID)",
-        "custom_azkar_trans_lang_en": "English (EN)"
+        "custom_azkar_trans_lang_en": "English (EN)",
+
+        // Share & Receive Dzikir
+        "btn_share_dzikir": "Share",
+        "btn_receive_dzikir": "+ Receive Dhikr",
+        "share_dzikir_title": "Share Dhikr Sequence",
+        "share_dzikir_desc": "Share this dhikr sequence via link or copy its code.",
+        "share_link_label": "Share Link",
+        "share_code_label": "Dhikr Code",
+        "btn_copy_link": "Copy Link",
+        "btn_copy_code": "Copy Code",
+        "toast_share_link_copied": "Dhikr link copied to clipboard!",
+        "toast_share_code_copied": "Dhikr code copied to clipboard!",
+        "toast_share_error": "Failed to share dhikr.",
+        "receive_dzikir_title": "Receive Dhikr",
+        "receive_dzikir_desc": "Paste a shared dhikr link or code to import it into your collection.",
+        "receive_input_placeholder": "Paste dhikr link or code here...",
+        "btn_preview_dzikir": "Preview",
+        "receive_preview_title": "Dhikr Preview",
+        "receive_preview_subtitle": "{pages} Pages • Total Target: {target}x",
+        "btn_save_received_dzikir": "Save to Collection",
+        "toast_dzikir_imported": 'Dhikr "{name}" added successfully!',
+        "modal_invalid_dzikir_code": "Invalid or corrupted dhikr link or code."
     }
 };
 

@@ -41,7 +41,18 @@ import {
     playerUndo, 
     renderCustomList, 
     openEditor,
-    updatePlayerUI
+    updatePlayerUI,
+    shareCustomDzikir,
+    openShareDzikirModal,
+    closeShareDzikirModal,
+    copyShareLink,
+    copyShareCode,
+    openReceiveDzikirModal,
+    closeReceiveDzikirModal,
+    backToReceiveInput,
+    previewDzikirFromInput,
+    confirmSaveReceivedDzikir,
+    handleSharedDzikirDeepLink
 } from './modules/dzikir.js';
 import { 
     renderHabits, 
@@ -108,6 +119,17 @@ window.updatePagiReminderTime = updatePagiReminderTime;
 window.togglePetangReminder = togglePetangReminder;
 window.updatePetangReminderTime = updatePetangReminderTime;
 window.updateVibrationInterval = updateVibrationInterval;
+window.shareCustomDzikir = shareCustomDzikir;
+window.openShareDzikirModal = openShareDzikirModal;
+window.closeShareDzikirModal = closeShareDzikirModal;
+window.copyShareLink = copyShareLink;
+window.copyShareCode = copyShareCode;
+window.openReceiveDzikirModal = openReceiveDzikirModal;
+window.closeReceiveDzikirModal = closeReceiveDzikirModal;
+window.backToReceiveInput = backToReceiveInput;
+window.previewDzikirFromInput = previewDzikirFromInput;
+window.confirmSaveReceivedDzikir = confirmSaveReceivedDzikir;
+window.handleSharedDzikirDeepLink = handleSharedDzikirDeepLink;
 
 // --- Dzikir Reminders Toggles & Time Setters ---
 function togglePagiReminder(isChecked) {
@@ -408,6 +430,29 @@ function handleHashRouting() {
     let startPage = 'page-dashboard';
     const pathname = window.location.pathname.replace(/\/$/, '') || '/';
     const hash = window.location.hash;
+
+    if (hash && hash.startsWith('#dzikir=')) {
+        const token = hash.replace('#dzikir=', '');
+        switchAppMode('tasbih', false);
+        history.replaceState({ pageId: 'page-menu' }, "", '#page-menu');
+        showPage('page-menu', false);
+        setTimeout(() => {
+            handleSharedDzikirDeepLink(token);
+        }, 150);
+        return;
+    }
+
+    const searchParams = typeof window !== 'undefined' && window.location.search ? new URLSearchParams(window.location.search) : null;
+    const dzikirQuery = searchParams ? searchParams.get('dzikir') : null;
+    if (dzikirQuery) {
+        switchAppMode('tasbih', false);
+        history.replaceState({ pageId: 'page-menu' }, "", '#page-menu');
+        showPage('page-menu', false);
+        setTimeout(() => {
+            handleSharedDzikirDeepLink(dzikirQuery);
+        }, 150);
+        return;
+    }
 
     if (pathname === '/about' || hash === '#page-about') {
         startPage = 'page-about';

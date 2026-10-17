@@ -6,6 +6,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.14.0] - 2026-10-18
+
+- **Highlight:** Added "Share Dhikr" and "Receive Dhikr" feature allowing users to share custom multi-page dhikr sequences via URL-safe UTF-8 Base64 deep-linking, Web Share API, clipboard copying, and a dedicated Material 3 preview modal with collision-free local state ingestion.
+
+### Specific UI & Component Changes
+- **Share Button on Custom Dzikir Rows (`src/modules/dzikir.js`):** Integrated a dedicated share icon button (`<use href="#icon-34"></use>`) into each custom dzikir row in `renderCustomList()`, positioned seamlessly adjacent to the Edit and Delete buttons.
+- **Header "+ Terima Dzikir" Button (`index.html`):** Added a prominent "+ Terima Dzikir" header action in the Custom Dzikir section (`#page-menu`), featuring `<use href="#icon-35"></use>` for instant access to the receive modal.
+- **Dedicated Share Modal (`#share-dzikir-modal` in `index.html`):** Implemented an M3 modal dialogue providing both a full shareable deep-link URL and raw token display with one-click copy buttons, auto-triggered when Web Share API is unsupported or dismissed.
+- **Dedicated Receive Modal (`#receive-dzikir-modal` in `index.html`):** Built a dual-view M3 modal container featuring:
+  - *Input View:* Multi-line textarea for pasting shared URLs, raw tokens, or entire WhatsApp/Telegram message texts.
+  - *Preview View:* Summary header showing title, page count, and total target count, alongside a scrollable card list previewing each page's Arabic text, Latin transliteration, translation, and target repetitions.
+- **SVG Symbol Defs (`index.html`):** Appended `icon-34` (standard Material share glyph) and `icon-35` (download/inbox receive glyph) to the optimized SVG symbols library.
+- **Bilingual i18n Localization (`src/core/i18n.js`):** Registered 19 new translation keys in Indonesian and English for all share and receive labels, modals, placeholders, preview badges, and toast messages.
+- **ESC Key Dismiss Handler (`src/ui/router.js`):** Registered both `#share-dzikir-modal` and `#receive-dzikir-modal` with the central ESC keyboard listener.
+
+### Core Logic & Audio/Haptic Workflows
+- **Portable UTF-8 Base64 Serialization (`src/modules/dzikir.js`):** Implemented `encodeDzikirPayload` and `decodeDzikirPayload` using native `TextEncoder` and `TextDecoder` to guarantee lossless Arabic character preservation and diacritics integrity without character encoding corruption.
+- **Resilient URL & Message Extractor (`src/modules/dzikir.js`):** Developed `extractDzikirPayloadFromInput` to defensively extract tokens from `#dzikir=...`, `?dzikir=...`, raw base64 tokens, or mixed-text messaging blocks (e.g. WhatsApp shares).
+- **Deep-Link Lifecycle & Hash Cleansing (`src/main.js`):** Wired `#dzikir=` and `?dzikir=` deep-link interceptors into `handleHashRouting()`, immediately cleansing the URL via `history.replaceState` to prevent re-prompting on browser reloads.
+- **Collision-Free ID Regeneration (`src/modules/dzikir.js`):** Implemented `regenerateDzikirIds` to generate fresh timestamp-based IDs (`Date.now() + index + 1`) for imported dzikir sequences and all constituent pages, preventing ID collisions with existing user data.
+- **Strict Schema Bounds & Sanitization (`src/modules/dzikir.js`):** Enforced defensive validation limits: titles capped to 100 characters, pages capped between 1 and 50, targets clamped between 1 and 99,999, and text rendering constrained to `textContent` for XSS immunity.
+
+### Dzikir & Habits Engine
+- **Custom Dzikir Collection Expansion:** Enabled frictionless peer-to-peer sharing and adoption of personalized dzikir routines created in TasbihKu while preserving the app's 100% offline-first local state architecture.
+
+### Test & Verification
+- **New Unit Test Suite (`tests/unit/dzikir-share.test.js`):** Added 16 comprehensive unit tests covering round-trip serialization, Arabic UTF-8 preservation, deep-link parameter extraction, WhatsApp text extraction, schema validation, clamped targets, and collision-free ID regeneration.
+- **Full Test Suite (`npm test`):** 104/104 unit tests passing across 5 test suites (100% pass rate).
+- **Production Compilation (`npm run build`):** Clean Vite compilation; 25 modules transformed into production bundle with 0 errors.
+
 ## [tasbihku-v1.13.1] - 2026-10-03
 
 - **Highlight:** Expanded the guided post-prayer wirid dataset (`wiridReadings`) from 7 incomplete recitations to 14 canonical Sunnah narrations adhering to *Hisnul Muslim* (Chapter 25) with full untruncated Ayat Kursi, Al-Mu'awwidhat (3 Quls), complete Tahlil narrations, and closing supplications, supported by store migration `guidedDataVersion: 3` and 88 unit tests.

@@ -9,7 +9,7 @@ import { stopStopwatch, stopTimer, updateStopwatchUI, updateTimerUI } from '../m
 import { renderHabits } from '../modules/habits.js';
 import { t } from '../core/i18n.js';
 
-export const APP_VERSION = '1.13.1';
+export const APP_VERSION = '1.14.0';
 
 export const SVG_ICONS = {
     tap: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>`,
@@ -126,11 +126,17 @@ document.addEventListener('keydown', (e) => {
         const habitLogModal = document.getElementById('habit-log-modal');
         const libraryModal = document.getElementById('library-modal');
         const customAzkarModal = document.getElementById('custom-azkar-modal');
+        const shareDzikirModal = document.getElementById('share-dzikir-modal');
+        const receiveDzikirModal = document.getElementById('receive-dzikir-modal');
         
         if (modalOverlay && modalOverlay.classList.contains('active')) {
             closeModal();
         } else if (timeModalOverlay && timeModalOverlay.classList.contains('active')) {
             timeModalOverlay.classList.remove('active');
+        } else if (shareDzikirModal && shareDzikirModal.classList.contains('active')) {
+            if (typeof window.closeShareDzikirModal === 'function') window.closeShareDzikirModal();
+        } else if (receiveDzikirModal && receiveDzikirModal.classList.contains('active')) {
+            if (typeof window.closeReceiveDzikirModal === 'function') window.closeReceiveDzikirModal();
         } else if (customAzkarModal && customAzkarModal.classList.contains('active')) {
             if (typeof window.closeCustomAzkarModal === 'function') window.closeCustomAzkarModal();
         } else if (libraryModal && libraryModal.classList.contains('active')) {

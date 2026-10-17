@@ -909,6 +909,12 @@ export function renderCustomList() {
         contentDiv.appendChild(descSpan);
         btnMain.appendChild(contentDiv);
 
+        const btnShare = document.createElement('button');
+        btnShare.className = 'btn btn-icon-edit';
+        btnShare.setAttribute('aria-label', `${t('btn_share_dzikir')} ${item.name}`);
+        btnShare.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-34"></use></svg>`;
+        btnShare.onclick = () => shareCustomDzikir(item.id);
+
         const btnEdit = document.createElement('button');
         btnEdit.className = 'btn btn-icon-edit';
         btnEdit.setAttribute('aria-label', `Edit ${item.name}`);
@@ -930,6 +936,7 @@ export function renderCustomList() {
         };
 
         wrapper.appendChild(btnMain);
+        wrapper.appendChild(btnShare);
         wrapper.appendChild(btnEdit);
         wrapper.appendChild(btnDel);
         container.appendChild(wrapper);
@@ -1406,6 +1413,375 @@ export function filterLibrary(query) {
     }
 }
 
+// --- Share & Receive Dzikir Utilities ---
+
+export function encodeDzikirPayload(item) {
+    if (!item || !item.name || !Array.isArray(item.pages)) {
+        throw new Error('Invalid item structure');
+    }
+    const portableData = {
+        v: 1,
+        type: 'tasbihku_dzikir',
+        name: String(item.name).trim(),
+        pages: item.pages.map(p => ({
+            arabic: p.arabic ? String(p.arabic).trim() : '',
+            latin: p.latin ? String(p.latin).trim() : '',
+            translation: p.translation ? String(p.translation).trim() : '',
+            reference: p.reference ? String(p.reference).trim() : '',
+            target: Math.max(1, parseInt(p.target) || 33)
+        }))
+    };
+    const jsonStr = JSON.stringify(portableData);
+    const utf8Bytes = new TextEncoder().encode(jsonStr);
+    let binStr = '';
+    for (let i = 0; i < utf8Bytes.length; i++) {
+        binStr += String.fromCharCode(utf8Bytes[i]);
+    }
+    return btoa(binStr).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+export function decodeDzikirPayload(token) {
+    if (typeof token !== 'string' || !token.trim()) {
+        throw new Error('Empty or invalid token');
+    }
+    let base64 = token.trim().replace(/-/g, '+').replace(/_/g, '/');
+    while (base64.length % 4 !== 0) {
+        base64 += '=';
+    }
+    const binStr = atob(base64);
+    const bytes = new Uint8Array(binStr.length);
+    for (let i = 0; i < binStr.length; i++) {
+        bytes[i] = binStr.charCodeAt(i);
+    }
+    const jsonStr = new TextDecoder().decode(bytes);
+    return JSON.parse(jsonStr);
+}
+
+export function extractDzikirPayloadFromInput(input) {
+    if (typeof input !== 'string') return null;
+    const trimmed = input.trim();
+    if (!trimmed) return null;
+
+    // Direct JSON check
+    if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+        try {
+            const parsed = JSON.parse(trimmed);
+            if (parsed && (parsed.type === 'tasbihku_dzikir' || (parsed.name && Array.isArray(parsed.pages)))) {
+                return encodeDzikirPayload(parsed);
+            }
+        } catch (_) {}
+    }
+
+    // Hash check: #dzikir=<token>
+    const hashMatch = trimmed.match(/#dzikir=([A-Za-z0-9_-]+)/);
+    if (hashMatch && hashMatch[1]) return hashMatch[1];
+
+    // Query param check: ?dzikir=<token> or &dzikir=<token>
+    const queryMatch = trimmed.match(/[?&]dzikir=([A-Za-z0-9_-]+)/);
+    if (queryMatch && queryMatch[1]) return queryMatch[1];
+
+    // Raw token check: base64url string with reasonable length (min 8 chars)
+    const rawMatch = trimmed.match(/^[A-Za-z0-9_-]{8,}$/);
+    if (rawMatch) return rawMatch[0];
+
+    return null;
+}
+
+export function validateDzikirPayload(payload) {
+    if (!payload || typeof payload !== 'object') {
+        return { valid: false, reason: 'Payload must be an object' };
+    }
+    if (payload.type && payload.type !== 'tasbihku_dzikir') {
+        return { valid: false, reason: 'Invalid payload type' };
+    }
+    if (typeof payload.name !== 'string' || !payload.name.trim()) {
+        return { valid: false, reason: 'Dzikir name is required' };
+    }
+    if (!Array.isArray(payload.pages) || payload.pages.length === 0) {
+        return { valid: false, reason: 'Pages must be a non-empty array' };
+    }
+    if (payload.pages.length > 50) {
+        return { valid: false, reason: 'Too many pages (max 50)' };
+    }
+    for (let i = 0; i < payload.pages.length; i++) {
+        const p = payload.pages[i];
+        if (!p || typeof p !== 'object') {
+            return { valid: false, reason: `Page ${i + 1} is invalid` };
+        }
+        const hasContent = Boolean(
+            (p.arabic && String(p.arabic).trim()) ||
+            (p.latin && String(p.latin).trim()) ||
+            (p.translation && String(p.translation).trim())
+        );
+        if (!hasContent) {
+            return { valid: false, reason: `Page ${i + 1} must contain arabic, latin, or translation` };
+        }
+    }
+    return {
+        valid: true,
+        sanitized: {
+            name: payload.name.trim().slice(0, 100),
+            pages: payload.pages.map(p => ({
+                arabic: (p.arabic ? String(p.arabic).trim() : '').slice(0, 1000),
+                latin: (p.latin ? String(p.latin).trim() : '').slice(0, 1000),
+                translation: (p.translation ? String(p.translation).trim() : '').slice(0, 1000),
+                reference: (p.reference ? String(p.reference).trim() : '').slice(0, 200),
+                target: Math.max(1, Math.min(99999, parseInt(p.target) || 33))
+            }))
+        }
+    };
+}
+
+export function regenerateDzikirIds(item) {
+    const baseId = Date.now();
+    return {
+        id: baseId,
+        name: item.name,
+        pages: item.pages.map((p, idx) => ({
+            id: baseId + idx + 1,
+            arabic: p.arabic,
+            latin: p.latin,
+            translation: p.translation,
+            reference: p.reference,
+            target: p.target
+        }))
+    };
+}
+
+let pendingReceiveDzikir = null;
+
+export async function shareCustomDzikir(id) {
+    const item = state.customList.find(i => i.id == id);
+    if (!item) return;
+
+    try {
+        const token = encodeDzikirPayload(item);
+        const origin = window.location.origin || '';
+        const pathname = window.location.pathname || '/';
+        const shareUrl = `${origin}${pathname}#dzikir=${token}`;
+
+        // Attempt Web Share API first if supported
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `TasbihKu: ${item.name}`,
+                    text: `${item.name} (${item.pages.length} Halaman)`,
+                    url: shareUrl
+                });
+                return;
+            } catch (err) {
+                if (err && err.name === 'AbortError') return;
+            }
+        }
+
+        // Fallback to share modal
+        openShareDzikirModal(item.name, shareUrl, token);
+    } catch (e) {
+        console.error('Failed to share dzikir:', e);
+        showToast(t('toast_share_error'));
+    }
+}
+
+export function openShareDzikirModal(title, url, code) {
+    const modal = document.getElementById('share-dzikir-modal');
+    const titleEl = document.getElementById('share-dzikir-modal-title');
+    const linkInput = document.getElementById('share-link-input');
+    const codeInput = document.getElementById('share-code-input');
+
+    if (titleEl) titleEl.textContent = title ? `${t('share_dzikir_title')}: ${title}` : t('share_dzikir_title');
+    if (linkInput) linkInput.value = url || '';
+    if (codeInput) codeInput.value = code || '';
+    if (modal) modal.classList.add('active');
+}
+
+export function closeShareDzikirModal() {
+    const modal = document.getElementById('share-dzikir-modal');
+    if (modal) modal.classList.remove('active');
+}
+
+export async function copyShareLink() {
+    const input = document.getElementById('share-link-input');
+    if (!input || !input.value) return;
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(input.value);
+        } else {
+            input.select();
+            document.execCommand('copy');
+        }
+        showToast(t('toast_share_link_copied'));
+    } catch (_) {
+        input.select();
+        document.execCommand('copy');
+        showToast(t('toast_share_link_copied'));
+    }
+}
+
+export async function copyShareCode() {
+    const textarea = document.getElementById('share-code-input');
+    if (!textarea || !textarea.value) return;
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(textarea.value);
+        } else {
+            textarea.select();
+            document.execCommand('copy');
+        }
+        showToast(t('toast_share_code_copied'));
+    } catch (_) {
+        textarea.select();
+        document.execCommand('copy');
+        showToast(t('toast_share_code_copied'));
+    }
+}
+
+export function openReceiveDzikirModal() {
+    const modal = document.getElementById('receive-dzikir-modal');
+    const inputView = document.getElementById('receive-modal-input-view');
+    const previewView = document.getElementById('receive-modal-preview-view');
+    const input = document.getElementById('receive-dzikir-input');
+
+    if (input) input.value = '';
+    if (inputView) inputView.style.display = 'block';
+    if (previewView) previewView.style.display = 'none';
+    pendingReceiveDzikir = null;
+
+    if (modal) modal.classList.add('active');
+    if (input) input.focus();
+}
+
+export function closeReceiveDzikirModal() {
+    const modal = document.getElementById('receive-dzikir-modal');
+    if (modal) modal.classList.remove('active');
+    pendingReceiveDzikir = null;
+}
+
+export function backToReceiveInput() {
+    const inputView = document.getElementById('receive-modal-input-view');
+    const previewView = document.getElementById('receive-modal-preview-view');
+    if (inputView) inputView.style.display = 'block';
+    if (previewView) previewView.style.display = 'none';
+    pendingReceiveDzikir = null;
+}
+
+export function previewDzikirFromInput() {
+    const input = document.getElementById('receive-dzikir-input');
+    const rawVal = input ? input.value : '';
+    const token = extractDzikirPayloadFromInput(rawVal);
+    if (!token) {
+        showToast(t('modal_invalid_dzikir_code'));
+        return;
+    }
+
+    try {
+        const decoded = decodeDzikirPayload(token);
+        const validation = validateDzikirPayload(decoded);
+        if (!validation.valid) {
+            showToast(t('modal_invalid_dzikir_code'));
+            return;
+        }
+        showReceivePreview(validation.sanitized);
+    } catch (e) {
+        showToast(t('modal_invalid_dzikir_code'));
+    }
+}
+
+export function showReceivePreview(sanitizedData) {
+    pendingReceiveDzikir = sanitizedData;
+
+    const modal = document.getElementById('receive-dzikir-modal');
+    const inputView = document.getElementById('receive-modal-input-view');
+    const previewView = document.getElementById('receive-modal-preview-view');
+    const nameEl = document.getElementById('receive-preview-name');
+    const subEl = document.getElementById('receive-preview-subtitle');
+    const listEl = document.getElementById('receive-preview-list');
+
+    if (nameEl) nameEl.textContent = sanitizedData.name;
+    const totalTarget = sanitizedData.pages.reduce((acc, p) => acc + (p.target || 0), 0);
+    if (subEl) subEl.textContent = t('receive_preview_subtitle', { pages: sanitizedData.pages.length, target: totalTarget });
+
+    if (listEl) {
+        listEl.innerHTML = '';
+        sanitizedData.pages.forEach((p, idx) => {
+            const card = document.createElement('div');
+            card.style.cssText = 'background: rgba(255,255,255,0.04); border: 1px solid var(--md-sys-color-outline-variant); border-radius: 8px; padding: 10px 12px; font-size: 0.9rem;';
+
+            const headerRow = document.createElement('div');
+            headerRow.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 4px; font-weight: 600; color: var(--md-sys-color-primary); font-size: 0.8rem;';
+            const pageNum = document.createElement('span');
+            pageNum.textContent = `#${idx + 1}`;
+            const targetSpan = document.createElement('span');
+            targetSpan.textContent = `${p.target}x`;
+            headerRow.appendChild(pageNum);
+            headerRow.appendChild(targetSpan);
+            card.appendChild(headerRow);
+
+            if (p.arabic) {
+                const arabicEl = document.createElement('div');
+                arabicEl.dir = 'rtl';
+                arabicEl.style.cssText = 'font-size: 1.15rem; font-family: "Amiri", serif; margin-bottom: 4px; line-height: 1.4;';
+                arabicEl.textContent = p.arabic;
+                card.appendChild(arabicEl);
+            }
+
+            if (p.latin) {
+                const latinEl = document.createElement('div');
+                latinEl.style.cssText = 'font-style: italic; opacity: 0.85; font-size: 0.85rem; margin-bottom: 2px;';
+                latinEl.textContent = p.latin;
+                card.appendChild(latinEl);
+            }
+
+            if (p.translation) {
+                const transEl = document.createElement('div');
+                transEl.style.cssText = 'opacity: 0.7; font-size: 0.8rem;';
+                transEl.textContent = p.translation;
+                card.appendChild(transEl);
+            }
+
+            listEl.appendChild(card);
+        });
+    }
+
+    if (inputView) inputView.style.display = 'none';
+    if (previewView) previewView.style.display = 'flex';
+    if (modal) modal.classList.add('active');
+}
+
+export function confirmSaveReceivedDzikir() {
+    if (!pendingReceiveDzikir) return;
+
+    const freshItem = regenerateDzikirIds(pendingReceiveDzikir);
+    if (!Array.isArray(state.customList)) {
+        state.customList = [];
+    }
+    state.customList.push(freshItem);
+    saveState();
+    renderCustomList();
+
+    closeReceiveDzikirModal();
+    showToast(t('toast_dzikir_imported', { name: freshItem.name }));
+    pendingReceiveDzikir = null;
+}
+
+export function handleSharedDzikirDeepLink(token) {
+    if (!token) return false;
+    const cleanToken = extractDzikirPayloadFromInput(token) || token;
+    try {
+        const decoded = decodeDzikirPayload(cleanToken);
+        const validation = validateDzikirPayload(decoded);
+        if (validation.valid) {
+            showReceivePreview(validation.sanitized);
+            return true;
+        } else {
+            showToast(t('modal_invalid_dzikir_code'));
+            return false;
+        }
+    } catch (_) {
+        showToast(t('modal_invalid_dzikir_code'));
+        return false;
+    }
+}
+
 // Bridging references to window globally for static index.html button bindings
 if (typeof window !== 'undefined') {
     window.startPlayer = startPlayer;
@@ -1424,4 +1800,16 @@ if (typeof window !== 'undefined') {
     window.saveCustomAzkar = saveCustomAzkar;
     window.deleteCustomAzkar = deleteCustomAzkar;
     window.filterLibrary = filterLibrary;
+    window.shareCustomDzikir = shareCustomDzikir;
+    window.openShareDzikirModal = openShareDzikirModal;
+    window.closeShareDzikirModal = closeShareDzikirModal;
+    window.copyShareLink = copyShareLink;
+    window.copyShareCode = copyShareCode;
+    window.openReceiveDzikirModal = openReceiveDzikirModal;
+    window.closeReceiveDzikirModal = closeReceiveDzikirModal;
+    window.backToReceiveInput = backToReceiveInput;
+    window.previewDzikirFromInput = previewDzikirFromInput;
+    window.showReceivePreview = showReceivePreview;
+    window.confirmSaveReceivedDzikir = confirmSaveReceivedDzikir;
+    window.handleSharedDzikirDeepLink = handleSharedDzikirDeepLink;
 }
