@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.14.1] - 2026-10-18
+
+- **Highlight:** Refined Custom Dzikir and Language Selection to adhere to Material 3 Expressive principles on Pixel 9 Pro viewports, resolving card squishing, text clipping, and unstyled form controls.
+
+### Specific UI & Component Changes
+- **Full-Width Custom Dzikir M3 Card (`src/modules/dzikir.js`, `style.css`):** Replaced the horizontally cramped 4-element flex row with a full-width `.custom-dzikir-card` matching Wirid Harian cards. Built an interactive top card surface (`.custom-dzikir-card-top`) that triggers `startPlayer('custom', item.id)` on tap/Enter, accompanied by an M3 circular tonal play badge (`.custom-dzikir-play-badge`).
+- **Metadata Assist Chips (`src/modules/dzikir.js`, `style.css`):** Formatted custom sequence properties into tonal pill chips (`.custom-dzikir-meta-chip`) showing page count and total target count without text crowding.
+- **Dedicated Bottom Action Toolbar (`src/modules/dzikir.js`, `style.css`):** Integrated a bottom action dock (`.custom-dzikir-toolbar`) with 40px circular tonal buttons for Share (`btn-tonal-mini`), Edit (`btn-tonal-mini`), and Delete (`btn-danger-mini` with soft error tonal background), featuring `e.stopPropagation()` to prevent unintended playback triggers.
+- **M3 Illustrated Empty State (`src/modules/dzikir.js`, `style.css`):** Introduced `.custom-dzikir-empty-card` with an icon, bilingual friendly guidance, and an M3 filled tonal button (`+ Buat Baru`) when no custom sequences exist.
+- **Section Header Action Chips (`index.html`, `style.css`):** Upgraded "+ Terima Dzikir" to an M3 Assist Chip (`.m3-chip-action`) with `#icon-35` icon, and "+ Buat Baru" to an M3 Filled Tonal Button (`.m3-btn-action`).
+- **M3 Expressive Segmented Control for Language (`index.html`, `style.css`):** Replaced the unstyled native HTML `<select>` with a tactile M3 Segmented Button Group (`.m3-segmented-control`) containing `#lang-btn-id` and `#lang-btn-en` pill buttons with active filled container highlights and spring motion.
+- **Anti-Clipping Responsive Settings Layout (`style.css`, `index.html`):** Restructured `#language-setting-row` with `.m3-setting-item`, `.m3-setting-text`, and flexible wrapping to eliminate vertical text slicing on mobile viewports.
+
+### Core Logic & Audio/Haptic Workflows
+- **Dual-Layer Language Synchronization (`src/core/i18n.js`):** Enhanced `applyTranslations()` to synchronously toggle active classes on `.m3-segment-pill` elements while simultaneously keeping the hidden `<select id="select-language">` in sync for 100% backward compatibility with external handlers and DOM events.
+- **Keyboard & Accessibility Affordance (`src/modules/dzikir.js`):** Attached `role="button"`, `tabindex="0"`, aria labels, and `keydown` (Enter / Space) listeners to custom dzikir card surfaces.
+
+### Dzikir & Habits Engine
+- **Localization Expansion (`src/core/i18n.js`):** Added `custom_empty_hint` translation strings across Indonesian and English dictionaries.
+
+### Test & Verification
+- **New Unit Tests (`tests/unit/dzikir.test.js`):** Added unit test assertions verifying `.custom-dzikir-empty-card` rendering on empty state, full-width `.custom-dzikir-card` structure, metadata chips, play badge, and toolbar action buttons.
+- **Full Test Suite (`npm test`):** 106/106 unit tests passing across 5 test files (100% pass rate).
+- **Production Build (`npm run build`):** Clean compilation, 25 modules transformed into production assets in ~490ms with 0 errors.
+
 ## [tasbihku-v1.14.0] - 2026-10-18
 
 - **Highlight:** Added "Share Dhikr" and "Receive Dhikr" feature allowing users to share custom multi-page dhikr sequences via URL-safe UTF-8 Base64 deep-linking, Web Share API, clipboard copying, and a dedicated Material 3 preview modal with collision-free local state ingestion.

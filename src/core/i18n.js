@@ -48,6 +48,7 @@ export const translations = {
         "back_to_dashboard": "Kembali ke dashboard",
         "section_daily_wirid": "Wirid Harian",
         "section_custom": "Custom Dzikir",
+        "custom_empty_hint": "Belum ada dzikir custom tersimpan.",
         "create_new": "+ Buat Baru",
         "section_settings": "Pengaturan",
         "section_reminders": "Pengingat Dzikir",
@@ -457,6 +458,7 @@ export const translations = {
         "back_to_dashboard": "Back to dashboard",
         "section_daily_wirid": "Daily Wirid",
         "section_custom": "Custom Dzikir",
+        "custom_empty_hint": "No custom dzikir saved yet.",
         "create_new": "+ Create New",
         "section_settings": "Settings",
         "section_reminders": "Dzikir Reminders",
@@ -921,5 +923,18 @@ export function applyTranslations() {
     const langSelect = document.getElementById('select-language');
     if (langSelect && langSelect.value !== lang) {
         langSelect.value = lang;
+    }
+
+    // Synchronize M3 Expressive Segmented Control pills
+    const btnId = document.getElementById('lang-btn-id');
+    const btnEn = document.getElementById('lang-btn-en');
+    if (btnId && btnEn) {
+        if (lang === 'id') {
+            btnId.classList.add('active');
+            btnEn.classList.remove('active');
+        } else {
+            btnEn.classList.add('active');
+            btnId.classList.remove('active');
+        }
     }
 }

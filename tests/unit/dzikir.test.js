@@ -14,8 +14,8 @@ vi.mock('../../src/ui/router.js', () => ({
     SVG_ICONS: { arrowUp: '', arrowDown: '' }
 }));
 
-import { dzikirPagi, dzikirPetang, wiridReadings, getLocalizedText } from '../../src/modules/dzikir.js';
-import { DEFAULT_STATE } from '../../src/core/store.js';
+import { dzikirPagi, dzikirPetang, wiridReadings, getLocalizedText, renderCustomList } from '../../src/modules/dzikir.js';
+import { DEFAULT_STATE, state } from '../../src/core/store.js';
 
 describe('Dzikir Module Dataset & Helper Unit Tests', () => {
     describe('Dataset Schema & Integrity Constraints', () => {
@@ -236,6 +236,91 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
             expect(getLocalizedText('Plain String')).toBe('Plain String');
             expect(getLocalizedText(null)).toBe('');
             expect(getLocalizedText(undefined)).toBe('');
+        });
+    });
+
+    describe('renderCustomList M3 Expressive Architecture', () => {
+        function createMockElement(tag) {
+            return {
+                tagName: tag.toUpperCase(),
+                className: '',
+                style: {},
+                innerHTML: '',
+                textContent: '',
+                children: [],
+                attributes: {},
+                setAttribute(k, v) { this.attributes[k] = v; },
+                getAttribute(k) { return this.attributes[k]; },
+                appendChild(child) { this.children.push(child); return child; }
+            };
+        }
+
+        it('renders M3 empty state card when customList is empty', () => {
+            const mockContainer = createMockElement('div');
+            global.document = {
+                getElementById: (id) => id === 'custom-list-container' ? mockContainer : null,
+                createElement: createMockElement
+            };
+
+            state.customList = [];
+            renderCustomList();
+
+            expect(mockContainer.children.length).toBe(1);
+            const emptyCard = mockContainer.children[0];
+            expect(emptyCard.className).toBe('custom-dzikir-empty-card');
+            expect(emptyCard.children.some(c => c.className === 'm3-btn-action')).toBe(true);
+        });
+
+        it('renders full-width M3 card with top play target and bottom action toolbar for each custom item', () => {
+            const mockContainer = createMockElement('div');
+            global.document = {
+                getElementById: (id) => id === 'custom-list-container' ? mockContainer : null,
+                createElement: createMockElement
+            };
+
+            state.customList = [
+                {
+                    id: 991,
+                    name: 'Doa Kemudahan Hisab',
+                    pages: [
+                        { target: 33 },
+                        { target: 67 }
+                    ]
+                }
+            ];
+
+            renderCustomList();
+
+            expect(mockContainer.children.length).toBe(1);
+            const card = mockContainer.children[0];
+            expect(card.className).toBe('custom-dzikir-card');
+
+            // Must have exactly 2 direct structural children: top interactive row and bottom toolbar
+            expect(card.children.length).toBe(2);
+            const [topRow, toolbar] = card.children;
+
+            expect(topRow.className).toBe('custom-dzikir-card-top');
+            expect(topRow.getAttribute('role')).toBe('button');
+
+            const infoDiv = topRow.children.find(c => c.className === 'custom-dzikir-info');
+            expect(infoDiv).toBeDefined();
+
+            const titleSpan = infoDiv.children.find(c => c.className === 'custom-dzikir-title');
+            expect(titleSpan.textContent).toBe('Doa Kemudahan Hisab');
+
+            const metaDiv = infoDiv.children.find(c => c.className === 'custom-dzikir-meta');
+            expect(metaDiv).toBeDefined();
+            expect(metaDiv.children.length).toBe(2); // pages chip & target chip
+
+            const playBadge = topRow.children.find(c => c.className === 'custom-dzikir-play-badge');
+            expect(playBadge).toBeDefined();
+
+            // Bottom toolbar must contain Share, Edit, and Delete action buttons
+            expect(toolbar.className).toBe('custom-dzikir-toolbar');
+            expect(toolbar.children.length).toBe(3);
+            expect(toolbar.children[0].className).toContain('btn-tonal-mini');
+            expect(toolbar.children[1].className).toContain('btn-tonal-mini');
+            expect(toolbar.children[2].className).toContain('btn-danger-mini');
         });
     });
 });

@@ -875,59 +875,111 @@ export function renderCustomList() {
     container.innerHTML = '';
     if (!state.customList || state.customList.length === 0) {
         const emptyDiv = document.createElement('div');
-        emptyDiv.style.cssText = 'padding: 40px; text-align: center; opacity: 0.5;';
+        emptyDiv.className = 'custom-dzikir-empty-card';
+        
+        const emptyIcon = document.createElement('div');
+        emptyIcon.style.cssText = 'color: var(--md-sys-color-primary); opacity: 0.8;';
+        emptyIcon.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-27"></use></svg>`;
+
         const emptySpan = document.createElement('span');
-        emptySpan.className = 'text-sub';
-        emptySpan.textContent = 'Belum ada dzikir custom.';
+        emptySpan.className = 'text-sub body-medium';
+        emptySpan.textContent = t('custom_empty_hint') || 'Belum ada dzikir custom tersimpan.';
+
+        const btnCreateFirst = document.createElement('button');
+        btnCreateFirst.className = 'm3-btn-action';
+        btnCreateFirst.style.marginTop = '4px';
+        btnCreateFirst.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg><span>${t('create_new')}</span>`;
+        btnCreateFirst.onclick = () => openEditor('new');
+
+        emptyDiv.appendChild(emptyIcon);
         emptyDiv.appendChild(emptySpan);
+        emptyDiv.appendChild(btnCreateFirst);
         container.appendChild(emptyDiv);
         return;
     }
 
     state.customList.forEach((item, index) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'dzikir-row';
+        const card = document.createElement('div');
+        card.className = 'custom-dzikir-card';
 
-        const btnMain = document.createElement('button');
-        btnMain.className = 'btn btn-list-item';
-        btnMain.style.flex = '1';
-        btnMain.style.margin = '0';
-        btnMain.onclick = () => startPlayer('custom', item.id);
+        // Top interactive area (Tap to Start Player)
+        const topRow = document.createElement('div');
+        topRow.className = 'custom-dzikir-card-top';
+        topRow.setAttribute('role', 'button');
+        topRow.setAttribute('tabindex', '0');
+        topRow.setAttribute('aria-label', `${item.name} - ${t('btn_launch_dzikir')}`);
+        topRow.onclick = () => startPlayer('custom', item.id);
+        topRow.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                startPlayer('custom', item.id);
+            }
+        };
 
-        const contentDiv = document.createElement('div');
-        contentDiv.style.cssText = 'display: flex; flex-direction: column; align-items: flex-start; width: 100%;';
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'custom-dzikir-info';
 
         const nameSpan = document.createElement('span');
-        nameSpan.style.cssText = 'font-weight: 800; font-size: 1.1rem; color: var(--md-sys-color-primary);';
+        nameSpan.className = 'custom-dzikir-title';
         nameSpan.textContent = item.name;
 
-        const descSpan = document.createElement('span');
-        descSpan.style.cssText = 'font-size: 0.85rem; opacity: 0.7; margin-top: 4px;';
-        descSpan.textContent = t('dzikir_pages_target', {pages: item.pages.length, target: item.pages.reduce((a, c) => a + c.target, 0)});
+        const totalTarget = (item.pages || []).reduce((a, c) => a + (c.target || 0), 0);
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'custom-dzikir-meta';
 
-        contentDiv.appendChild(nameSpan);
-        contentDiv.appendChild(descSpan);
-        btnMain.appendChild(contentDiv);
+        const pagesChip = document.createElement('span');
+        pagesChip.className = 'custom-dzikir-meta-chip';
+        pagesChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-27"></use></svg><span>${item.pages.length} Halaman</span>`;
+
+        const targetChip = document.createElement('span');
+        targetChip.className = 'custom-dzikir-meta-chip';
+        targetChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle></svg><span>Target: ${totalTarget}</span>`;
+
+        metaDiv.appendChild(pagesChip);
+        metaDiv.appendChild(targetChip);
+
+        infoDiv.appendChild(nameSpan);
+        infoDiv.appendChild(metaDiv);
+
+        const playBadge = document.createElement('div');
+        playBadge.className = 'custom-dzikir-play-badge';
+        playBadge.setAttribute('aria-hidden', 'true');
+        playBadge.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-22"></use></svg>`;
+
+        topRow.appendChild(infoDiv);
+        topRow.appendChild(playBadge);
+
+        // Bottom Action Toolbar (Share, Edit, Delete)
+        const toolbar = document.createElement('div');
+        toolbar.className = 'custom-dzikir-toolbar';
 
         const btnShare = document.createElement('button');
-        btnShare.className = 'btn btn-icon-edit';
+        btnShare.className = 'btn-tonal-mini';
         btnShare.setAttribute('aria-label', `${t('btn_share_dzikir')} ${item.name}`);
-        btnShare.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-34"></use></svg>`;
-        btnShare.onclick = () => shareCustomDzikir(item.id);
+        btnShare.setAttribute('title', t('btn_share_dzikir') || 'Bagikan Dzikir');
+        btnShare.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-34"></use></svg>`;
+        btnShare.onclick = (e) => {
+            e.stopPropagation();
+            shareCustomDzikir(item.id);
+        };
 
         const btnEdit = document.createElement('button');
-        btnEdit.className = 'btn btn-icon-edit';
+        btnEdit.className = 'btn-tonal-mini';
         btnEdit.setAttribute('aria-label', `Edit ${item.name}`);
-        btnEdit.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
-        btnEdit.onclick = () => openEditor('custom', item.id);
+        btnEdit.setAttribute('title', 'Edit');
+        btnEdit.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>`;
+        btnEdit.onclick = (e) => {
+            e.stopPropagation();
+            openEditor('custom', item.id);
+        };
 
         const btnDel = document.createElement('button');
-        btnDel.className = 'btn btn-icon-edit';
-        btnDel.style.backgroundColor = 'rgba(255, 180, 171, 0.1)';
-        btnDel.style.color = '#ffb4ab';
+        btnDel.className = 'btn-tonal-mini btn-danger-mini';
         btnDel.setAttribute('aria-label', `${t('btn_delete')} ${item.name}`);
-        btnDel.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12ZM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4Z"/></svg>`;
-        btnDel.onclick = () => {
+        btnDel.setAttribute('title', t('btn_delete') || 'Hapus');
+        btnDel.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12ZM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4Z"/></svg>`;
+        btnDel.onclick = (e) => {
+            e.stopPropagation();
             showModal(t('modal_delete_dzikir_title'), t('modal_delete_dzikir_msg', {name: item.name}), () => {
                 state.customList.splice(index, 1);
                 saveState();
@@ -935,11 +987,13 @@ export function renderCustomList() {
             });
         };
 
-        wrapper.appendChild(btnMain);
-        wrapper.appendChild(btnShare);
-        wrapper.appendChild(btnEdit);
-        wrapper.appendChild(btnDel);
-        container.appendChild(wrapper);
+        toolbar.appendChild(btnShare);
+        toolbar.appendChild(btnEdit);
+        toolbar.appendChild(btnDel);
+
+        card.appendChild(topRow);
+        card.appendChild(toolbar);
+        container.appendChild(card);
     });
 }
 
