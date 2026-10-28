@@ -9,6 +9,9 @@ vi.mock('../../src/hardware/media.js', () => ({
 vi.mock('../../src/ui/router.js', () => ({
     showModal: vi.fn(),
     showPage: vi.fn(),
+    goBack: vi.fn(),
+    registerModalOpen: vi.fn(),
+    registerModalClose: vi.fn(),
     animateValue: vi.fn(),
     triggerCelebration: vi.fn(),
     SVG_ICONS: { arrowUp: '', arrowDown: '' }
@@ -19,7 +22,9 @@ import {
     decodeDzikirPayload, 
     extractDzikirPayloadFromInput, 
     validateDzikirPayload, 
-    regenerateDzikirIds 
+    regenerateDzikirIds,
+    getLocalizedText,
+    showReceivePreview
 } from '../../src/modules/dzikir.js';
 
 describe('Share & Receive Dzikir Module Unit Tests', () => {
@@ -188,6 +193,124 @@ describe('Share & Receive Dzikir Module Unit Tests', () => {
                 expect(typeof id).toBe('number');
                 expect(id).toBeGreaterThan(0);
             });
+        });
+    });
+
+    describe('Multi-language Object Translation Support (Regression: [object Object] Bug)', () => {
+        const objectTranslationDzikir = {
+            name: 'Doa Kemudahan Hisab',
+            pages: [
+                {
+                    arabic: 'اللهم حاسبني حسابا يسيرا',
+                    latin: 'Allahumma haasibni hisaban yasiira',
+                    translation: {
+                        id: 'Ya Allah! Karuniakanlah kepadaku hisab yang mudah.',
+                        en: 'O Allah! Grant me an easy reckoning.'
+                    },
+                    reference: {
+                        id: 'Musnad Ahmad, vol. 6, pg. 48',
+                        en: 'Musnad Ahmad, vol. 6, pg. 48'
+                    },
+                    target: 33
+                }
+            ]
+        };
+
+        it('should encode and decode object-based translations without coercing to "[object Object]"', () => {
+            const token = encodeDzikirPayload(objectTranslationDzikir);
+            const decoded = decodeDzikirPayload(token);
+
+            expect(decoded.name).toBe('Doa Kemudahan Hisab');
+            expect(typeof decoded.pages[0].translation).toBe('object');
+            expect(decoded.pages[0].translation).not.toBe('[object Object]');
+            expect(decoded.pages[0].translation.id).toBe('Ya Allah! Karuniakanlah kepadaku hisab yang mudah.');
+            expect(decoded.pages[0].translation.en).toBe('O Allah! Grant me an easy reckoning.');
+            expect(decoded.pages[0].reference.id).toBe('Musnad Ahmad, vol. 6, pg. 48');
+        });
+
+        it('should validate and sanitize payloads with object translations', () => {
+            const validated = validateDzikirPayload(objectTranslationDzikir);
+            expect(validated.valid).toBe(true);
+            expect(typeof validated.sanitized.pages[0].translation).toBe('object');
+            expect(validated.sanitized.pages[0].translation.id).toBe('Ya Allah! Karuniakanlah kepadaku hisab yang mudah.');
+            expect(validated.sanitized.pages[0].translation.en).toBe('O Allah! Grant me an easy reckoning.');
+        });
+
+        it('should normalize both string and object translations to canonical { id, en } in regenerateDzikirIds', () => {
+            const regeneratedObj = regenerateDzikirIds(objectTranslationDzikir);
+            expect(regeneratedObj.pages[0].translation).toEqual({
+                id: 'Ya Allah! Karuniakanlah kepadaku hisab yang mudah.',
+                en: 'O Allah! Grant me an easy reckoning.'
+            });
+
+            const stringTranslationDzikir = {
+                name: 'Tasbih',
+                pages: [{ arabic: 'سبحان الله', translation: 'Maha Suci Allah', target: 33 }]
+            };
+            const regeneratedStr = regenerateDzikirIds(stringTranslationDzikir);
+            expect(regeneratedStr.pages[0].translation).toEqual({
+                id: 'Maha Suci Allah',
+                en: ''
+            });
+        });
+
+        it('should guard getLocalizedText against literal "[object Object]" strings', () => {
+            expect(getLocalizedText('[object Object]', 'id')).toBe('');
+            expect(getLocalizedText({ id: '[object Object]', en: 'Valid' }, 'id')).toBe('');
+            expect(getLocalizedText({ id: 'Terjemahan', en: 'Translation' }, 'id')).toBe('Terjemahan');
+            expect(getLocalizedText({ id: 'Terjemahan', en: 'Translation' }, 'en')).toBe('Translation');
+            expect(getLocalizedText('Teks biasa', 'id')).toBe('Teks biasa');
+        });
+
+        it('should properly render localized preview in DOM without displaying "[object Object]"', () => {
+            function createMockEl(tag) {
+                return {
+                    tagName: tag.toUpperCase(),
+                    className: '',
+                    style: {},
+                    innerHTML: '',
+                    textContent: '',
+                    children: [],
+                    classList: { add: vi.fn(), remove: vi.fn() },
+                    appendChild(child) { this.children.push(child); return child; }
+                };
+            }
+
+            const elements = {
+                'receive-dzikir-modal': createMockEl('div'),
+                'receive-modal-input-view': createMockEl('div'),
+                'receive-modal-preview-view': createMockEl('div'),
+                'receive-preview-name': createMockEl('div'),
+                'receive-preview-subtitle': createMockEl('div'),
+                'receive-preview-list': createMockEl('div')
+            };
+
+            global.document = {
+                getElementById: (id) => elements[id] || null,
+                createElement: createMockEl
+            };
+
+            showReceivePreview({
+                name: 'Doa Kemudahan Hisab',
+                pages: [
+                    {
+                        arabic: 'اللهم حاسبني حسابا يسيرا',
+                        latin: 'Allahumma haasibni hisaban yasiira',
+                        translation: {
+                            id: 'Ya Allah! Karuniakanlah kepadaku hisab yang mudah.',
+                            en: 'O Allah! Grant me an easy reckoning.'
+                        },
+                        target: 10
+                    }
+                ]
+            });
+
+            const listEl = elements['receive-preview-list'];
+            expect(listEl.children.length).toBe(1);
+            const card = listEl.children[0];
+            const textContents = card.children.map(c => c.textContent);
+            expect(textContents).toContain('Ya Allah! Karuniakanlah kepadaku hisab yang mudah.');
+            expect(textContents.join(' ')).not.toContain('[object Object]');
         });
     });
 });

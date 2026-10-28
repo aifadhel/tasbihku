@@ -6,6 +6,70 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.14.4] - 2026-10-18
+
+- **Highlight:** Refined native mobile state management, history unwinding, edge gesture collision protection, and centralized active modal stack to deliver an authentic native app experience without browser navigation artifacts or history trapping.
+
+### Specific UI & Component Changes
+- **Centralized Active Modal Stack (`src/ui/router.js`):** Implemented `activeModalStack` with `registerModalOpen`, `registerModalClose`, and `hasActiveModals`. All 10 application dialogs and bottom sheets (`number-input-modal`, `time-input-modal`, `habit-modal`, `habit-detail-modal`, `habit-log-modal`, `library-modal`, `custom-azkar-modal`, `share-dzikir-modal`, `receive-dzikir-modal`, and generic `modal-overlay`) now register in a unified LIFO modal stack.
+- **Back-Gesture Modal Interception (`src/ui/router.js`):** Configured global `popstate` listener to intercept mobile edge back-swipes and Android hardware back actions whenever modals are open. Dismisses only the topmost modal in place without tearing down or navigating the underlying page.
+- **Zero-Flicker Native Transitions (`src/ui/router.js` & `style.css`):** Removed the legacy 50ms blank screen timeout in `showPage()`. Switched to instantaneous `.page.active` toggling and removed the 50ms entrance delay from `.page.active` transition CSS, eliminating screen flashing during page transitions.
+- **Dynamic Viewport & Overscroll Containment (`style.css`):** Configured `height: 100dvh; min-height: -webkit-fill-available; overscroll-behavior: none;` on `html`, `body`, and `#app`. Added `overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch;` on `.page` to prevent pull-to-refresh accidents and mobile browser URL bar layout shifts.
+- **Edge Gesture Guard (`src/main.js`):** Added an edge protection threshold (`touchStartX < 35px`) in `handleSwipeGesture` on `#page-player`, preventing OS edge back navigation swipes from colliding with and accidentally triggering counter `playerUndo()`.
+- **Player Navigation Action (`index.html`):** Updated player top-bar back button to invoke `goBack(window.playerSourcePage || 'page-menu')` with localized `data-i18n-aria="btn_back"`.
+
+### Core Logic & Audio/Haptic Workflows
+- **History Trap Resolution (`src/modules/dzikir.js`):** Fixed the critical history trapping bug where completing a dzikir sequence or exiting the custom editor pushed duplicate `page-menu` entries forward onto the browser history stack. Celebration modal dismissal now invokes `goBack(playerSourcePage || 'page-menu')` and editor save/restore invokes `goBack('page-menu')`, properly unwinding the history stack so subsequent mobile back gestures return directly to the caller (e.g., Dashboard).
+- **Dynamic Caller Tracking (`src/modules/dzikir.js`):** Added `playerSourcePage` tracking in `startPlayer()` to dynamically capture whether the dzikir player was launched from the Dashboard (`page-dashboard`) or Settings (`page-menu`), guaranteeing an accurate return path on completion.
+- **Idempotent Page Routing (`src/ui/router.js`):** Hardened `showPage()` to check if the target page is already `.page.active`, preventing redundant DOM mutations and duplicate history pushes.
+
+### Dzikir & Habits Engine
+- **Seamless Habit & Sequence Flow:** Preserved all automated habit tracking, streak increments, and stacking celebration toast notifications upon sequence completion while ensuring history navigation correctly pops back to the originating screen.
+
+### Test & Verification
+- **Unit Test Suite (`npm test`):** Added 11 new comprehensive unit tests in `tests/unit/router.test.js` and `tests/unit/dzikir.test.js` validating `activeModalStack` registration, popstate modal dismissal without page changes, idempotent routing, and history unwinding on dzikir completion/editor saves. 122/122 unit tests passing across all 5 test files.
+- **Production Compilation (`npm run build`):** Verified clean production compilation with Vite; 25 modules transformed into optimized bundles with 0 errors.
+
+## [tasbihku-v1.14.3] - 2026-10-18
+
+- **Highlight:** Refined Material 3 Expressive layout and responsive behavior for compact mobile viewports (e.g., Redmi Note 10s ~360–392px logical width), resolving segmented control wrapping/clipping, streamlining custom dzikir header action buttons, and enhancing vector metadata chip rendering.
+
+### Specific UI & Component Changes
+- **Non-Wrapping M3 Settings Item (`style.css`):** Refactored `.m3-setting-item` to enforce strict single-row alignment (`flex-direction: row; flex-wrap: nowrap; justify-content: space-between; align-items: center; overflow: hidden; padding: 14px 20px; box-sizing: border-box;`). Sized `.m3-setting-text` with `flex: 1 1 auto; min-width: 0; padding-right: 8px;`, ensuring setting title and description flow naturally without forcing trailing interactive controls into a wrapped second row.
+- **Compact Segmented Control (`style.css`):** Updated `.m3-segmented-control` with `flex-shrink: 0; padding: 3px; gap: 2px;` and refined `.m3-segment-pill` (`padding: 6px 12px; min-width: 36px; font-size: 0.82rem; font-weight: 700; line-height: 1;`), eliminating vertical slicing or container clipping down to 320px viewports while retaining accessible touch response.
+- **Streamlined Custom Dzikir Header Buttons (`index.html`):** Removed duplicate `+` strings from action chip labels in `.m3-chip-action` and `.m3-btn-action` (from `+ + Buat Baru` and `📥 + Terima Dzikir` to clean vector icon + text: `[📥 Terima]` and `[+ Buat Baru]`), preventing header wrapping and horizontal crowding on compact displays.
+- **Crisp Outlined Metadata Chips (`src/modules/dzikir.js`):** Replaced legacy solid black SVG glyphs with high-contrast outlined vector icons (`stroke="currentColor" stroke-width="2"`) for page count and target bullseye chips, preventing solid block rendering artifacts across OEM Android webviews.
+
+### Core Logic & Audio/Haptic Workflows
+- **Synchronized Language Controls:** Maintained strict backward compatibility for `#select-language` `<select>` DOM element change events while driving active pill states. Preserved Web Audio synthesis, haptic feedback profiles, and counter persistence across viewports.
+
+### Dzikir & Habits Engine
+- **Header Action Localization (`src/core/i18n.js`):** Registered `btn_header_receive` ("Terima" / "Receive") and `btn_header_create` ("Buat Baru" / "Create New") across Indonesian and English dictionaries to maintain clean button labels without hardcoded or duplicate glyph strings.
+
+### Test & Verification
+- **Unit Test Suite (`npm test`):** Verified full test suite; 111/111 unit tests passing across all 5 test files (`dzikir.test.js`, `dzikir-share.test.js`, `habits.test.js`, `sound.test.js`, `store.test.js`).
+- **Production Compilation (`npm run build`):** Vite production bundle compiled cleanly with 25 modules transformed (0 errors).
+
+## [tasbihku-v1.14.2] - 2026-10-18
+
+- **Highlight:** Resolved dhikr-sharing translation serialization bug where multi-language translation objects (`{ id, en }`) were coerced into `"[object Object]"` strings during URL/Base64 encoding and preview/playback.
+
+### Specific UI & Component Changes
+- **Receive Modal Preview Localization (`src/modules/dzikir.js`):** Updated `showReceivePreview()` card rendering to dynamically resolve translations via `getLocalizedText(p.translation, state.language || 'id')` instead of directly binding `p.translation` to `textContent`, completely preventing raw `[object Object]` nodes from rendering.
+- **Dzikir Player Translation Defense (`src/modules/dzikir.js`):** Hardened `getLocalizedText()` to proactively intercept and strip literal `"[object Object]"` strings from legacy payloads or cached states, ensuring pristine typography in `#player-translation`.
+
+### Core Logic & Audio/Haptic Workflows
+- **Non-Coercive Object Serialization (`src/modules/dzikir.js`):** Refactored `encodeDzikirPayload()` to preserve nested `{ id, en }` translation and reference structures without calling `String(p.translation)`. Now safely trims and preserves both Indonesian and English translation fields into the portable Base64 URL token.
+- **Comprehensive Payload Validation & Sanitization (`src/modules/dzikir.js`):** Updated `validateDzikirPayload()` to recognize object-based translations as valid page content, sanitizing both `id` and `en` strings up to 1000 characters.
+- **Canonical ID & State Regeneration (`src/modules/dzikir.js`):** Normalized incoming translations in `regenerateDzikirIds()` into standard `{ id, en }` records so that imported sequences are immediately compatible with both `#page-player` and `#page-editor` without data corruption.
+
+### Dzikir & Habits Engine
+- **Full Multi-Language Preservation:** Shared custom dhikrs originating from presets or library additions (such as *Doa Kemudahan Hisab*) maintain their authentic Indonesian and English translations across receiver devices.
+
+### Test & Verification
+- **Unit Test Suite (`npm test`):** Added comprehensive regression tests in `tests/unit/dzikir-share.test.js` covering multi-language object translation encoding/decoding roundtrip, validation sanitization, canonical ID regeneration, `getLocalizedText` object guarding, and headless DOM preview rendering. 111/111 passing across 5 test suites.
+- **Production Compilation (`npm run build`):** Vite production bundle compiled cleanly with 25 modules transformed (0 errors).
+
 ## [tasbihku-v1.14.1] - 2026-10-18
 
 - **Highlight:** Refined Custom Dzikir and Language Selection to adhere to Material 3 Expressive principles on Pixel 9 Pro viewports, resolving card squishing, text clipping, and unstyled form controls.

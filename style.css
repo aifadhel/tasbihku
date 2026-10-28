@@ -206,16 +206,26 @@ a:focus-visible {
     }
 }
 
+html {
+    height: 100%;
+    height: 100dvh;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+}
+
 body {
     font-family: var(--font-family-base);
     background-color: var(--md-sys-color-background);
     color: var(--md-sys-color-on-background);
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 100%;
+    height: 100dvh;
+    min-height: -webkit-fill-available;
     display: flex;
     justify-content: center;
     overflow: hidden;
+    overscroll-behavior: none;
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition saat ganti tema */
 }
 
@@ -223,10 +233,13 @@ body {
     width: 100%;
     max-width: 500px;
     height: 100%;
+    height: 100dvh;
     position: relative;
     background-color: var(--md-sys-color-background);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    overscroll-behavior: none;
     transition: background-color 0.3s ease;
     container-type: inline-size;
     container-name: app-container;
@@ -353,6 +366,8 @@ body {
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
     
     /* Transition states */
     opacity: 0;
@@ -376,8 +391,8 @@ body {
     
     /* Entrance transition (when active class is added) */
     transition: 
-        opacity var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-spring-standard) 50ms,
-        transform var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-spring-standard) 50ms,
+        opacity var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-spring-standard),
+        transform var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-spring-standard),
         visibility 0s linear 0s;
 }
 
@@ -3221,30 +3236,33 @@ button:focus-visible {
     gap: 12px;
 }
 
-/* M3 Expressive Settings Item (Responsive Anti-Clipping) */
+/* M3 Expressive Settings Item (Single-row side-by-side layout, zero clipping) */
 .m3-setting-item {
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
     min-height: 72px;
     height: auto;
-    padding: 16px 20px;
+    padding: 14px 20px;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     cursor: default;
     background-color: var(--md-sys-color-surface-container-high);
     border-radius: var(--shape-corner-xl);
     margin-top: 8px;
     width: 100%;
+    box-sizing: border-box;
     transition: background-color var(--md-sys-motion-duration-short) ease;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .m3-setting-text {
     display: flex;
     flex-direction: column;
-    flex: 1 1 180px;
+    flex: 1 1 auto;
     min-width: 0;
+    padding-right: 8px;
 }
 
 .m3-setting-title {
@@ -3252,25 +3270,28 @@ button:focus-visible {
     color: var(--md-sys-color-on-background);
     font-size: 1rem;
     line-height: 1.3;
+    white-space: normal;
 }
 
 .m3-setting-desc {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     opacity: 0.7;
-    margin-top: 4px;
+    margin-top: 3px;
     line-height: 1.35;
     word-break: break-word;
+    white-space: normal;
 }
 
-/* M3 Expressive Segmented Control */
+/* M3 Expressive Segmented Control (Compact & Touch-Friendly) */
 .m3-segmented-control {
     display: inline-flex;
     align-items: center;
+    flex-shrink: 0;
     background: var(--md-sys-color-surface-container);
     border-radius: var(--shape-corner-full);
-    padding: 4px;
+    padding: 3px;
     border: 1px solid var(--md-sys-color-outline-variant);
-    gap: 4px;
+    gap: 2px;
 }
 
 .m3-segment-pill {
@@ -3278,14 +3299,17 @@ button:focus-visible {
     outline: none;
     background: transparent;
     color: var(--md-sys-color-on-surface-variant);
-    padding: 6px 16px;
+    padding: 6px 12px;
+    min-width: 36px;
+    text-align: center;
     border-radius: var(--shape-corner-full);
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.82rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all var(--md-sys-motion-duration-short) ease;
     font-family: inherit;
     user-select: none;
+    line-height: 1;
 }
 
 .m3-segment-pill:hover {
@@ -3294,14 +3318,14 @@ button:focus-visible {
 }
 
 .m3-segment-pill:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
 }
 
 .m3-segment-pill.active {
     background: var(--md-sys-color-primary) !important;
     color: var(--md-sys-color-on-primary) !important;
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    font-weight: 800;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 /* --- ACCESSIBILITY: REDUCED MOTION --- */

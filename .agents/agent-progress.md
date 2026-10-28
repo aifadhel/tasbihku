@@ -2,9 +2,55 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Current Version**: tasbihku-v1.14.1
-- **Unit Tests**: 106/106 passing (100%)
+- **Current Version**: tasbihku-v1.14.4
+- **Unit Tests**: 122/122 passing (100%)
 - **Production Build**: Clean (25 modules transformed)
+
+## Session: 2026-10-18 (v1.14.4 Native Mobile State Management & Back-Swipe Navigation)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Implemented centralized `activeModalStack` (`registerModalOpen`, `registerModalClose`, `hasActiveModals`), zero-flicker transitions, and modal-intercepting `popstate` / `goBack` in `src/ui/router.js`.
+  - [✓] Step 2: Added dynamic caller tracking (`playerSourcePage`) and replaced forward pushes with `goBack(playerSourcePage || 'page-menu')` on sequence completion and editor save/restore in `src/modules/dzikir.js`.
+  - [✓] Step 3: Connected all 10 application dialogs and bottom sheets in `src/modules/habits-ui.js` and `src/modules/tasbih.js` to router modal registration.
+  - [✓] Step 4: Added edge gesture guard (`touchStartX < 35px`) in `src/main.js` and updated player header back action in `index.html`.
+  - [✓] Step 5: Applied `height: 100dvh; min-height: -webkit-fill-available; overscroll-behavior: none;` and `.page { overscroll-behavior-y: contain; }` in `style.css`.
+  - [✓] Step 6: Added comprehensive unit tests in `tests/unit/router.test.js` and `tests/unit/dzikir.test.js` (122/122 passing).
+  - [✓] Step 7: Verified production compilation via `npm run build`, executed automated version bump to `v1.14.4`, and enriched `CHANGELOG.md`.
+- **Verification Evidence**:
+  - `npm test`: 122 passed across 5 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 18.02 kB HTML / 82.52 kB CSS / 55.34 kB JS (Exit code 0).
+
+## Session: 2026-10-18 (v1.14.3 Material 3 Expressive Compact Viewport Polish)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Enforced strict single-row nowrap layout on `.m3-setting-item` and compacted `.m3-segmented-control` / `.m3-segment-pill` to prevent wrapping and clipping down to 320px viewports (`style.css`).
+  - [✓] Step 2: Streamlined Custom Dzikir header action chips by stripping redundant duplicate plus glyphs from labels and registering `btn_header_receive` and `btn_header_create` in bilingual dictionaries (`index.html`, `src/core/i18n.js`).
+  - [✓] Step 3: Upgraded metadata chips in `renderCustomList()` to high-contrast outlined vector SVGs (`src/modules/dzikir.js`).
+  - [✓] Step 4: Verified full test suite (111/111 passing), compiled production bundle cleanly, executed automated version bump to `v1.14.3`, and enriched `CHANGELOG.md`.
+- **Verification Evidence**:
+  - `npm test`: 111 passed across 5 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 18.00 kB HTML / 82.47 kB CSS / 54.77 kB JS (Exit code 0).
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified Language setting row maintains side-by-side single-row layout without clipping on Redmi Note 10s (360-392px) viewports.
+  - [✓] Verified Custom Dzikir header action buttons display single clear glyphs without duplicate `+` strings.
+  - [✓] Verified metadata chips render crisp vector outlines across all webview modes.
+- **Known Regressions / Blockers**: None.
+
+## Session: 2026-10-18 (v1.14.2 Dzikir Sharing Translation [object Object] Bug Fix)
+- **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness
+- **Milestones Completed**:
+  - [✓] Step 1: Resolved object translation string coercion in `encodeDzikirPayload`, `validateDzikirPayload`, and `regenerateDzikirIds` to preserve `{ id, en }` objects and plain strings without evaluating to `"[object Object]"` (`src/modules/dzikir.js`).
+  - [✓] Step 2: Added defensive check in `getLocalizedText()` to eliminate literal `"[object Object]"` strings and localized preview rendering in `showReceivePreview()` via `getLocalizedText` (`src/modules/dzikir.js`).
+  - [✓] Step 3: Implemented 5 unit tests in `tests/unit/dzikir-share.test.js` validating object translation roundtrips, sanitization, canonical ID regeneration, `getLocalizedText` guarding, and mock DOM preview rendering.
+  - [✓] Step 4: Verified full test suite (111/111 passing), compiled production bundle cleanly, executed automated version bump to `v1.14.2`, and enriched `CHANGELOG.md`.
+- **Verification Evidence**:
+  - `npm test`: 111 passed across 5 test files (Exit code 0).
+  - `npm run build`: 25 modules transformed, 0 errors, gzip 18.00 kB HTML / 82.45 kB CSS / 54.77 kB JS (Exit code 0).
+  - Subagent Step 5.5 double-check: `harness-verifier` verified all requirements with PASS status.
+- **Double-Check Findings (Step 5.5)**:
+  - [✓] Verified `encodeDzikirPayload` preserves nested `{ id, en }` translation and reference structures without string coercion.
+  - [✓] Verified `showReceivePreview` and `renderPlayer` display authentic localized text instead of `[object Object]`.
+- **Known Regressions / Blockers**: None.
 
 ## Session: 2026-10-18 (v1.14.1 Material 3 Expressive UI/UX Refinement)
 - **Planning & Executing Model**: Gemini 3.8 Flash (High) / Antigravity Harness

@@ -1,6 +1,6 @@
 {
   "name": "tasbihku",
-  "version": "1.14.1",
+  "version": "1.14.4",
   "description": "A progressive web app for tracking Tasbih counts and daily habits with advanced statistics.",
   "license": "MIT",
   "author": "aifadhel <iemedcahkudus@gmail.com>",
@@ -27,7 +27,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run tests/unit/",
+    "test": "vitest run tests/unit/ --pool=forks",
     "test:watch": "vitest tests/unit/",
     "test:e2e": "playwright test",
     "version:bump": "node scripts/bump-version.js"

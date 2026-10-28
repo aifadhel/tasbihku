@@ -630,6 +630,9 @@ document.addEventListener('touchend', (e) => {
 }, { passive: true });
 
 function handleSwipeGesture() {
+    // Prevent accidental swipe undo when user is triggering OS edge swipe-back gesture (< 35px from screen edge)
+    if (touchStartX < 35) return;
+
     const diffX = touchEndX - touchStartX;
     const diffY = Math.abs(touchEndY - touchStartY);
     

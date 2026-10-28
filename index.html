@@ -292,14 +292,14 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
                     <span class="label-large text-sub" data-i18n="section_custom">Custom Dzikir</span>
-                    <div style="display: flex; gap: 8px; align-items: center;">
+                    <div style="display: flex; gap: 6px; align-items: center;">
                         <button class="m3-chip-action" onclick="window.openReceiveDzikirModal()" data-i18n-aria="btn_receive_dzikir" aria-label="Terima Dzikir">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-35"></use></svg>
-                            <span data-i18n="btn_receive_dzikir">+ Terima Dzikir</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-35"></use></svg>
+                            <span data-i18n="btn_header_receive">Terima</span>
                         </button>
                         <button class="m3-btn-action" onclick="openEditor('new')" data-i18n-aria="create_new" aria-label="Buat Baru">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                            <span data-i18n="create_new">+ Buat Baru</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            <span data-i18n="btn_header_create">Buat Baru</span>
                         </button>
                     </div>
                 </div>
@@ -474,7 +474,7 @@
         <!-- UNIFIED PLAYER PAGE -->
         <div id="page-player" class="page">
             <div class="top-bar">
-                <button class="btn btn-icon" onclick="goBack('page-menu')" aria-label="Kembali ke menu" data-i18n-aria="menu_title">
+                <button class="btn btn-icon" onclick="goBack(window.playerSourcePage || 'page-menu')" aria-label="Kembali" data-i18n-aria="btn_back">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-10"></use></svg>
                 </button>
                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; overflow: hidden; padding: 0 10px;">

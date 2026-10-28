@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 vi.mock('../../src/hardware/media.js', () => ({
     vibrate: vi.fn(),
@@ -9,12 +9,16 @@ vi.mock('../../src/hardware/media.js', () => ({
 vi.mock('../../src/ui/router.js', () => ({
     showModal: vi.fn(),
     showPage: vi.fn(),
+    goBack: vi.fn(),
+    registerModalOpen: vi.fn(),
+    registerModalClose: vi.fn(),
     animateValue: vi.fn(),
     triggerCelebration: vi.fn(),
     SVG_ICONS: { arrowUp: '', arrowDown: '' }
 }));
 
-import { dzikirPagi, dzikirPetang, wiridReadings, getLocalizedText, renderCustomList } from '../../src/modules/dzikir.js';
+import { showModal, showPage, goBack } from '../../src/ui/router.js';
+import { dzikirPagi, dzikirPetang, wiridReadings, getLocalizedText, renderCustomList, startPlayer, confirmRestoreGuided, saveEditorSession, openEditor } from '../../src/modules/dzikir.js';
 import { DEFAULT_STATE, state } from '../../src/core/store.js';
 
 describe('Dzikir Module Dataset & Helper Unit Tests', () => {
@@ -321,6 +325,71 @@ describe('Dzikir Module Dataset & Helper Unit Tests', () => {
             expect(toolbar.children[0].className).toContain('btn-tonal-mini');
             expect(toolbar.children[1].className).toContain('btn-tonal-mini');
             expect(toolbar.children[2].className).toContain('btn-danger-mini');
+        });
+    });
+
+    describe('Dzikir Navigation & History Unwinding', () => {
+        beforeEach(() => {
+            vi.clearAllMocks();
+            global.window = {
+                playerSourcePage: null
+            };
+        });
+
+        it('startPlayer records source page from active page before opening player', () => {
+            const mockPage = { id: 'page-menu' };
+            global.document = {
+                querySelector: vi.fn((sel) => sel === '.page.active' ? mockPage : null),
+                getElementById: vi.fn(() => null)
+            };
+
+            startPlayer('pagi');
+
+            expect(global.window.playerSourcePage).toBe('page-menu');
+            expect(showPage).toHaveBeenCalledWith('page-player');
+        });
+
+        it('confirmRestoreGuided calls goBack instead of forward page push upon confirmation', () => {
+            // First modal asks for confirmation
+            showModal.mockImplementationOnce((title, msg, onConfirm) => {
+                onConfirm();
+            });
+            // Second modal displays success message and its callback invokes goBack
+            showModal.mockImplementationOnce((title, msg, onDismiss) => {
+                onDismiss();
+            });
+
+            confirmRestoreGuided();
+
+            expect(goBack).toHaveBeenCalledWith('page-menu');
+            expect(showPage).not.toHaveBeenCalledWith('page-menu');
+        });
+
+        it('saveEditorSession calls goBack instead of forward page push upon save confirmation', () => {
+            global.document = {
+                getElementById: vi.fn((id) => {
+                    if (id === 'editor-input-name') return { value: 'My Test Dzikir' };
+                    if (id === 'custom-list-container') return { innerHTML: '', appendChild: vi.fn() };
+                    return null;
+                }),
+                createElement: vi.fn(() => ({
+                    className: '',
+                    style: {},
+                    setAttribute: vi.fn(),
+                    appendChild: vi.fn()
+                }))
+            };
+
+            openEditor('new');
+
+            showModal.mockImplementationOnce((title, msg, onDismiss) => {
+                onDismiss();
+            });
+
+            saveEditorSession();
+
+            expect(goBack).toHaveBeenCalledWith('page-menu');
+            expect(showPage).not.toHaveBeenCalledWith('page-menu');
         });
     });
 });

@@ -5,7 +5,7 @@
 import { state, saveState, saveStateImmediate } from '../core/store.js';
 import { vibrate, playTapSound, triggerMilestoneFeedback } from '../hardware/media.js';
 import { trackActivity, triggerTimerNotification } from './habits.js';
-import { showModal, animateValue, SVG_ICONS, triggerCelebration, updateResetButtonState } from '../ui/router.js';
+import { showModal, animateValue, SVG_ICONS, triggerCelebration, updateResetButtonState, registerModalOpen, registerModalClose } from '../ui/router.js';
 import { t } from '../core/i18n.js';
 
 // Stopwatch private state variables
@@ -79,16 +79,18 @@ export function openNumberInputModal(title, desc, initialValue, callback) {
         numberInputCallback = callback;
         
         modal.classList.add('active');
+        registerModalOpen('number-input-modal', closeNumberInputModal);
         inputEl.focus();
         inputEl.select();
     }
 }
 
-export function closeNumberInputModal() {
+export function closeNumberInputModal(fromPopstate = false) {
     const modal = document.getElementById('number-input-modal');
     if (modal) {
         modal.classList.remove('active');
     }
+    registerModalClose('number-input-modal', fromPopstate);
     numberInputCallback = null;
 }
 
@@ -274,12 +276,16 @@ export function promptCustomTimer() {
     if (mInput) mInput.value = m.toString().padStart(2, '0');
     if (sInput) sInput.value = s.toString().padStart(2, '0');
     const modalEl = document.getElementById('time-input-modal');
-    if (modalEl) modalEl.classList.add('active');
+    if (modalEl) {
+        modalEl.classList.add('active');
+        registerModalOpen('time-input-modal', closeTimeInputModal);
+    }
 }
 
-export function closeTimeInputModal() {
+export function closeTimeInputModal(fromPopstate = false) {
     const modal = document.getElementById('time-input-modal');
     if (modal) modal.classList.remove('active');
+    registerModalClose('time-input-modal', fromPopstate);
 }
 
 export function applyTimeInputModal() {

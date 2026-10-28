@@ -7,6 +7,7 @@ let switchDashboardMode;
 let updateResetButtonState;
 let handleTablistKeyboard;
 let mockElements = {};
+let routerModule;
 
 beforeAll(async () => {
     global.window = {
@@ -62,7 +63,7 @@ beforeAll(async () => {
         };
     });
 
-    const routerModule = await import('../../src/ui/router.js');
+    routerModule = await import('../../src/ui/router.js');
     switchDashboardMode = routerModule.switchDashboardMode;
     updateResetButtonState = routerModule.updateResetButtonState;
 
@@ -477,6 +478,122 @@ describe('Dashboard Mode-Aware Reset Button & Dock Console Unit Tests', () => {
             expect(css).toContain('.badge-apache');
             expect(css).toContain('.badge-ofl');
             expect(css).toContain('.badge-mit');
+        });
+    });
+
+    describe('Native Navigation & Active Modal Stack', () => {
+        let popstateHandler;
+
+        beforeAll(() => {
+            popstateHandler = global.window.addEventListener.mock.calls.find(call => call[0] === 'popstate')?.[1];
+            global.history = {
+                pushState: vi.fn(),
+                back: vi.fn()
+            };
+        });
+
+        beforeEach(() => {
+            while (routerModule.activeModalStack.length > 0) {
+                routerModule.activeModalStack.pop();
+            }
+            vi.clearAllMocks();
+        });
+
+        it('should push modal to activeModalStack and call history.pushState when opened', () => {
+            const closeFn = vi.fn();
+            routerModule.registerModalOpen('test-modal', closeFn);
+
+            expect(routerModule.hasActiveModals()).toBe(true);
+            expect(routerModule.activeModalStack).toHaveLength(1);
+            expect(routerModule.activeModalStack[0]).toEqual({ id: 'test-modal', closeFn });
+            expect(global.history.pushState).toHaveBeenCalledWith({ modal: 'test-modal' }, '', expect.any(String));
+        });
+
+        it('should be idempotent and avoid pushing duplicate modals to activeModalStack', () => {
+            const closeFn = vi.fn();
+            routerModule.registerModalOpen('test-modal', closeFn);
+            routerModule.registerModalOpen('test-modal', closeFn);
+
+            expect(routerModule.activeModalStack).toHaveLength(1);
+            expect(global.history.pushState).toHaveBeenCalledTimes(1);
+        });
+
+        it('should remove modal from activeModalStack and call history.back when closed by user UI action', () => {
+            const closeFn = vi.fn();
+            routerModule.registerModalOpen('test-modal', closeFn);
+            expect(routerModule.activeModalStack).toHaveLength(1);
+
+            routerModule.registerModalClose('test-modal', false);
+
+            expect(routerModule.hasActiveModals()).toBe(false);
+            expect(routerModule.activeModalStack).toHaveLength(0);
+            expect(global.history.back).toHaveBeenCalledTimes(1);
+        });
+
+        it('should remove modal from activeModalStack without calling history.back when closed via popstate', () => {
+            const closeFn = vi.fn();
+            routerModule.registerModalOpen('test-modal', closeFn);
+            expect(routerModule.activeModalStack).toHaveLength(1);
+
+            routerModule.registerModalClose('test-modal', true);
+
+            expect(routerModule.hasActiveModals()).toBe(false);
+            expect(routerModule.activeModalStack).toHaveLength(0);
+            expect(global.history.back).not.toHaveBeenCalled();
+        });
+
+        it('should intercept popstate when modal is open and dismiss top modal without page change', () => {
+            const closeFn1 = vi.fn();
+            const closeFn2 = vi.fn();
+            routerModule.registerModalOpen('modal-1', closeFn1);
+            routerModule.registerModalOpen('modal-2', closeFn2);
+
+            expect(routerModule.activeModalStack).toHaveLength(2);
+
+            expect(typeof popstateHandler).toBe('function');
+            popstateHandler({ state: { pageId: 'page-menu' } });
+
+            expect(closeFn2).toHaveBeenCalledWith(true);
+            expect(closeFn1).not.toHaveBeenCalled();
+            expect(routerModule.activeModalStack).toHaveLength(1);
+            expect(routerModule.activeModalStack[0].id).toBe('modal-1');
+        });
+
+        it('goBack should dismiss topmost active modal without calling history.back', () => {
+            const closeFn = vi.fn();
+            routerModule.registerModalOpen('test-modal', closeFn);
+
+            routerModule.goBack('page-dashboard');
+
+            expect(closeFn).toHaveBeenCalledWith(false);
+            expect(global.history.back).not.toHaveBeenCalled();
+        });
+
+        it('goBack should call history.back if internal history stack is non-empty and no modals open', () => {
+            const historyStack = routerModule.getInternalHistoryStack();
+            historyStack.push('page-menu');
+
+            routerModule.goBack('page-dashboard');
+
+            expect(global.history.back).toHaveBeenCalled();
+        });
+
+        it('showPage should be idempotent when target page is already active', () => {
+            const mockPage = {
+                id: 'page-dashboard',
+                classList: {
+                    contains: vi.fn((cls) => cls === 'active'),
+                    add: vi.fn(),
+                    remove: vi.fn()
+                }
+            };
+            const originalQuerySelector = global.document.querySelector;
+            global.document.querySelector = vi.fn((sel) => sel === '.page.active' ? mockPage : null);
+
+            routerModule.showPage('page-dashboard');
+
+            expect(global.history.pushState).not.toHaveBeenCalled();
+            global.document.querySelector = originalQuerySelector;
         });
     });
 });

@@ -4,7 +4,7 @@
 
 import { state, saveState } from '../core/store.js';
 import { vibrate, playTapSound } from '../hardware/media.js';
-import { showModal, SVG_ICONS } from '../ui/router.js';
+import { showModal, registerModalOpen, registerModalClose, SVG_ICONS } from '../ui/router.js';
 import { fireConfetti } from '../ui/confetti.js';
 import { showToast } from '../ui/toast.js';
 import {
@@ -955,11 +955,13 @@ export function openHabitModal(mode, habitId = null) {
     }
     
     modal.classList.add('active');
+    registerModalOpen('habit-modal', closeHabitModal);
 }
 
-export function closeHabitModal() {
+export function closeHabitModal(fromPopstate = false) {
     const modal = document.getElementById('habit-modal');
     if (modal) modal.classList.remove('active');
+    registerModalClose('habit-modal', fromPopstate);
 }
 
 export function saveHabitFromModal() {
@@ -1122,13 +1124,11 @@ export function openHabitDetailModal(habitId) {
     const habit = state.habits.find(h => h.id === habitId);
     if (!habit) return;
 
-    // History API integration
+    // History API integration & Active Modal Stack
     if (typeof window !== 'undefined') {
         window.isHabitDetailModalOpen = true;
     }
-    if (typeof history !== 'undefined') {
-        history.pushState({ modal: 'habit-detail', habitId }, '', '');
-    }
+    registerModalOpen('habit-detail-modal', closeHabitDetailModal);
 
     calendarHabitId = habitId;
     calendarYearState = new Date().getFullYear();
@@ -1167,12 +1167,10 @@ export function closeHabitDetailModal(fromPopstate = false) {
     const modal = document.getElementById('habit-detail-modal');
     if (!modal) return;
     
-    if (typeof window !== 'undefined' && window.isHabitDetailModalOpen) {
+    if (typeof window !== 'undefined') {
         window.isHabitDetailModalOpen = false;
-        if (typeof history !== 'undefined' && !fromPopstate) {
-            history.back();
-        }
     }
+    registerModalClose('habit-detail-modal', fromPopstate);
 
     modal.classList.remove('active');
 }
@@ -1712,11 +1710,13 @@ export function openHabitLogModal(habitId, dateStr) {
     if (noteInput) noteInput.value = entry.note || "";
 
     modal.classList.add('active');
+    registerModalOpen('habit-log-modal', closeHabitLogModal);
 }
 
-export function closeHabitLogModal() {
+export function closeHabitLogModal(fromPopstate = false) {
     const modal = document.getElementById('habit-log-modal');
     if (modal) modal.classList.remove('active');
+    registerModalClose('habit-log-modal', fromPopstate);
     currentLogHabitId = null;
     currentLogDateStr = null;
     

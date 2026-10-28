@@ -9,7 +9,7 @@ import { stopStopwatch, stopTimer, updateStopwatchUI, updateTimerUI } from '../m
 import { renderHabits } from '../modules/habits.js';
 import { t } from '../core/i18n.js';
 
-export const APP_VERSION = '1.14.1';
+export const APP_VERSION = '1.14.4';
 
 export const SVG_ICONS = {
     tap: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>`,
@@ -25,15 +25,54 @@ export const SVG_ICONS = {
 // Page routing hooks registry
 export const pageHooks = {};
 
-// --- Router Navigation ---
+// --- Router Navigation & Active Modal Stack ---
 let internalHistoryStack = [];
+export const activeModalStack = [];
+
+export function getInternalHistoryStack() {
+    return internalHistoryStack;
+}
+
+export function registerModalOpen(modalId, closeFn) {
+    if (activeModalStack.some(m => m.id === modalId)) return;
+    activeModalStack.push({ id: modalId, closeFn });
+    if (typeof history !== 'undefined' && typeof history.pushState === 'function') {
+        const currentUrl = typeof window !== 'undefined' && window.location ? (window.location.href || window.location.pathname || '') : '';
+        history.pushState({ modal: modalId }, '', currentUrl);
+    }
+}
+
+export function registerModalClose(modalId, fromPopstate = false) {
+    const idx = activeModalStack.findIndex(m => m.id === modalId);
+    if (idx !== -1) {
+        activeModalStack.splice(idx, 1);
+        if (!fromPopstate && typeof history !== 'undefined' && typeof history.back === 'function') {
+            history.back();
+        }
+    }
+}
+
+export function hasActiveModals() {
+    return activeModalStack.length > 0;
+}
 
 export function showPage(pageId, pushToHistory = true) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    setTimeout(() => {
-        const pageEl = document.getElementById(pageId);
-        if (pageEl) pageEl.classList.add('active');
-    }, 50);
+    if (typeof document !== 'undefined') {
+        const currentActive = document.querySelector('.page.active');
+        if (currentActive && currentActive.id === pageId) {
+            // Already active on this page; do not duplicate history entry
+            return;
+        }
+
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(p => {
+            if (p.id === pageId) {
+                p.classList.add('active');
+            } else {
+                p.classList.remove('active');
+            }
+        });
+    }
 
     // Run registered page hooks
     if (typeof pageHooks[pageId] === 'function') {
@@ -42,7 +81,9 @@ export function showPage(pageId, pushToHistory = true) {
 
     if (pushToHistory) {
         const targetUrl = pageId === 'page-about' ? '/about' : (pageId === 'page-dashboard' ? '/' : `#${pageId}`);
-        history.pushState({ pageId }, '', targetUrl);
+        if (typeof history !== 'undefined' && typeof history.pushState === 'function') {
+            history.pushState({ pageId }, '', targetUrl);
+        }
         internalHistoryStack.push(pageId);
     }
 }
@@ -50,16 +91,29 @@ export function showPage(pageId, pushToHistory = true) {
 // Global popstate back navigation support
 if (typeof window !== 'undefined') {
     window.addEventListener('popstate', (e) => {
-        internalHistoryStack.pop();
+        // 1. If an active modal is open, back gesture dismisses the topmost modal without navigating pages
+        if (activeModalStack.length > 0) {
+            const topModal = activeModalStack.pop();
+            if (topModal && typeof topModal.closeFn === 'function') {
+                topModal.closeFn(true); // true indicates invoked from popstate
+            }
+            return;
+        }
 
+        // Fallback check for habit detail modal if not recorded in activeModalStack
         if (window.isHabitDetailModalOpen && typeof window.closeHabitDetailModal === 'function') {
             window.closeHabitDetailModal(true);
             return;
         }
 
+        // 2. Only pop page history if actually navigating between pages
+        if (internalHistoryStack.length > 0) {
+            internalHistoryStack.pop();
+        }
+
         if (e.state && e.state.pageId) {
             showPage(e.state.pageId, false);
-        } else if (window.location.pathname.replace(/\/$/, '') === '/about') {
+        } else if (window.location && window.location.pathname && window.location.pathname.replace(/\/$/, '') === '/about') {
             showPage('page-about', false);
         } else {
             showPage('page-dashboard', false);
@@ -68,11 +122,26 @@ if (typeof window !== 'undefined') {
 }
 
 export function goBack(fallbackPage = 'page-dashboard') {
+    if (activeModalStack.length > 0) {
+        const topModal = activeModalStack[activeModalStack.length - 1];
+        if (topModal && typeof topModal.closeFn === 'function') {
+            topModal.closeFn(false);
+        }
+        return;
+    }
+
     if (internalHistoryStack.length > 0) {
-        history.back();
+        if (typeof history !== 'undefined' && typeof history.back === 'function') {
+            history.back();
+        } else {
+            internalHistoryStack.pop();
+            showPage(fallbackPage, false);
+        }
     } else {
         const targetUrl = fallbackPage === 'page-about' ? '/about' : (fallbackPage === 'page-dashboard' ? '/' : `#${fallbackPage}`);
-        history.replaceState({ pageId: fallbackPage }, '', targetUrl);
+        if (typeof history !== 'undefined' && typeof history.replaceState === 'function') {
+            history.replaceState({ pageId: fallbackPage }, '', targetUrl);
+        }
         showPage(fallbackPage, false);
     }
 }
@@ -102,12 +171,16 @@ export function showModal(title, message, yesCallback, isAlert = false, noCallba
     currentModalCallback = yesCallback;
     currentModalCancelCallback = noCallback;
 
-    if (overlay) overlay.classList.add('active');
+    if (overlay) {
+        overlay.classList.add('active');
+        registerModalOpen('modal-overlay', closeModal);
+    }
 }
 
-export function closeModal() {
+export function closeModal(fromPopstate = false) {
     const overlay = document.getElementById('modal-overlay');
     if (overlay) overlay.classList.remove('active');
+    registerModalClose('modal-overlay', fromPopstate);
     currentModalCallback = null;
     if (currentModalCancelCallback) {
         const cancelCb = currentModalCancelCallback;
@@ -476,6 +549,9 @@ if (typeof window !== 'undefined') {
     window.goBack = goBack;
     window.showModal = showModal;
     window.closeModal = closeModal;
+    window.registerModalOpen = registerModalOpen;
+    window.registerModalClose = registerModalClose;
+    window.hasActiveModals = hasActiveModals;
     window.switchAppMode = switchAppMode;
     window.switchDashboardMode = switchDashboardMode;
     window.toggleOledMode = toggleOledMode;

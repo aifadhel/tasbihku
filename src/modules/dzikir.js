@@ -6,7 +6,7 @@ import { state, saveState } from '../core/store.js';
 import { t } from '../core/i18n.js';
 import { vibrate, playTapSound } from '../hardware/media.js';
 import { trackActivity, checkAndTriggerLinkedHabit, showStackingCelebrationToast } from './habits.js';
-import { showModal, showPage, animateValue, triggerCelebration, SVG_ICONS } from '../ui/router.js';
+import { showModal, showPage, goBack, registerModalOpen, registerModalClose, animateValue, triggerCelebration, SVG_ICONS } from '../ui/router.js';
 import azkarData from '../data/azkar.json';
 import { showToast } from '../ui/toast.js';
 
@@ -640,9 +640,11 @@ export const dzikirPetang = [
 export function getLocalizedText(val, lang = state.language || 'id') {
     if (val === null || val === undefined) return '';
     if (typeof val === 'object') {
-        return val[lang] || val.id || val.en || '';
+        const text = val[lang] || val.id || val.en || '';
+        return text === '[object Object]' ? '' : String(text);
     }
-    return String(val);
+    const str = String(val);
+    return str === '[object Object]' ? '' : str;
 }
 
 // Editor Session state
@@ -673,6 +675,8 @@ export function getSessionData(type, id) {
     return { name, pages: rawPages };
 }
 
+export let playerSourcePage = 'page-menu';
+
 export function startPlayer(type, id = null) {
     trackActivity();
     lastRenderedPlayerIndex = -1;
@@ -681,6 +685,16 @@ export function startPlayer(type, id = null) {
     state.playerIndex = 0;
     state.playerCount = 0;
     saveState();
+
+    if (typeof document !== 'undefined') {
+        const activePageEl = document.querySelector('.page.active');
+        if (activePageEl && activePageEl.id && activePageEl.id !== 'page-player') {
+            playerSourcePage = activePageEl.id;
+        }
+    }
+    if (typeof window !== 'undefined') {
+        window.playerSourcePage = playerSourcePage;
+    }
 
     const d = getSessionData(type, id);
     if (!d.pages || d.pages.length === 0) {
@@ -852,7 +866,7 @@ export function goToNextPlayerPage() {
         }
 
         showModal(t('modal_celebration_title'), t('modal_celebration_msg', {name: session.name}), () => {
-            showPage('page-menu');
+            goBack(playerSourcePage || 'page-menu');
         });
     }
 }
@@ -929,11 +943,11 @@ export function renderCustomList() {
 
         const pagesChip = document.createElement('span');
         pagesChip.className = 'custom-dzikir-meta-chip';
-        pagesChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-27"></use></svg><span>${item.pages.length} Halaman</span>`;
+        pagesChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg><span>${item.pages.length} Halaman</span>`;
 
         const targetChip = document.createElement('span');
         targetChip.className = 'custom-dzikir-meta-chip';
-        targetChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle></svg><span>Target: ${totalTarget}</span>`;
+        targetChip.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg><span>Target: ${totalTarget}</span>`;
 
         metaDiv.appendChild(pagesChip);
         metaDiv.appendChild(targetChip);
@@ -1207,7 +1221,7 @@ export function saveEditorSession() {
     saveState();
     renderCustomList();
     showModal(t('modal_success'), t('modal_saved'), () => {
-        showPage('page-menu');
+        goBack('page-menu');
     }, true);
 }
 
@@ -1216,7 +1230,7 @@ export function confirmRestoreGuided() {
         delete state.guidedData[editorType];
         saveState();
         showModal(t('modal_success'), t('modal_success_default'), () => {
-            showPage('page-menu');
+            goBack('page-menu');
         }, true);
     });
 }
@@ -1272,16 +1286,20 @@ export async function showLibraryModal() {
         }
         
         const modal = document.getElementById('library-modal');
-        if (modal) modal.classList.add('active');
+        if (modal) {
+            modal.classList.add('active');
+            registerModalOpen('library-modal', closeLibraryModal);
+        }
     } catch (e) {
         console.error('Failed to load Azkar Library', e);
         showModal('Error', t('modal_library_load_error'), null, true);
     }
 }
 
-export function closeLibraryModal() {
+export function closeLibraryModal(fromPopstate = false) {
     const modal = document.getElementById('library-modal');
     if (modal) modal.classList.remove('active');
+    registerModalClose('library-modal', fromPopstate);
 }
 
 let tempCustomTranslations = { id: '', en: '' };
@@ -1334,14 +1352,16 @@ export function openCustomAzkarModal() {
         }
 
         modal.classList.add('active');
+        registerModalOpen('custom-azkar-modal', closeCustomAzkarModal);
     }
 }
 
-export function closeCustomAzkarModal() {
+export function closeCustomAzkarModal(fromPopstate = false) {
     const modal = document.getElementById('custom-azkar-modal');
     if (modal) {
         modal.classList.remove('active');
     }
+    registerModalClose('custom-azkar-modal', fromPopstate);
 }
 
 export function saveCustomAzkar() {
@@ -1473,17 +1493,45 @@ export function encodeDzikirPayload(item) {
     if (!item || !item.name || !Array.isArray(item.pages)) {
         throw new Error('Invalid item structure');
     }
+    const rawName = typeof item.name === 'object' && item.name !== null
+        ? (getLocalizedText(item.name) || '')
+        : String(item.name).trim();
+
     const portableData = {
         v: 1,
         type: 'tasbihku_dzikir',
-        name: String(item.name).trim(),
-        pages: item.pages.map(p => ({
-            arabic: p.arabic ? String(p.arabic).trim() : '',
-            latin: p.latin ? String(p.latin).trim() : '',
-            translation: p.translation ? String(p.translation).trim() : '',
-            reference: p.reference ? String(p.reference).trim() : '',
-            target: Math.max(1, parseInt(p.target) || 33)
-        }))
+        name: rawName,
+        pages: item.pages.map(p => {
+            let translation = '';
+            if (p.translation && typeof p.translation === 'object') {
+                const id = p.translation.id ? String(p.translation.id).trim() : '';
+                const en = p.translation.en ? String(p.translation.en).trim() : '';
+                if (id || en) {
+                    translation = { id, en };
+                }
+            } else if (p.translation) {
+                translation = String(p.translation).trim();
+            }
+
+            let reference = '';
+            if (p.reference && typeof p.reference === 'object') {
+                const id = p.reference.id ? String(p.reference.id).trim() : '';
+                const en = p.reference.en ? String(p.reference.en).trim() : '';
+                if (id || en) {
+                    reference = { id, en };
+                }
+            } else if (p.reference) {
+                reference = String(p.reference).trim();
+            }
+
+            return {
+                arabic: p.arabic ? String(p.arabic).trim() : '',
+                latin: p.latin ? String(p.latin).trim() : '',
+                translation,
+                reference,
+                target: Math.max(1, parseInt(p.target) || 33)
+            };
+        })
     };
     const jsonStr = JSON.stringify(portableData);
     const utf8Bytes = new TextEncoder().encode(jsonStr);
@@ -1548,7 +1596,13 @@ export function validateDzikirPayload(payload) {
     if (payload.type && payload.type !== 'tasbihku_dzikir') {
         return { valid: false, reason: 'Invalid payload type' };
     }
-    if (typeof payload.name !== 'string' || !payload.name.trim()) {
+    if (!payload.name || (typeof payload.name !== 'string' && typeof payload.name !== 'object')) {
+        return { valid: false, reason: 'Dzikir name is required' };
+    }
+    const rawName = typeof payload.name === 'object' && payload.name !== null
+        ? (getLocalizedText(payload.name) || '')
+        : String(payload.name).trim();
+    if (!rawName) {
         return { valid: false, reason: 'Dzikir name is required' };
     }
     if (!Array.isArray(payload.pages) || payload.pages.length === 0) {
@@ -1562,10 +1616,17 @@ export function validateDzikirPayload(payload) {
         if (!p || typeof p !== 'object') {
             return { valid: false, reason: `Page ${i + 1} is invalid` };
         }
+        let hasTrans = false;
+        if (p.translation && typeof p.translation === 'object') {
+            hasTrans = Boolean((p.translation.id && String(p.translation.id).trim()) || (p.translation.en && String(p.translation.en).trim()));
+        } else if (p.translation) {
+            hasTrans = Boolean(String(p.translation).trim());
+        }
+
         const hasContent = Boolean(
             (p.arabic && String(p.arabic).trim()) ||
             (p.latin && String(p.latin).trim()) ||
-            (p.translation && String(p.translation).trim())
+            hasTrans
         );
         if (!hasContent) {
             return { valid: false, reason: `Page ${i + 1} must contain arabic, latin, or translation` };
@@ -1574,14 +1635,36 @@ export function validateDzikirPayload(payload) {
     return {
         valid: true,
         sanitized: {
-            name: payload.name.trim().slice(0, 100),
-            pages: payload.pages.map(p => ({
-                arabic: (p.arabic ? String(p.arabic).trim() : '').slice(0, 1000),
-                latin: (p.latin ? String(p.latin).trim() : '').slice(0, 1000),
-                translation: (p.translation ? String(p.translation).trim() : '').slice(0, 1000),
-                reference: (p.reference ? String(p.reference).trim() : '').slice(0, 200),
-                target: Math.max(1, Math.min(99999, parseInt(p.target) || 33))
-            }))
+            name: rawName.slice(0, 100),
+            pages: payload.pages.map(p => {
+                let translation = '';
+                if (p.translation && typeof p.translation === 'object') {
+                    translation = {
+                        id: (p.translation.id ? String(p.translation.id).trim() : '').slice(0, 1000),
+                        en: (p.translation.en ? String(p.translation.en).trim() : '').slice(0, 1000)
+                    };
+                } else if (p.translation) {
+                    translation = String(p.translation).trim().slice(0, 1000);
+                }
+
+                let reference = '';
+                if (p.reference && typeof p.reference === 'object') {
+                    reference = {
+                        id: (p.reference.id ? String(p.reference.id).trim() : '').slice(0, 200),
+                        en: (p.reference.en ? String(p.reference.en).trim() : '').slice(0, 200)
+                    };
+                } else if (p.reference) {
+                    reference = String(p.reference).trim().slice(0, 200);
+                }
+
+                return {
+                    arabic: (p.arabic ? String(p.arabic).trim() : '').slice(0, 1000),
+                    latin: (p.latin ? String(p.latin).trim() : '').slice(0, 1000),
+                    translation,
+                    reference,
+                    target: Math.max(1, Math.min(99999, parseInt(p.target) || 33))
+                };
+            })
         }
     };
 }
@@ -1590,15 +1673,26 @@ export function regenerateDzikirIds(item) {
     const baseId = Date.now();
     return {
         id: baseId,
-        name: item.name,
-        pages: item.pages.map((p, idx) => ({
-            id: baseId + idx + 1,
-            arabic: p.arabic,
-            latin: p.latin,
-            translation: p.translation,
-            reference: p.reference,
-            target: p.target
-        }))
+        name: typeof item.name === 'object' && item.name !== null ? (getLocalizedText(item.name) || '') : item.name,
+        pages: item.pages.map((p, idx) => {
+            let translation = p.translation;
+            if (typeof translation === 'string') {
+                translation = { id: translation, en: '' };
+            } else if (!translation || typeof translation !== 'object') {
+                translation = { id: '', en: '' };
+            } else {
+                translation = { id: translation.id || '', en: translation.en || '' };
+            }
+
+            return {
+                id: baseId + idx + 1,
+                arabic: p.arabic || '',
+                latin: p.latin || '',
+                translation,
+                reference: p.reference || '',
+                target: p.target || 33
+            };
+        })
     };
 }
 
@@ -1645,12 +1739,16 @@ export function openShareDzikirModal(title, url, code) {
     if (titleEl) titleEl.textContent = title ? `${t('share_dzikir_title')}: ${title}` : t('share_dzikir_title');
     if (linkInput) linkInput.value = url || '';
     if (codeInput) codeInput.value = code || '';
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        registerModalOpen('share-dzikir-modal', closeShareDzikirModal);
+    }
 }
 
-export function closeShareDzikirModal() {
+export function closeShareDzikirModal(fromPopstate = false) {
     const modal = document.getElementById('share-dzikir-modal');
     if (modal) modal.classList.remove('active');
+    registerModalClose('share-dzikir-modal', fromPopstate);
 }
 
 export async function copyShareLink() {
@@ -1700,14 +1798,18 @@ export function openReceiveDzikirModal() {
     if (previewView) previewView.style.display = 'none';
     pendingReceiveDzikir = null;
 
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        registerModalOpen('receive-dzikir-modal', closeReceiveDzikirModal);
+    }
     if (input) input.focus();
 }
 
-export function closeReceiveDzikirModal() {
+export function closeReceiveDzikirModal(fromPopstate = false) {
     const modal = document.getElementById('receive-dzikir-modal');
     if (modal) modal.classList.remove('active');
     pendingReceiveDzikir = null;
+    registerModalClose('receive-dzikir-modal', fromPopstate);
 }
 
 export function backToReceiveInput() {
@@ -1785,10 +1887,11 @@ export function showReceivePreview(sanitizedData) {
                 card.appendChild(latinEl);
             }
 
-            if (p.translation) {
+            const transText = getLocalizedText(p.translation, state.language || 'id');
+            if (transText) {
                 const transEl = document.createElement('div');
                 transEl.style.cssText = 'opacity: 0.7; font-size: 0.8rem;';
-                transEl.textContent = p.translation;
+                transEl.textContent = transText;
                 card.appendChild(transEl);
             }
 
