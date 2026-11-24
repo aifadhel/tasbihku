@@ -1,0 +1,177 @@
+@layer features {
+  /* --- HABIT TRACKER STYLES --- */
+  .habit-card {
+      background-color: var(--md-sys-color-surface-container);
+      border-radius: var(--shape-corner-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      position: relative;
+      overflow: hidden;
+      container-type: inline-size;
+      container-name: habit-card;
+  }
+
+  .habit-card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .habit-card:active {
+      transform: translateY(0) scale(0.98);
+  }
+
+  .habit-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      width: 100%;
+  }
+
+  .habit-color-indicator {
+      width: 6px;
+      height: 40px;
+      border-radius: var(--shape-corner-sm);
+      flex-shrink: 0;
+  }
+
+  .habit-details {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      overflow: hidden;
+  }
+
+  .habit-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--md-sys-color-on-background);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+
+  .habit-desc {
+      font-size: 0.8rem;
+      opacity: 0.6;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-top: 2px;
+  }
+
+  .habit-streak {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ff9a56;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+  }
+
+  .habit-days-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+  }
+
+  .habit-day-bubble {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      cursor: pointer;
+      user-select: none;
+  }
+
+  .day-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--md-sys-color-outline);
+      text-transform: uppercase;
+  }
+
+  .habit-day-bubble.today .day-label {
+      color: var(--md-sys-color-primary);
+      font-weight: 800;
+  }
+
+  .day-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--md-sys-color-outline-variant);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .checkmark-icon {
+      font-size: 1rem;
+      font-weight: bold;
+      color: transparent;
+      transition: color 0.15s ease-in-out;
+  }
+
+  /* When completed, fill the circle with custom habit color */
+  .habit-day-bubble.completed .day-circle {
+      background-color: var(--habit-color);
+      border-color: var(--habit-color);
+      transform: scale(1.05);
+  }
+
+  .habit-day-bubble.completed .checkmark-icon {
+      color: #000000; /* Dark checkmark on color fill */
+  }
+
+  /* Skipped/Unscheduled Day Styling */
+  .habit-day-bubble.skipped {
+      cursor: default;
+  }
+
+  .habit-day-bubble.skipped .day-circle {
+      border-style: dashed !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      background-color: transparent !important;
+      opacity: 0.4;
+      transform: none !important;
+  }
+
+  .habit-day-bubble.skipped .checkmark-icon {
+      color: rgba(255, 255, 255, 0.2) !important;
+      font-size: 0.9rem;
+  }
+
+  /* Empty State Card */
+  .habit-empty-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      background: rgba(255,255,255,0.02);
+      border: 2px dashed var(--md-sys-color-outline-variant);
+      border-radius: var(--shape-corner-lg);
+      color: var(--md-sys-color-outline);
+  }
+
+  .habit-empty-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+  }
+
+}

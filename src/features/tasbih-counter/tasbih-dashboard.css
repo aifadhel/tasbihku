@@ -1,0 +1,119 @@
+@layer features {
+  /* USERNAME INPUT OVERRIDE (DASHBOARD) */
+  #username-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed transparent;
+      color: var(--md-sys-color-on-background);
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      max-width: 240px; /* Batasi lebar agar tidak merusak layout */
+      font-family: var(--font-family-base);
+      font-size: 1.1rem; /* Sama dengan .title-medium */
+      font-weight: 700;
+      letter-spacing: 0.15px;
+      border-radius: 0;
+      transition: border-color 0.2s;
+  }
+
+  #username-input:focus {
+      background: transparent;
+      outline: none;
+      border-bottom-color: var(--md-sys-color-primary);
+  }
+  #username-input::placeholder {
+      color: var(--md-sys-color-outline);
+      opacity: 0.5;
+  }
+
+  /* Streak Badge -> M3 Assist Chip */
+  .streak-badge,
+  .streak-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      align-self: center;
+      width: fit-content;
+      gap: 6px;
+      background-color: var(--md-sys-color-tertiary-container);
+      color: var(--md-sys-color-on-tertiary-container);
+      border: 1px solid rgba(220, 196, 140, 0.25);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+      padding: 6px 14px;
+      border-radius: var(--shape-corner-sm, 8px);
+      white-space: nowrap;
+      box-shadow: var(--md-sys-elevation-level-1);
+      margin: 0 auto 12px auto;
+      transition: background-color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-short) ease,
+                  transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
+  }
+
+  .streak-badge:hover,
+  .streak-chip:hover {
+      box-shadow: var(--md-sys-elevation-level-2);
+  }
+
+  /* Arabic Text Font Override */
+  .arabic-text {
+      font-family: 'Amiri Quran', 'Amiri', serif !important;
+  }
+
+  /* Username input styling adjustment for streak badge */
+  .flex-col > div {
+      align-items: center;
+  }
+
+  #username-input {
+      max-width: 180px; /* Slightly smaller to make room for badge */
+  }
+
+  /* --- APP MODE SWITCHER --- */
+  .mode-switcher {
+      display: flex;
+      background: var(--md-sys-color-surface-container-high);
+      border-radius: var(--shape-corner-full);
+      padding: 2px;
+      height: 40px;
+      align-items: center;
+      border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .mode-btn {
+      background: transparent;
+      border: none;
+      border-radius: var(--shape-corner-full);
+      height: 34px;
+      width: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  color var(--md-sys-motion-duration-short) ease;
+      color: var(--md-sys-color-on-surface-variant);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .mode-btn:hover {
+      transform: scale(1.04);
+  }
+
+  .mode-btn:active {
+      transform: scale(0.94);
+  }
+
+  .mode-btn.active {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      box-shadow: var(--md-sys-elevation-level-1);
+  }
+
+}

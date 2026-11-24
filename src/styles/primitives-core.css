@@ -1,0 +1,161 @@
+@layer primitives {
+  /* --- LAYOUT HELPERS --- */
+  .top-bar-spacer {
+      width: 48px;
+  }
+
+  /* --- TYPOGRAPHY (Expressive Scale) --- */
+  .display-large {
+      font-size: clamp(3.5rem, 12vw, 5.5rem); /* Responsive sizing to prevent overflow */
+      font-weight: 800;  /* Extra Bold */
+      line-height: 1.1;
+      letter-spacing: -2px;
+      color: var(--md-sys-color-primary);
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      margin: var(--spacing-lg) 0;
+      text-shadow: 0 4px 24px rgba(140, 214, 181, 0.1);
+  }
+
+  .display-medium {
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      color: var(--md-sys-color-primary);
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+  }
+
+  .headline-large {
+      font-size: 2rem; /* M3 Expressive headline-large is larger */
+      font-weight: 700;
+      line-height: 1.25;
+  }
+
+  .headline-medium {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.25;
+  }
+
+  .title-large {
+      font-size: 1.375rem;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0;
+  }
+
+  .title-medium {
+      font-size: 1.125rem;
+      font-weight: 700;
+      line-height: 1.5;
+      letter-spacing: 0.15px;
+  }
+
+  .label-large {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+      letter-spacing: 0.1px;
+  }
+
+  .label-medium {
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: 0.25px;
+  }
+
+  .body-large {
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 1.5;
+      letter-spacing: 0.5px;
+  }
+
+  .body-medium {
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.43;
+      letter-spacing: 0.25px;
+  }
+
+  .body-small {
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.33;
+      letter-spacing: 0.4px;
+  }
+
+  .title-small {
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.43;
+      letter-spacing: 0.1px;
+  }
+
+  .label-small {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      line-height: 1.45;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+  }
+
+  .text-sub {
+      color: var(--md-sys-color-outline);
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.5;
+  }
+
+  /* --- COMPONENTS --- */
+
+  /* Utility */
+  .text-center { text-align: center; }
+  .flex-col { display: flex; flex-direction: column; }
+  .gap-2 { display: flex; gap: 12px; }
+  .mt-auto { margin-top: auto; }
+  .w-full { width: 100%; }
+
+  /* Watermark Footer */
+  .footer-watermark {
+      text-align: center;
+      font-size: 0.75rem;
+      opacity: 0.5;
+      margin-top: 32px;
+      margin-bottom: 16px;
+      font-weight: 500;
+      color: var(--md-sys-color-outline);
+      letter-spacing: 0.5px;
+  }
+
+  /* --- MATERIAL 3 EXPRESSIVE UPGRADES --- */
+
+  /* Custom Scrollbar for M3 compliance */
+  ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+      background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+      background: var(--md-sys-color-outline-variant);
+      border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+      background: var(--md-sys-color-outline);
+  }
+
+  /* Prominent focus rings for M3 accessibility */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible {
+      outline: 3px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+  }
+
+}

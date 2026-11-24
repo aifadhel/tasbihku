@@ -1,0 +1,142 @@
+@layer primitives {
+  /* Buttons */
+  .btn {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-enter),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      background-color: transparent;
+  }
+
+  /* M3 State Layers */
+  .btn::before,
+  .mode-btn::before,
+  .segment-btn::before,
+  .day-circle::before,
+  .color-picker-dot::before,
+  .day-chk-bubble::before,
+  .routine-section-header::before,
+  .btn-icon-edit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: currentColor;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      border-radius: inherit;
+  }
+
+  .btn:hover::before,
+  .mode-btn:hover::before,
+  .segment-btn:hover::before,
+  .day-circle:hover::before,
+  .color-picker-dot:hover::before,
+  .day-chk-bubble:hover::before,
+  .routine-section-header:hover::before,
+  .btn-icon-edit:hover::before {
+      opacity: 0.08; /* M3 Hover state opacity */
+  }
+
+  .btn:active::before,
+  .mode-btn:active::before,
+  .segment-btn:active::before,
+  .day-circle:active::before,
+  .color-picker-dot:active::before,
+  .day-chk-bubble:active::before,
+  .routine-section-header:active::before,
+  .btn-icon-edit:active::before {
+      opacity: 0.12; /* M3 Pressed state opacity */
+  }
+
+  .btn:active,
+  .mode-btn:active,
+  .segment-btn:active,
+  .day-circle:active,
+  .color-picker-dot:active,
+  .day-chk-bubble:active,
+  .routine-section-header:active,
+  .btn-icon-edit:active {
+      transform: scale(0.95);
+      transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
+  }
+
+  .btn-filled {
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      height: 48px;
+      padding: 0 24px;
+      border-radius: var(--shape-corner-full);
+      width: 100%;
+      font-weight: 800;
+      font-size: 1rem;
+  }
+
+  .btn-tonal {
+      background-color: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      font-weight: 700;
+  }
+
+  .btn-tonal:hover {
+      background-color: color-mix(in srgb, var(--md-sys-color-secondary-container) 88%, var(--md-sys-color-on-secondary-container));
+  }
+
+  /* Expressive List Item Button */
+  .btn-list-item {
+      background-color: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface-variant);
+      min-height: 72px; /* Taller touch target */
+      padding: 16px 24px;
+      border-radius: var(--shape-corner-xl); /* Very rounded */
+      width: 100%;
+      justify-content: flex-start;
+      margin-bottom: 12px;
+      text-align: left;
+      transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+      position: relative;
+      overflow: hidden;
+  }
+
+  .btn-list-item:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .btn-list-item:active {
+      transform: translateY(0) scale(0.98);
+  }
+
+  .btn-icon {
+      background: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-background);
+      width: 48px;
+      height: 48px;
+      border-radius: var(--shape-corner-full);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s;
+  }
+
+  .btn-text {
+      background: transparent;
+      color: var(--md-sys-color-primary);
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: var(--shape-corner-full);
+  }
+
+}

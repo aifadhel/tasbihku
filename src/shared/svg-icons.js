@@ -1,0 +1,10 @@
+export const SVG_ICONS = {
+  tap: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M9 11.24V7.5a2.5 2.5 0 0 1 5 0v3.74c1.21-.81 2-2.18 2-3.74C16 4.46 13.54 2 10.5 2S5 4.46 5 7.5c0 1.56.79 2.93 2 3.74zm12.3 3.65c-.2-.6-.7-.95-1.3-.95h-2.5v-2.73c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.79h-1.3v-4.58c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v4.58H9.9v-2.16c0-.67-.58-1.21-1.3-1.21-.72 0-1.3.54-1.3 1.21v5.3c0 2.21 1.79 4 4 4h5.2c1.78 0 3.29-1.18 3.79-2.87l1.01-3.34c.2-.67-.01-1.41-.5-1.92z"/></svg>`,
+  pause: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`,
+  play: `<svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`,
+  fire: `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 4px; color: #ff9a56;"><path d="M12 18c-3.1 0-5-1.9-5-4.5C7 10.9 9.3 7 12 3c2.7 4 5 7.9 5 10.5 0 2.6-1.9 4.5-5 4.5z"/></svg>`,
+  arrowUp: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg>`,
+  arrowDown: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>`,
+  calendar: `<svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>`,
+  dragGrip: `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; opacity: 0.4; cursor: grab; padding: 2px;"><path d="M11 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm-2-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 4c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>`
+};

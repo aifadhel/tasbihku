@@ -1,0 +1,155 @@
+@layer features {
+  /* FAB Content Styling */
+  .fab-emoji {
+      font-size: 2.2rem;
+      margin-bottom: 4px;
+  }
+  .fab-label {
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-size: 1rem;
+  }
+
+  /* THE TAP BUTTON (FAB) - Material 3 Large FAB */
+  .fab-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      margin: 16px 0;
+  }
+
+  .fab-large,
+  .m3-fab-large {
+      width: 152px;
+      height: 152px;
+      background-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border-radius: var(--shape-corner-xl, 36px);
+      font-size: 1.15rem;
+      box-shadow: var(--md-sys-elevation-level-3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      z-index: 2;
+      transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-enter),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-short) ease;
+      user-select: none;
+      -webkit-user-select: none;
+  }
+
+  .fab-large:hover,
+  .m3-fab-large:hover {
+      box-shadow: var(--md-sys-elevation-level-4);
+  }
+
+  .fab-large:active,
+  .m3-fab-large:active {
+      transform: scale(0.95);
+      box-shadow: var(--md-sys-elevation-level-1);
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+  }
+
+  .fab-large.is-paused {
+      background-color: var(--md-sys-color-error) !important;
+      color: var(--md-sys-color-on-error) !important;
+  }
+
+  .fab-large.is-paused:active {
+      background-color: #852221 !important;
+      color: #ffffff !important;
+  }
+
+  /* Dashboard Action Console & Mode-Aware Reset Button */
+  .fab-action-dock {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      margin: 16px auto;
+      gap: 16px;
+  }
+
+  .btn-reset-tonal {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+      border-radius: var(--shape-corner-full);
+      background-color: var(--md-sys-color-secondary-container, #334b40);
+      color: var(--md-sys-color-on-secondary-container, #cce8da);
+      border: 1px solid var(--md-sys-color-outline-variant, rgba(255, 255, 255, 0.12));
+      box-shadow: var(--md-sys-elevation-level-1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: transform 0.12s cubic-bezier(0.2, 0, 0, 1),
+                  background-color 0.2s ease,
+                  color 0.2s ease,
+                  opacity 0.2s ease,
+                  box-shadow 0.12s ease;
+      user-select: none;
+      -webkit-user-select: none;
+  }
+
+  .btn-reset-tonal:hover:not(.is-disabled):not(:disabled) {
+      box-shadow: var(--md-sys-elevation-level-2);
+      filter: brightness(1.08);
+  }
+
+  .btn-reset-tonal:active:not(.is-disabled):not(:disabled) {
+      transform: scale(0.92);
+      box-shadow: var(--md-sys-elevation-level-0);
+      filter: brightness(0.95);
+  }
+
+  .btn-reset-tonal.is-disabled,
+  .btn-reset-tonal:disabled {
+      opacity: 0.35 !important;
+      pointer-events: none !important;
+      box-shadow: none !important;
+      border-color: rgba(255, 255, 255, 0.06) !important;
+      cursor: default !important;
+  }
+
+  .fab-dock-balance-anchor {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      min-height: 48px;
+      visibility: hidden;
+      flex-shrink: 0;
+      pointer-events: none;
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes progress-complete-glow {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.25) drop-shadow(0 0 8px var(--md-sys-color-primary)); }
+    100% { filter: brightness(1); }
+  }
+
+  .progress-complete-glow {
+    animation: progress-complete-glow 0.35s var(--md-sys-motion-easing-standard);
+  }
+
+  @keyframes m3-counter-pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+
+  .count-pop-animation {
+    animation: m3-counter-pop var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  }
+
+}

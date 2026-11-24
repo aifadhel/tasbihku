@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.15.0] - 2026-11-21
+
+- **Highlight:** Hybrid Feature-Sliced Vanilla JS Architecture alignment: decomposed legacy monolithic modules and styles into depth-1 isolated feature slices (`<=200L`/file), declarative `[data-cmd]` delegation over `command-bus.js`, `@layer` CSS cascade with `oklch()`/`color-mix()` seed tokens, split boot/IndexedDB persistence, automated structural/bundle budget gates, and service worker chunk precache injection.
+
+### Specific UI & Component Changes
+- **Declarative Command Delegation (`index.html`, `src/app/dom-bridge.js`):** Replaced all 88 inline `onclick=` / `onchange=` / `oninput=` handlers and `window.*` bindings with unified `[data-cmd]`, `[data-cmd-change]`, `[data-cmd-input]`, `[data-arg]`, `[data-arg2]`, and `[data-stop-prop]` delegation while preserving every element ID, ARIA role, keyboard tablist navigation (`ArrowLeft`/`ArrowRight`/`Home`/`End`), Space/Enter/KeyR/Ctrl+Z shortcuts, and edge-guarded swipe/long-press gestures.
+- **Layered CSS Architecture & Seed Tokens (`style.css`, `src/styles/*`, `src/features/*/*.css`):** Stripped `3,353L` `style.css` and inline `<style>` from `index.html` into an `@layer reset, tokens, primitives, features, overrides` manifest backed by seed tokens (`--seed-hue`, `--seed-chroma`, `--radius-base`, `--density`, `--font-scale`, `--motion-scale`), `@supports (color: oklch(...))` surface generation, Material 3 hex fallbacks, `.oled-mode`, and 18 isolated `@layer features` CSS modules.
+- **Modal History Swap Safety (`src/app/slots.js`, `src/features/habits-ui/habits-detail.js`, `habits-modal.js`):** Added `swapModal()` + `history.replaceState()` for modal-to-modal transitions (`habit-detail-modal` -> `habit-modal` -> `modal-overlay`), eliminating asynchronous Chromium `history.back()`/`popstate` navigation races.
+- **Localized Linked-Dzikir Picker (`src/features/habits-ui/habits-modal-form.js`):** Fixed `[object Object]` option labels in `#habit-input-linked-dzikir` by resolving Azkar/custom names through `getLocalizedText()`.
+
+### Core Logic & Audio/Haptic Workflows
+- **App Shell & Capability Registry (`src/app/`, `src/main.js`, `vite.config.js`):** Introduced `command-bus.js`, `feature-registry.js` (dynamic `import()` + 1x retry + `vite:preloadError` guard), `slots.js`, `version.js` (updated `scripts/bump-version.js` target), and reduced `src/main.js` from `647L` to a thin `55L` shell (`dist/assets/index.js` cut from `55.34 kB` to `19.50 kB` gz). Added `swPrecacheManifestPlugin()` in `vite.config.js` to inject all generated `dist/assets/*.js|css` chunks into `dist/sw.js` `urlsToCache`.
+- **Split Storage & Cross-Tab Sync (`src/shared/storage.js`, `store.js`, `store-migrate.js`):** Limited `localStorage` to `<= 1KB` boot preferences (`tasbihKuBootPrefs`), promoted IndexedDB (`tasbihKuState`) as primary storage with automatic one-time legacy `localStorage` migration, and added `BroadcastChannel('tasbihku_state_sync')` live synchronization.
+
+### Dzikir & Habits Engine
+- **Six Isolated Feature Slices (`src/features/`):** Decomposed monoliths into `tasbih-counter`, `dzikir-guided` (extracted `wirid.data.json`, `pagi.data.json`, `petang.data.json` + 60ms-debounced player), `dzikir-custom` (lazy editor, Azkar library, share codec & UI), `habits-core` (pure dates, EMA strength, Istiqamah grace streaks, CSV export exposed via `habitsCore` capability), `habits-ui` (cards, drag/drop, modals, calendar, reminders, lazy heatmap/trend charts), and `settings-shell` (router, theme/OLED/audio/vibration toggles, backup/restore).
+- **Domain-Split i18n (`src/shared/i18n.js`, `i18n-core.json`, `src/features/*/*.i18n.json`):** Partitioned 375 bilingual keys per locale (`id`/`en` parity) into core + 7 feature JSON bundles (`<= 150L` each) loaded via `import.meta.glob`.
+- **Automated Structural & Size Gates (`scripts/check.mjs`, `scripts/codemap.mjs`, `size.config.json`, `CODEMAP.md`, `docs/ARCHITECTURE.md`):** Enforces `<=200L` JS/CSS files, `<=60L` 0-import `*.contract.js` manifests, `<=150L` i18n parity JSONs, zero barrels/cycles, zero `window.<fn>=` globals, zero raw `localStorage` outside `storage.js`, and bundle gzip ceilings (`<=20KB` JS shell, `<=90KB` CSS shell, `<=40KB` lazy chunks).
+
+### Test & Verification
+- **Unit & Architecture Suite (`npm test`):** `48/48` tests passing across `11` test files (`vitest run src/ tests/unit/ --pool=forks`, exit code `0`).
+- **Structural & Bundle Gates (`npm run check && npm run size && npm run codemap`):** Full repo structural audit (`CHECK PASS scope=full exit=0`), bundle size audit (`CHECK PASS scope=--size exit=0`), and `CODEMAP.md` (`12L`).
+- **Production Compilation (`npm run build`):** `79` modules transformed cleanly (`dist/index.html` `17.55 kB` gz, `dist/assets/index.css` `82.72 kB` gz, `dist/assets/index.js` `19.50 kB` gz, `dist/sw.js` `CACHE_NAME = 'tasbihku-v1.15.0'` with all `dist/assets/*.js|css` precached; exit code `0`).
+
 ## [tasbihku-v1.14.4] - 2026-10-18
 
 - **Highlight:** Refined native mobile state management, history unwinding, edge gesture collision protection, and centralized active modal stack to deliver an authentic native app experience without browser navigation artifacts or history trapping.

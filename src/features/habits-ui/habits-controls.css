@@ -1,0 +1,155 @@
+@layer features {
+  /* Color Picker Dot Highlight */
+  .color-picker-dot {
+      position: relative;
+      overflow: hidden;
+  }
+
+  .color-picker-dot.active {
+      border-color: var(--md-sys-color-on-background) !important;
+      box-shadow: 0 0 10px var(--md-sys-color-primary);
+      transform: scale(1.1);
+  }
+
+  .day-checkbox-label {
+      cursor: pointer;
+      user-select: none;
+  }
+
+  .day-chk-bubble {
+      padding: 8px 0;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--md-sys-color-outline);
+      border: 1.5px solid var(--md-sys-color-outline-variant);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .day-checkbox-label input:checked + .day-chk-bubble {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border-color: var(--md-sys-color-primary);
+      transform: scale(1.08);
+  }
+
+  /* --- STYLES FOR NUMERICAL HABITS & DIALOGS --- */
+  .calendar-picker-cell.partial {
+      background-color: rgba(140, 214, 181, 0.2) !important;
+      border-color: var(--habit-color, var(--md-sys-color-primary)) !important;
+      color: var(--md-sys-color-on-background) !important;
+      opacity: 1 !important;
+  }
+
+  .habit-progress-mini {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      opacity: 0.9;
+      margin-top: 4px;
+      color: var(--md-sys-color-primary);
+  }
+
+  .habit-launch-dzikir-btn {
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-top: 8px;
+      border-radius: var(--shape-corner-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      border: 1px solid var(--md-sys-color-outline-variant);
+      box-shadow: var(--md-sys-elevation-level-1, 0 1px 3px rgba(0, 0, 0, 0.2));
+      letter-spacing: 0.2px;
+      transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  border-color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-short) ease;
+  }
+
+  .habit-launch-dzikir-btn:hover {
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transform: translateY(-1px);
+  }
+
+  .habit-launch-dzikir-btn:active {
+      transform: scale(0.96);
+  }
+
+  .habit-day-bubble.partial .day-circle {
+      border-color: var(--habit-color, var(--md-sys-color-primary)) !important;
+      background: rgba(140, 214, 181, 0.15) !important;
+  }
+
+  .habit-day-bubble.partial .checkmark-icon {
+      color: var(--habit-color, var(--md-sys-color-primary)) !important;
+      font-size: 0.65rem;
+  }
+
+  /* Notes list inside details modal */
+  .habit-notes-list {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+  }
+
+  .habit-note-item {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--shape-corner-md);
+      padding: 12px 16px;
+      border-left: 3px solid var(--habit-color, var(--md-sys-color-primary));
+  }
+
+  .habit-note-date {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      font-weight: 700;
+      margin-bottom: 4px;
+  }
+
+  .habit-note-content {
+      font-size: 0.85rem;
+      line-height: 1.4;
+  }
+
+  .habit-card.dragging {
+      opacity: 0.5;
+      transform: scale(0.98);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      z-index: 100;
+  }
+
+  /* Habit Filter Chips */
+  .habit-filter-chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--md-sys-color-on-surface);
+      font-size: 0.85rem;
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+  }
+
+  .habit-filter-chip.active {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+      border-color: var(--md-sys-color-primary);
+  }
+
+
+
+}

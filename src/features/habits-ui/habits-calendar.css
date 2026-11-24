@@ -1,0 +1,95 @@
+@layer features {
+  /* --- INTERACTIVE CALENDAR PICKER STYLES --- */
+  .calendar-nav-btn {
+      width: 48px;
+      min-width: 48px;
+      height: 48px;
+      border-radius: var(--shape-corner-full);
+      background: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface-variant);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard),
+                  background-color var(--md-sys-motion-duration-short) ease;
+  }
+
+  .calendar-nav-btn:hover {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+  }
+
+  .calendar-nav-btn:active {
+      transform: scale(0.92);
+  }
+
+  .calendar-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+  }
+
+  .calendar-picker-cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--shape-corner-xs);
+      border: 1.5px solid var(--md-sys-color-outline-variant);
+      background: transparent;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+      color: var(--md-sys-color-on-background);
+  }
+
+  .calendar-picker-cell:active {
+      transform: scale(0.9);
+  }
+
+  .calendar-picker-cell.other-month {
+      opacity: 0.25;
+      border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .calendar-picker-cell.today {
+      border-color: var(--md-sys-color-primary);
+      box-shadow: 0 0 6px rgba(140, 214, 181, 0.4);
+  }
+
+  .calendar-picker-cell.completed {
+      background-color: var(--habit-color, var(--md-sys-color-primary)) !important;
+      border-color: var(--habit-color, var(--md-sys-color-primary)) !important;
+      color: #000000 !important;
+      opacity: 1 !important;
+  }
+
+  .calendar-picker-cell.not-scheduled {
+      border-style: dashed;
+      border-color: rgba(255, 255, 255, 0.1);
+      opacity: 0.45;
+  }
+
+  .calendar-picker-cell.not-scheduled.completed {
+      border-style: solid;
+      opacity: 1;
+  }
+
+  .calendar-picker-cell.skipped {
+      border-style: dashed;
+      border-color: rgba(255, 255, 255, 0.1);
+      opacity: 0.45;
+      color: rgba(255, 255, 255, 0.2);
+      font-size: 0.75rem;
+  }
+
+  .calendar-picker-cell.future-day {
+      visibility: hidden;
+      pointer-events: none;
+  }
+
+}

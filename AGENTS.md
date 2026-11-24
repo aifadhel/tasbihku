@@ -37,7 +37,7 @@ This workspace adheres to strict context-window management, prompt caching optim
 
 ### Rule 7: Token-Budget Reasoning (CoT Optimization)
 - **Direct Mode:** Skip extensive planning cycles for trivial, deterministic edits (formatting, typos, simple imports).
-- **Abbreviated Thoughts:** Keep thought blocks compact. Never reprint code snippets or copy-paste file blocks inside thoughts; reference via file path and line numbers (e.g. `src/core/store.js#L12-18`).
+- **Abbreviated Thoughts:** Keep thought blocks compact. Never reprint code snippets or copy-paste file blocks inside thoughts; reference via file path and line numbers (e.g. `src/shared/store.js#L12-18`).
 
 ### Negative Constraints
 - Zero filler: "Here is", "I understand", "Let me", "Certainly", "Of course", "Happy to help".
@@ -53,7 +53,7 @@ This workspace adheres to strict context-window management, prompt caching optim
 ## 2. Dynamic Context Discovery Heuristic (Filesystem-Context)
 
 Before initiating work:
-1. **Target Identification:** Consult `docs/ARCHITECTURE.md` section 4 to identify the exact submodule and strict boundaries.
+1. **Target Identification:** Consult `CODEMAP.md`, `src/features/<name>/<name>.contract.js`, and `docs/ARCHITECTURE.md` §4 to identify the exact feature slice and strict boundaries.
 2. **Just-In-Time Loading:** Only load the specific file required for the active domain. Never preload unrelated modules or entire directories.
 3. **Observation Offloading:** When tool output exceeds 2,000 tokens, offload data to scratch files or grep for targeted lines rather than carrying full outputs in context.
 4. **Targeted Inspections:** Use `grep_search` and targeted slice reads (`StartLine`/`EndLine`) for files > 300 lines instead of ingesting whole files.

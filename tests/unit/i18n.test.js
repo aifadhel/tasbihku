@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { state } from '../../src/core/store.js';
-import { t, setLanguage, getLanguage, translations } from '../../src/core/i18n.js';
+import { state } from '../../src/shared/store.js';
+import { t, setLanguage, getLanguage, translations } from '../../src/shared/i18n.js';
 
-vi.mock('../../src/core/store.js', () => {
+vi.mock('../../src/shared/store.js', () => {
     const mockState = {
         language: 'id'
     };

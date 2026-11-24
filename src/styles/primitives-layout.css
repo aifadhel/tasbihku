@@ -1,0 +1,131 @@
+@layer primitives {
+  /* Pages with Fade Transition */
+  .page {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 24px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
+      
+      /* Transition states */
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: scale(0.96);
+      
+      /* Default exit transition (when active class is removed) */
+      transition: 
+          opacity var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+          transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+          visibility 0s linear var(--md-sys-motion-duration-medium);
+  }
+
+  .page.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: scale(1);
+      z-index: 2; /* Active page stays above others during transitions */
+      
+      /* Entrance transition (when active class is added) */
+      transition: 
+          opacity var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-spring-standard),
+          transform var(--md-sys-motion-duration-long) var(--md-sys-motion-easing-spring-standard),
+          visibility 0s linear 0s;
+  }
+
+  /* Top Bar - Material 3 Standard App Bar (64dp) */
+  .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0 16px 0;
+      min-height: 64px;
+  }
+
+  .top-bar .btn-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+  }
+
+  /* Cards */
+  .card {
+      background-color: var(--md-sys-color-surface-container);
+      border-radius: var(--shape-corner-lg); /* 24px */
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard),
+                  background-color var(--md-sys-motion-duration-short) ease,
+                  box-shadow var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+  }
+
+  .card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .card:active {
+      transform: translateY(0) scale(0.98);
+  }
+
+  .card-outlined {
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background: transparent;
+      border-radius: var(--shape-corner-lg);
+  }
+
+  /* Inputs & Selects - Standardized M3 Filled Text Field Pattern */
+  input[type="text"], input[type="number"], input[type="date"], input[type="time"], select {
+      width: 100%;
+      background: var(--md-sys-color-surface-container-high);
+      border: 2px solid transparent;
+      color: var(--md-sys-color-on-background);
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-family: var(--font-family-base);
+      font-weight: 500;
+      border-radius: var(--shape-corner-md);
+      margin-bottom: 24px;
+      transition: all 0.2s;
+  }
+  input:focus, select:focus {
+      outline: none;
+      background: var(--md-sys-color-surface-container);
+      border-color: var(--md-sys-color-primary);
+  }
+
+  input::placeholder { color: var(--md-sys-color-outline); font-weight: 400; }
+
+  /* Textarea Styling */
+  textarea {
+      width: 100%;
+      background: var(--md-sys-color-surface-container-high);
+      border: 2px solid transparent;
+      color: var(--md-sys-color-on-background);
+      padding: 16px 20px;
+      font-size: 1rem;
+      font-family: var(--font-family-base);
+      font-weight: 500;
+      border-radius: var(--shape-corner-md);
+      margin-bottom: 24px;
+      transition: all 0.2s;
+      resize: vertical;
+      min-height: 80px;
+  }
+  textarea:focus {
+      outline: none;
+      background: var(--md-sys-color-surface-container);
+      border-color: var(--md-sys-color-primary);
+  }
+  textarea::placeholder { color: var(--md-sys-color-outline); font-weight: 400; }
+
+}

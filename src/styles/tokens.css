@@ -1,0 +1,117 @@
+@layer tokens {
+  /* Seed Customizability Tokens */
+  :root {
+    --seed-hue: 158;
+    --seed-chroma: 0.08;
+    --radius-base: 16px;
+    --density: 1;
+    --font-scale: 1;
+    --motion-scale: 1;
+  }
+  /* --- MATERIAL 3 EXPRESSIVE TOKENS --- */
+  :root {
+      /* Font Family: Google Sans Flex paired with Google Sans Code */
+      --font-family-base: 'Google Sans Flex Variable', 'Google Sans Flex', sans-serif;
+      --font-family-mono: 'Google Sans Code', monospace;
+
+      /* Color Palette (Deep Emerald & Soft Gold Accents) */
+      --md-sys-color-background: #0e1b15;
+      --md-sys-color-on-background: #e1e3df;
+      
+      --md-sys-color-surface: #0e1b15;
+      --md-sys-color-on-surface: #e1e3df;
+      --md-sys-color-surface-dim: #0b1410;
+      --md-sys-color-surface-bright: #35453d;
+      --md-sys-color-surface-container-lowest: #09110d;
+      --md-sys-color-surface-container-low: #15201b;
+      --md-sys-color-surface-container: #19251f;
+      --md-sys-color-surface-container-high: #233029;
+      --md-sys-color-surface-container-highest: #2a3831;
+      --md-sys-color-surface-variant: #1e2d25;
+      --md-sys-color-on-surface-variant: #c5cfc8;
+      
+      /* Primary: Vibrant Emerald */
+      --md-sys-color-primary: #8cd6b5;
+      --md-sys-color-on-primary: #003826;
+      --md-sys-color-primary-container: #005138;
+      --md-sys-color-on-primary-container: #a7f2d0;
+
+      /* Secondary: Muted Sage */
+      --md-sys-color-secondary-container: #334b40;
+      --md-sys-color-on-secondary-container: #cce8da;
+
+      /* Tertiary: Golden Accent for completion/highlights */
+      --md-sys-color-tertiary: #dcc48c;
+      --md-sys-color-tertiary-container: #564519;
+
+      --md-sys-color-outline: #89938d;
+      --md-sys-color-outline-variant: #404944;
+      --md-sys-color-error: #ffb4ab;
+      --md-sys-color-on-error: #690005;
+
+      /* M3 Expressive Spacing Scale */
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 24px;
+      --spacing-xxl: 32px;
+      --spacing-xxxl: 48px;
+
+      /* Expressive Shapes - Lebih bulat */
+      --shape-corner-xs: 4px;
+      --shape-corner-sm: 8px;
+      --shape-corner-md: 16px;
+      --shape-corner-lg: 24px;
+      --shape-corner-xl: 28px;
+      --shape-corner-full: 9999px;
+
+      /* Material 3 Expressive Motion Tokens */
+      --md-sys-motion-easing-spring-enter: cubic-bezier(0.34, 1.56, 0.64, 1); /* spring overshoot */
+      --md-sys-motion-easing-spring-standard: cubic-bezier(0.25, 1, 0.5, 1); /* spring standard */
+      --md-sys-motion-duration-short: 150ms;
+      --md-sys-motion-duration-medium: 350ms;
+      --md-sys-motion-duration-long: 500ms;
+
+      /* Material 3 State Layers */
+      --md-sys-state-hover-opacity: 0.08;
+      --md-sys-state-focus-opacity: 0.10;
+      --md-sys-state-pressed-opacity: 0.12;
+      --md-sys-state-dragged-opacity: 0.16;
+
+      /* Material 3 Tonal & Shadow Elevation Levels */
+      --md-sys-elevation-level-0: none;
+      --md-sys-elevation-level-1: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+      --md-sys-elevation-level-2: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+      --md-sys-elevation-level-3: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+      --md-sys-elevation-level-4: 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 6px 10px 4px rgba(0, 0, 0, 0.15);
+      --md-sys-elevation-level-5: 0 4px 4px 0 rgba(0, 0, 0, 0.3), 0 8px 12px 6px rgba(0, 0, 0, 0.15);
+
+      /* Dynamic Variables */
+      --arabic-font-size: 2.5rem;
+  }
+
+  /* --- OLED / PITCH BLACK THEME OVERRIDES --- */
+  body.oled-mode {
+      --md-sys-color-background: #000000;
+      --md-sys-color-surface: #000000;
+      
+      /* Kontainer dibuat sangat gelap tapi tetap terlihat sedikit */
+      --md-sys-color-surface-container-lowest: #000000;
+      --md-sys-color-surface-container-low: #000000;
+      --md-sys-color-surface-container: #0a0a0a; 
+      --md-sys-color-surface-container-high: #121212;
+      --md-sys-color-surface-container-highest: #1a1a1a;
+      
+      /* Menggelapkan varian outline agar tidak terlalu mencolok di background hitam */
+      --md-sys-color-outline-variant: #333333;
+  }
+
+  @supports (color: oklch(0.5 0.1 158)) {
+    :root {
+      --md-sys-color-primary-tint: oklch(0.82 var(--seed-chroma) var(--seed-hue));
+      --md-sys-color-surface-mix: color-mix(in oklch, var(--md-sys-color-surface) 92%, var(--md-sys-color-primary) 8%);
+    }
+  }
+
+}

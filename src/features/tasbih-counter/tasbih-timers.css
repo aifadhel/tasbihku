@@ -1,0 +1,53 @@
+@layer features {
+  /* Stopwatch Display */
+  .stopwatch-display {
+    font-family: var(--font-family-mono);
+    text-shadow: 0 0 20px rgba(140, 214, 181, 0.2);
+  }
+
+  /* Timer Display */
+  .timer-display {
+    font-family: var(--font-family-mono);
+    color: var(--md-sys-color-tertiary);
+    text-shadow: 0 0 20px rgba(220, 196, 140, 0.2);
+    transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+  }
+
+  /* Expressive Running status indicator pulse for Stopwatch and Timer */
+  .timer-running {
+      animation: m3-timer-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes m3-timer-pulse {
+      0%, 100% {
+          opacity: 1;
+          transform: scale(1);
+      }
+      50% {
+          opacity: 0.85;
+          transform: scale(1.02);
+      }
+  }
+
+  /* Preset Buttons */
+  .preset-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .preset-buttons .btn-text {
+    background: var(--md-sys-color-surface-container-high);
+    color: var(--md-sys-color-on-surface-variant);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .preset-buttons .btn-text:hover {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+}

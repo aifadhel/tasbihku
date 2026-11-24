@@ -1,75 +1,69 @@
 # TasbihKu
 
-Offline-first Progressive Web App (PWA) for digital tasbih counting, guided morning/evening and post-prayer wirid, and spiritual habit tracking.
+Offline-first Progressive Web App for digital tasbih counting, guided daily wirid, custom dzikir collections, and spiritual habit tracking.
 
 [![CI](https://github.com/aifadhel/tasbihku/actions/workflows/ci.yml/badge.svg)](https://github.com/aifadhel/tasbihku/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Features
 
-- **Tasbih counter**: Tap-to-count interface with audio click effects, haptic vibration feedback, target limits, and free-counting mode.
-- **Guided dzikir**: Morning (dzikir pagi), evening (dzikir petang), and post-prayer (ba'da shalat) wirid with Arabic text, transliteration, translations (Indonesian/English), and Hadith references.
-- **Custom dzikir editor**: Create, edit, reorder, import, and export personalized dzikir collections.
-- **Habit tracker**: Daily spiritual habit checklist with streaks, targets, notes, and archiving.
-- **Statistics and charts**: Day-of-week breakdown, completion trends, and CSV data export.
-- **Timer and stopwatch**: Preset countdown timers and stopwatch modes for timed sessions.
-- **Offline PWA**: Full offline capability via service worker caching and installable web app manifest.
-- **Display modes**: Light, dark, and true-black OLED themes using Material Design 3 design tokens.
-- **Reminders**: Configurable notifications for morning and evening dzikir.
+- Free tap counter with target limits, manual count adjustment, synthesized click audio, and configurable vibration intervals.
+- Stopwatch and countdown timer modes with 1m, 5m, 10m, and 30m presets integrated into the main dashboard dock.
+- Guided morning (pagi), evening (petang), and post-prayer (wirid) dzikir sets with Arabic script, Latin transliteration, Indonesian and English translations, and Hadith references.
+- Custom dzikir sequence editor backed by a searchable Azkar library and URL-hash sharing links.
+- Habit tracker supporting daily, weekday, weekly-target, and interval schedules across morning, afternoon, evening, and anytime sections, with drag-and-drop reordering and linked dzikir completion.
+- Habit consistency tracking powered by EMA strength scoring, single-day Istiqamah streak grace, monthly log calendars, activity heatmaps, trend charts, and CSV export.
+- IndexedDB storage (`tasbihKuState`) paired with a `<= 1 KB` `localStorage` boot preference cache, cross-tab `BroadcastChannel` synchronization, and full JSON backup export/import.
+- Offline service worker precaching for generated asset chunks, plus light, dark, and pitch-black OLED display modes, Arabic font scaling, screen wake lock, and scheduled reminder notifications.
 
 ## Tech Stack
 
 | Component | Technology |
 |---|---|
 | Runtime | Vanilla JavaScript (ES Modules), HTML5, CSS3 |
-| Storage | IndexedDB via [`idb-keyval`](https://github.com/nicedoc/idb-keyval) |
-| Design tokens | Material Design 3 CSS custom properties |
-| Build tool | [Vite](https://vitejs.dev/) |
-| Testing | [Vitest](https://vitest.dev/) (unit), [Playwright](https://playwright.dev/) (E2E) |
+| Architecture | Thin shell (`src/app/`) + depth-1 feature slices (`src/features/*/`) decoupled over an async command/event bus |
+| Styling | Cascade-layered CSS (`@layer`) with `oklch()` / `color-mix()` seed tokens and Material Design 3 hex fallbacks |
+| Storage | IndexedDB via [`idb-keyval`](https://github.com/nicedoc/idb-keyval), `<= 1 KB` `localStorage` boot cache, `BroadcastChannel` |
+| Build tool | [Vite](https://vitejs.dev/) with `closeBundle` service worker chunk manifest injection |
+| Quality gates | Custom structural and bundle budget checks (`scripts/check.mjs`, `size.config.json`) |
+| Testing | [Vitest](https://vitest.dev/) (unit & feature tests), [Playwright](https://playwright.dev/) (E2E) |
 | Hosting | Firebase Hosting (compatible with any static host) |
 
 ## Project Structure
 
 ```
-├── index.html              # Main SPA entry point
-├── style.css               # Design system tokens and component styles
+├── index.html                  # App shell HTML and declarative [data-cmd] bindings
+├── style.css                   # @layer manifest importing src/styles/* and feature stylesheets
+├── CODEMAP.md                  # Generated feature, slot, and command index
+├── size.config.json            # Gzipped shell and lazy-chunk size budgets
 ├── src/
-│   ├── main.js             # Application bootstrap and event wiring
-│   ├── core/
-│   │   ├── store.js        # State management and IndexedDB persistence
-│   │   └── i18n.js         # Internationalization (ID/EN)
+│   ├── main.js                 # Shell bootstrap and eager startup feature registration
+│   ├── app/                    # Command bus, lazy feature registry, modal/capability slots, DOM bridge, version
+│   ├── shared/                 # Split storage, reactive store + migrations, i18n loader, media, wake lock, UI helpers
+│   ├── styles/                 # Reset, oklch/M3 tokens, and shared CSS primitives
 │   ├── data/
-│   │   └── azkar.json      # Built-in dzikir content
-│   ├── hardware/
-│   │   ├── media.js        # Audio synthesis and haptic feedback
-│   │   └── system.js       # PWA installation, notifications, wake lock
-│   ├── modules/
-│   │   ├── tasbih.js       # Tasbih counter logic
-│   │   ├── dzikir.js       # Guided dzikir and custom editor logic
-│   │   ├── habits.js       # Habit module exports
-│   │   ├── habits-data.js  # Habit state and streak calculations
-│   │   ├── habits-ui.js    # Habit DOM rendering and event handlers
-│   │   ├── habits-chart.js # SVG chart rendering for habit statistics
-│   │   └── habits-export.js# CSV export generator
-│   └── ui/
-│       ├── router.js       # View routing, modal management, theme toggles
-│       ├── toast.js        # Toast notifications
-│       └── confetti.js     # Completion animation
-├── public/
-│   ├── manifest.json       # PWA manifest
-│   ├── sw.js               # Service worker for offline caching
-│   ├── config.json         # Audio sprite configuration
-│   ├── sound.ogg           # Tap sound asset
-│   └── icon-*.png          # Application icons
+│   │   └── azkar.json          # Built-in Azkar library entries
+│   └── features/
+│       ├── tasbih-counter/     # Free counter, target limit, stopwatch, countdown timer
+│       ├── dzikir-guided/      # Wirid/pagi/petang JSON datasets and docked player engine
+│       ├── dzikir-custom/      # Custom list, lazy editor, Azkar library, share codec & UI
+│       ├── habits-core/        # Date math, streaks, EMA strength scoring, CSV generation
+│       ├── habits-ui/          # Cards, drag/drop, modals, calendar, reminders, lazy charts
+│       └── settings-shell/     # Hash/popstate router, modal dialogs, OLED/audio/haptics, JSON backup
+├── public/                     # Static PWA assets, manifest.json, sw.js template, sound.ogg, config.json
+├── scripts/
+│   ├── check.mjs               # Structural, isolation, line-limit, and gzip size verifier
+│   ├── codemap.mjs             # CODEMAP.md generator from *.contract.js headers
+│   └── bump-version.js         # Syncs package.json, src/app/version.js, public/sw.js, and CHANGELOG.md
 ├── docs/
-│   ├── ARCHITECTURE.md     # System architecture and module boundaries
-│   └── archive/            # Historical changelogs and notes
+│   ├── ARCHITECTURE.md         # Layering rules, cross-feature contracts, discovery heuristics
+│   └── archive/                # Historical notes and changelogs
 ├── tests/
-│   ├── unit/               # Vitest unit test suite
-│   └── e2e/                # Playwright E2E test suite
-├── .github/workflows/      # GitHub Actions CI workflow
-├── vite.config.js          # Vite configuration
-├── playwright.config.js    # Playwright configuration
+│   ├── unit/                   # Cross-cutting architecture and i18n Vitest suites
+│   └── e2e/                    # Playwright browser suites (feature specs also live in src/features/*/)
+├── .github/workflows/ci.yml    # GitHub Actions CI pipeline
+├── vite.config.js
+├── playwright.config.js
 └── package.json
 ```
 
@@ -90,19 +84,28 @@ npm install
 
 ### Development
 
-Start the local development server at `http://localhost:3005`:
+Start the local Vite dev server on `http://localhost:3005`:
 
 ```bash
 npm run dev
 ```
 
-### Testing
+### Checks and Testing
 
 ```bash
-# Run unit tests
+# Run structural checks (file size limits, feature isolation, i18n parity, no inline JS/globals)
+npm run check
+
+# Regenerate CODEMAP.md from feature contract headers
+npm run codemap
+
+# Verify gzipped shell and lazy-chunk bundle budgets after building
+npm run size
+
+# Run unit and feature tests
 npm test
 
-# Run unit tests in watch mode
+# Run Vitest in watch mode
 npm run test:watch
 
 # Run Playwright E2E tests (requires Chromium)
@@ -113,16 +116,16 @@ npm run test:e2e
 ### Production Build
 
 ```bash
-# Build production bundle to dist/
+# Build dist/ and inject generated chunk assets into dist/sw.js
 npm run build
 
-# Preview production build locally
+# Preview dist/ locally
 npm run preview
 ```
 
 ### Deployment
 
-Deploy to Firebase Hosting:
+Deploy `dist/` to Firebase Hosting:
 
 ```bash
 npm install -g firebase-tools
@@ -174,8 +177,8 @@ MIT License. See [LICENSE](LICENSE) for details.
 | Tool | Version | License | Purpose |
 |---|---|---|---|
 | [Vite](https://vitejs.dev/) | `^5.0.0` | [MIT](https://github.com/vitejs/vite/blob/main/LICENSE) | Development server and asset bundler |
-| [Vitest](https://vitest.dev/) | `^1.0.0` | [MIT](https://github.com/vitest-dev/vitest/blob/main/LICENSE) | Unit test runner |
-| [Playwright](https://playwright.dev/) | `^1.60.0` | [Apache-2.0](https://github.com/microsoft/playwright/blob/main/LICENSE) | End-to-end browser testing |
+| [Vitest](https://vitest.dev/) | `^1.0.0` | [MIT](https://github.com/vitest-dev/vitest/blob/main/LICENSE) | Unit and feature test runner |
+| [Playwright](https://playwright.dev/) | `^1.60.0` | [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) | End-to-end browser testing |
 
 ### Text Sources
 

@@ -1,0 +1,71 @@
+@layer features {
+  /* Custom Dzikir Section Header M3 Action Chips */
+  .m3-chip-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--shape-corner-full);
+      background: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface-variant);
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid var(--md-sys-color-outline-variant);
+      cursor: pointer;
+      transition: all 0.2s ease;
+  }
+
+  .m3-chip-action:hover {
+      background: var(--md-sys-color-surface-container-highest);
+      color: var(--md-sys-color-on-background);
+      transform: translateY(-1px);
+  }
+
+  .m3-chip-action:active {
+      transform: scale(0.96);
+  }
+
+  .m3-btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--shape-corner-full);
+      background: var(--md-sys-color-secondary-container);
+      color: var(--md-sys-color-on-secondary-container);
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+  }
+
+  .m3-btn-action:hover {
+      background: color-mix(in srgb, var(--md-sys-color-secondary-container) 88%, var(--md-sys-color-on-secondary-container));
+      transform: translateY(-1px);
+  }
+
+  .m3-btn-action:active {
+      transform: scale(0.96);
+  }
+
+  /* Custom Dzikir Empty State Card */
+  .custom-dzikir-empty-card {
+      padding: 36px 20px;
+      text-align: center;
+      background: var(--md-sys-color-surface-container);
+      border-radius: var(--shape-corner-xl);
+      border: 1px dashed var(--md-sys-color-outline-variant);
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+  }
+
+  .editor-page-card { background: var(--md-sys-color-surface-container); border-radius: 16px; padding: 16px; margin-bottom: 12px; position: relative; }
+  .editor-page-card input, .editor-page-card textarea { width: 100%; background: var(--md-sys-color-surface-container); border: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-background); padding: 12px; border-radius: var(--shape-corner-md); margin-bottom: 12px; font-family: inherit; }
+  .editor-page-card textarea { resize: vertical; min-height: 60px; }
+  .editor-page-card .card-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+}

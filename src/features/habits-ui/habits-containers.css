@@ -1,0 +1,133 @@
+@layer features {
+  /* --- CSS CONTAINER QUERIES (@container) --- */
+
+  /* Habit Detail Responsive Queries (Desktop / High Resolution Centering) */
+  @media (min-width: 600px) {
+      .habit-detail-overlay {
+          align-items: center; /* Center vertically on desktop / high resolution */
+      }
+  }
+
+  @container habit-detail (min-width: 600px) {
+      .habit-detail-container {
+          width: 95%;
+          max-width: 900px;
+          height: 90vh;
+          max-height: 800px;
+          border-radius: var(--shape-corner-xl);
+      }
+      
+      .habit-detail-grid {
+          grid-template-columns: 1.1fr 0.9fr;
+      }
+  }
+
+  @container habit-detail (max-width: 340px) {
+      .habit-detail-body {
+          padding: 12px;
+      }
+      .habit-detail-header {
+          padding: 12px 14px;
+      }
+      .habit-detail-header-left {
+          gap: 8px;
+      }
+  }
+
+  /* Habit Card Container Queries */
+  @container habit-card (max-width: 340px) {
+      .habit-card {
+          padding: 12px;
+          gap: 10px;
+      }
+      .habit-title {
+          font-size: 0.95rem;
+      }
+      .habit-desc {
+          font-size: 0.75rem;
+      }
+      .habit-days-strip {
+          gap: 4px;
+      }
+      .day-circle {
+          width: 28px;
+          height: 28px;
+      }
+      .day-label {
+          font-size: 0.6rem;
+      }
+      .checkmark-icon {
+          font-size: 0.8rem;
+      }
+  }
+
+  @container habit-card (min-width: 480px) {
+      .habit-card {
+          padding: 20px;
+          gap: 20px;
+      }
+      .habit-title {
+          font-size: 1.2rem;
+      }
+      .habit-days-strip {
+          gap: 12px;
+      }
+      .day-circle {
+          width: 42px;
+          height: 42px;
+      }
+      .day-label {
+          font-size: 0.75rem;
+      }
+  }
+
+  /* Modal Viewport Container Queries */
+  @container modal-viewport (max-width: 340px) {
+      .modal-box {
+          width: 95%;
+          padding: 16px;
+          border-radius: var(--shape-corner-lg);
+      }
+      .modal-title {
+          font-size: 1.1rem;
+      }
+      .modal-actions {
+          flex-direction: column;
+          gap: 6px;
+      }
+      .modal-actions .btn {
+          width: 100%;
+      }
+  }
+
+  @container modal-viewport (min-width: 600px) {
+      .modal-box {
+          max-width: 460px;
+          padding: 32px;
+          border-radius: var(--shape-corner-xl);
+      }
+      .modal-title {
+          font-size: 1.35rem;
+      }
+  }
+
+  /* Fallback for Legacy Browsers without CSS Container Queries */
+  @supports not (container-type: inline-size) {
+      @media (min-width: 768px) {
+          .habit-detail-overlay {
+              align-items: center;
+          }
+          .habit-detail-container {
+              width: 95%;
+              max-width: 900px;
+              height: 90vh;
+              max-height: 800px;
+              border-radius: var(--shape-corner-xl);
+          }
+          .habit-detail-grid {
+              grid-template-columns: 1.1fr 0.9fr;
+          }
+      }
+  }
+
+}

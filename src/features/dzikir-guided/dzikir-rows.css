@@ -1,0 +1,105 @@
+@layer features {
+  /* Dzikir Row Layout (Consistent icon button sizing) */
+  .dzikir-row {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+      align-items: stretch;
+  }
+
+  .dzikir-row-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+  }
+
+  .dzikir-row-title {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--md-sys-color-primary);
+  }
+
+  .dzikir-row-desc {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin-top: 4px;
+  }
+
+  /* Edit Icon Button for Dzikir Rows (Consistent 56px size) */
+  .btn-icon-edit {
+      background: var(--md-sys-color-surface-container);
+      color: var(--md-sys-color-on-background);
+      width: 56px;
+      min-width: 56px;
+      height: 56px;
+      border-radius: var(--shape-corner-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      align-self: stretch;
+      transition: background-color 0.2s;
+  }
+  .btn-icon-edit:active {
+      transform: scale(0.95);
+  }
+
+  /* Progress Bar - Thicker and Rounded (Standardized spacing) */
+  .progress-track {
+      height: 12px;
+      background: var(--md-sys-color-surface-container-high);
+      width: 100%;
+      border-radius: 99px;
+      margin: 16px 0;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+  }
+  .progress-fill {
+      height: 100%;
+      background: var(--md-sys-color-primary);
+      width: 0%;
+      border-radius: 99px;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Player Text Container Transition */
+  #player-text-container {
+      transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Dzikir Panel Container Queries */
+  @container dzikir-panel (max-width: 340px) {
+      .dzikir-row {
+          gap: 6px;
+          margin-top: 8px;
+      }
+      .dzikir-row-title {
+          font-size: 0.95rem;
+      }
+      .dzikir-row-desc {
+          font-size: 0.75rem;
+      }
+      .btn-icon-edit {
+          width: 44px;
+          min-width: 44px;
+          height: 44px;
+      }
+  }
+
+  @container dzikir-panel (min-width: 480px) {
+      .dzikir-row {
+          gap: 16px;
+      }
+      .dzikir-row-title {
+          font-size: 1.2rem;
+      }
+      .btn-icon-edit {
+          width: 60px;
+          min-width: 60px;
+          height: 60px;
+      }
+  }
+
+}

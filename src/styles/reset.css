@@ -1,0 +1,111 @@
+@layer reset {
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  /* --- MATERIAL 3 EXPRESSIVE FOCUS INDICATORS & A11Y --- */
+  :focus-visible {
+      outline: 3px solid var(--md-sys-color-primary) !important;
+      outline-offset: 2px !important;
+  }
+
+  :focus:not(:focus-visible) {
+      outline: none !important;
+  }
+
+  button:focus-visible,
+  .btn:focus-visible,
+  .mode-btn:focus-visible,
+  .segment-btn:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible {
+      outline: 3px solid var(--md-sys-color-primary) !important;
+      outline-offset: 2px !important;
+  }
+
+  /* --- PREFERS-REDUCED-MOTION (M3 Accessibility Fallback) --- */
+  @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+      }
+      
+      .page,
+      .page.active,
+      .modal-box,
+      .card,
+      .btn,
+      .fab-large {
+          transform: none !important;
+          transition: opacity 0.01ms !important;
+      }
+  }
+
+  html {
+      height: 100%;
+      height: 100dvh;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+      font-family: var(--font-family-base);
+      background-color: var(--md-sys-color-background);
+      color: var(--md-sys-color-on-background);
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      height: 100dvh;
+      min-height: -webkit-fill-available;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      overscroll-behavior: none;
+      transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition saat ganti tema */
+  }
+
+  #app {
+      width: 100%;
+      max-width: 500px;
+      height: 100%;
+      height: 100dvh;
+      position: relative;
+      background-color: var(--md-sys-color-background);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      overscroll-behavior: none;
+      transition: background-color 0.3s ease;
+      container-type: inline-size;
+      container-name: app-container;
+  }
+
+  /* --- ACCESSIBILITY: REDUCED MOTION --- */
+  @media (prefers-reduced-motion: reduce) {
+      .count-pop-animation,
+      .expressive-pop,
+      .progress-complete-glow,
+      .timer-running,
+      .player-deck-tap-btn,
+      .player-deck-btn-undo {
+          animation: none !important;
+          transform: none !important;
+          transition: none !important;
+      }
+      #player-text-container,
+      .progress-fill,
+      .player-scroll-viewport {
+          transition: none !important;
+          scroll-behavior: auto !important;
+      }
+  }
+
+
+
+
+
+}

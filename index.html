@@ -18,36 +18,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
-    
-    <!-- Add some extra styles for our new Editor UI directly embedded here or we can just rely on inline/existing ones -->
-    <style>
-        .editor-page-card {
-            background: var(--md-sys-color-surface-container);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-        .editor-page-card input, .editor-page-card textarea {
-            width: 100%;
-            background: var(--md-sys-color-surface-container);
-            border: 1px solid var(--md-sys-color-outline-variant);
-            color: var(--md-sys-color-on-background);
-            padding: 12px;
-            border-radius: var(--shape-corner-md);
-            margin-bottom: 12px;
-            font-family: inherit;
-        }
-        .editor-page-card textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-        .editor-page-card .card-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-        }
-    </style>
 </head>
 <body>
     <!-- SVG Icons Defs (Token Optimized) -->
@@ -101,18 +71,18 @@
                 <div class="flex-col" style="flex-grow: 1;">
                     <span class="text-sub body-small" data-i18n="greeting">Assalamu'alaikum</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
-                        <input type="text" id="username-input" value="SaudaraKu" placeholder="Nama Anda" data-i18n-placeholder="username_placeholder" autocomplete="off" spellcheck="false">
+                        <input type="text" id="username-input" value="SaudaraKu" placeholder="Nama Anda" data-i18n-placeholder="username_placeholder" autocomplete="off" spellcheck="false" data-cmd-input="settings:update-username">
                     </div>
                 </div>
                 <div class="mode-switcher" id="app-mode-switcher" style="margin-right: 8px;">
-                    <button class="mode-btn active" id="mode-tasbih-btn" onclick="switchAppMode('tasbih')" aria-label="Mode Tasbih" data-i18n-aria="mode_tasbih">
+                    <button class="mode-btn active" id="mode-tasbih-btn" data-cmd="settings:switch-app-mode" data-arg="tasbih" aria-label="Mode Tasbih" data-i18n-aria="mode_tasbih">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-1"></use></svg>
                     </button>
-                    <button class="mode-btn" id="mode-habit-btn" onclick="switchAppMode('habit')" aria-label="Mode Kebiasaan" data-i18n-aria="mode_habit">
+                    <button class="mode-btn" id="mode-habit-btn" data-cmd="settings:switch-app-mode" data-arg="habit" aria-label="Mode Kebiasaan" data-i18n-aria="mode_habit">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-2"></use></svg>
                     </button>
                 </div>
-                <button class="btn btn-icon" onclick="showPage('page-menu')" aria-label="Buka menu dzikir" data-i18n-aria="open_menu">
+                <button class="btn btn-icon" data-cmd="settings:show-page" data-arg="page-menu" aria-label="Buka menu dzikir" data-i18n-aria="open_menu">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-3"></use></svg>
                 </button>
             </div>
@@ -137,15 +107,15 @@
                     <!-- DASHBOARD MODE SWITCHER (Apple HIG Segmented Tab View) -->
                     <div class="segmented-fab-container apple-tab-view" id="dashboard-mode-switcher" role="tablist" aria-label="Mode Tampilan Tasbih" data-active-index="0" style="--tab-active-index: 0;">
                       <div class="apple-tab-indicator" aria-hidden="true"></div>
-                      <button class="segment-btn active" id="tab-counting" role="tab" aria-selected="true" aria-controls="counting-display-area" tabindex="0" data-mode="counting" onclick="switchDashboardMode('counting')">
+                      <button class="segment-btn active" id="tab-counting" role="tab" aria-selected="true" aria-controls="counting-display-area" tabindex="0" data-mode="counting" data-cmd="settings:switch-dashboard-mode" data-arg="counting">
                         <svg class="segment-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-5"></use></svg>
                         <span class="segment-label" data-i18n="mode_counting">Counting</span>
                       </button>
-                      <button class="segment-btn" id="tab-stopwatch" role="tab" aria-selected="false" aria-controls="stopwatch-display-area" tabindex="-1" data-mode="stopwatch" onclick="switchDashboardMode('stopwatch')">
+                      <button class="segment-btn" id="tab-stopwatch" role="tab" aria-selected="false" aria-controls="stopwatch-display-area" tabindex="-1" data-mode="stopwatch" data-cmd="settings:switch-dashboard-mode" data-arg="stopwatch">
                         <svg class="segment-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-6"></use></svg>
                         <span class="segment-label" data-i18n="mode_stopwatch">Stopwatch</span>
                       </button>
-                      <button class="segment-btn" id="tab-timer" role="tab" aria-selected="false" aria-controls="timer-display-area" tabindex="-1" data-mode="timer" onclick="switchDashboardMode('timer')">
+                      <button class="segment-btn" id="tab-timer" role="tab" aria-selected="false" aria-controls="timer-display-area" tabindex="-1" data-mode="timer" data-cmd="settings:switch-dashboard-mode" data-arg="timer">
                         <svg class="segment-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-7"></use></svg>
                         <span class="segment-label" data-i18n="mode_timer">Timer</span>
                       </button>
@@ -157,9 +127,9 @@
                         <!-- COUNTING DISPLAY -->
                         <div id="counting-display-area" role="tabpanel" aria-labelledby="tab-counting" style="display: block;">
                             <div style="display: flex; justify-content: center; align-items: center; gap: 8px;">
-                                <div id="free-counter" class="display-large" style="cursor: pointer;" onclick="promptManualCount()" aria-label="Edit Hitungan" data-i18n-aria="edit_count">0</div>
+                                <div id="free-counter" class="display-large" style="cursor: pointer;" data-cmd="tasbih:prompt-count" aria-label="Edit Hitungan" data-i18n-aria="edit_count">0</div>
                             </div>
-                            <div class="body-medium" style="text-align: center; margin-top: 4px; color: var(--md-sys-color-on-surface-variant); cursor: pointer;" onclick="promptTargetLimit()">
+                            <div class="body-medium" style="text-align: center; margin-top: 4px; color: var(--md-sys-color-on-surface-variant); cursor: pointer;" data-cmd="tasbih:prompt-target">
                                 Target: <span id="free-target-display" class="title-small">0</span>
                             </div>
                         </div>
@@ -171,13 +141,13 @@
                         
                         <!-- TIMER DISPLAY -->
                         <div id="timer-display-area" role="tabpanel" aria-labelledby="tab-timer" style="display: none;">
-                            <div id="timer-counter" class="display-medium timer-display" style="margin: 16px 0; cursor: pointer; transition: opacity 0.2s;" onclick="promptCustomTimer()" aria-label="Tap untuk ubah waktu" data-i18n-aria="tap_to_change_time">00:00:00</div>
+                            <div id="timer-counter" class="display-medium timer-display" style="margin: 16px 0; cursor: pointer; transition: opacity 0.2s;" data-cmd="tasbih:prompt-timer" aria-label="Tap untuk ubah waktu" data-i18n-aria="tap_to_change_time">00:00:00</div>
                             <div id="timer-setup-area" style="margin-bottom: 24px;">
                                 <div class="preset-buttons">
-                                    <button class="btn btn-text" onclick="setTimerPreset(60)">1m</button>
-                                    <button class="btn btn-text" onclick="setTimerPreset(300)">5m</button>
-                                    <button class="btn btn-text" onclick="setTimerPreset(600)">10m</button>
-                                    <button class="btn btn-text" onclick="setTimerPreset(1800)">30m</button>
+                                    <button class="btn btn-text" data-cmd="tasbih:timer-preset" data-arg="60">1m</button>
+                                    <button class="btn btn-text" data-cmd="tasbih:timer-preset" data-arg="300">5m</button>
+                                    <button class="btn btn-text" data-cmd="tasbih:timer-preset" data-arg="600">10m</button>
+                                    <button class="btn btn-text" data-cmd="tasbih:timer-preset" data-arg="1800">30m</button>
                                 </div>
                                 <div class="body-small" style="color: var(--md-sys-color-outline); margin-top: 12px; text-align: center;" data-i18n="timer_hint">Tap angka waktu di atas untuk mengatur custom timer.</div>
                             </div>
@@ -186,10 +156,10 @@
                     </div>
                     
                     <div class="fab-container fab-action-dock">
-                        <button class="btn btn-reset-tonal is-disabled" id="dashboard-reset-btn" onclick="handleDashboardReset()" aria-label="Reset" data-i18n-aria="btn_reset" disabled>
+                        <button class="btn btn-reset-tonal is-disabled" id="dashboard-reset-btn" data-cmd="tasbih:dashboard-reset" aria-label="Reset" data-i18n-aria="btn_reset" disabled>
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-18"></use></svg>
                         </button>
-                        <button class="btn fab-large m3-fab-large" id="dashboard-main-btn" onclick="handleDashboardMainBtn()" aria-label="Tap">
+                        <button class="btn fab-large m3-fab-large" id="dashboard-main-btn" data-cmd="tasbih:dashboard-main" aria-label="Tap">
                             <span id="dashboard-main-emoji" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px;" aria-hidden="true">
                                 <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-8"></use></svg>
                             </span>
@@ -226,7 +196,7 @@
 
                 <!-- Add Habit Button -->
                 <div style="margin-top: auto; margin-bottom: 20px; display: flex; justify-content: center; width: 100%;">
-                    <button class="btn btn-filled" onclick="openHabitModal('new')" style="max-width: 250px;" data-i18n="habit_add_btn">
+                    <button class="btn btn-filled" data-cmd="habits:open-modal" data-arg="new" style="max-width: 250px;" data-i18n="habit_add_btn">
                         <span style="margin-right: 8px;">+</span> Tambah Kebiasaan
                     </button>
                 </div>
@@ -237,7 +207,7 @@
         <!-- MENU PAGE -->
         <div id="page-menu" class="page">
             <div class="top-bar">
-                <button class="btn btn-icon" onclick="goBack('page-dashboard')" aria-label="Kembali ke dashboard" data-i18n-aria="back_to_dashboard">
+                <button class="btn btn-icon" data-cmd="settings:go-back" data-arg="page-dashboard" aria-label="Kembali ke dashboard" data-i18n-aria="back_to_dashboard">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-10"></use></svg>
                 </button>
                 <h2 class="headline-large" id="menu-page-title" data-i18n="menu_title">Pilih Dzikir</h2>
@@ -250,39 +220,39 @@
                 
                 <!-- Guided Dzikir Pagi -->
                 <div class="dzikir-row">
-                    <button class="btn btn-list-item" onclick="startPlayer('pagi')" style="flex: 1; margin:0;">
+                    <button class="btn btn-list-item" data-cmd="dzikir:start-player" data-arg="pagi" style="flex: 1; margin:0;">
                         <div class="dzikir-row-content">
                             <span class="dzikir-row-title" data-i18n="dzikir_pagi_title">Dzikir Pagi</span>
                             <span class="dzikir-row-desc" data-i18n="dzikir_pagi_desc">Dzikir pagi hari berdasarkan hadits sahih</span>
                         </div>
                     </button>
-                    <button class="btn btn-icon-edit" onclick="openEditor('pagi')" aria-label="Edit Dzikir Pagi">
+                    <button class="btn btn-icon-edit" data-cmd="dzikir:open-editor" data-arg="pagi" aria-label="Edit Dzikir Pagi">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-11"></use></svg>
                     </button>
                 </div>
 
                 <!-- Guided Dzikir Petang -->
                 <div class="dzikir-row">
-                    <button class="btn btn-list-item" onclick="startPlayer('petang')" style="flex: 1; margin:0;">
+                    <button class="btn btn-list-item" data-cmd="dzikir:start-player" data-arg="petang" style="flex: 1; margin:0;">
                         <div class="dzikir-row-content">
                             <span class="dzikir-row-title" data-i18n="dzikir_petang_title">Dzikir Petang</span>
                             <span class="dzikir-row-desc" data-i18n="dzikir_petang_desc">Dzikir sore hari berdasarkan hadits sahih</span>
                         </div>
                     </button>
-                    <button class="btn btn-icon-edit" onclick="openEditor('petang')" aria-label="Edit Dzikir Petang">
+                    <button class="btn btn-icon-edit" data-cmd="dzikir:open-editor" data-arg="petang" aria-label="Edit Dzikir Petang">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-11"></use></svg>
                     </button>
                 </div>
 
                 <!-- Wirid Shalat -->
                 <div class="dzikir-row">
-                    <button class="btn btn-list-item" onclick="startPlayer('wirid')" style="flex: 1; margin:0;">
+                    <button class="btn btn-list-item" data-cmd="dzikir:start-player" data-arg="wirid" style="flex: 1; margin:0;">
                         <div class="dzikir-row-content">
                             <span class="dzikir-row-title" data-i18n="wirid_title">Wirid Ba'da Shalat</span>
                             <span class="dzikir-row-desc" data-i18n="wirid_desc">Tasbih, Tahmid, Takbir (33x) + Tahlil</span>
                         </div>
                     </button>
-                    <button class="btn btn-icon-edit" onclick="openEditor('wirid')" aria-label="Edit Wirid Shalat">
+                    <button class="btn btn-icon-edit" data-cmd="dzikir:open-editor" data-arg="wirid" aria-label="Edit Wirid Shalat">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-11"></use></svg>
                     </button>
                 </div>
@@ -293,11 +263,11 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 8px; flex-wrap: wrap;">
                     <span class="label-large text-sub" data-i18n="section_custom">Custom Dzikir</span>
                     <div style="display: flex; gap: 6px; align-items: center;">
-                        <button class="m3-chip-action" onclick="window.openReceiveDzikirModal()" data-i18n-aria="btn_receive_dzikir" aria-label="Terima Dzikir">
+                        <button class="m3-chip-action" data-cmd="dzikir:open-receive" data-i18n-aria="btn_receive_dzikir" aria-label="Terima Dzikir">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-35"></use></svg>
                             <span data-i18n="btn_header_receive">Terima</span>
                         </button>
-                        <button class="m3-btn-action" onclick="openEditor('new')" data-i18n-aria="create_new" aria-label="Buat Baru">
+                        <button class="m3-btn-action" data-cmd="dzikir:open-editor" data-arg="new" data-i18n-aria="create_new" aria-label="Buat Baru">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                             <span data-i18n="btn_header_create">Buat Baru</span>
                         </button>
@@ -319,10 +289,10 @@
                     <span class="m3-setting-desc" data-i18n="setting_language_desc">Pilih bahasa tampilan aplikasi</span>
                 </div>
                 <div class="m3-segmented-control" role="group" aria-labelledby="language-label">
-                    <button type="button" id="lang-btn-id" class="m3-segment-pill active" onclick="window.setLanguage('id')" aria-label="Bahasa Indonesia">ID</button>
-                    <button type="button" id="lang-btn-en" class="m3-segment-pill" onclick="window.setLanguage('en')" aria-label="English">EN</button>
+                    <button type="button" id="lang-btn-id" class="m3-segment-pill active" data-cmd="settings:set-language" data-arg="id" aria-label="Bahasa Indonesia">ID</button>
+                    <button type="button" id="lang-btn-en" class="m3-segment-pill" data-cmd="settings:set-language" data-arg="en" aria-label="English">EN</button>
                 </div>
-                <select id="select-language" onchange="window.setLanguage(this.value)" style="display: none;" aria-hidden="true">
+                <select id="select-language" data-cmd-change="settings:set-language" style="display: none;" aria-hidden="true">
                     <option value="id" data-i18n="lang_id">Bahasa Indonesia</option>
                     <option value="en" data-i18n="lang_en">English</option>
                 </select>
@@ -334,7 +304,7 @@
                     <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="setting_wakelock_desc">Cegah HP tidur saat dzikir</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="toggle-wakelock" onchange="toggleWakeLock(this.checked)" aria-labelledby="wakelock-label">
+                    <input type="checkbox" id="toggle-wakelock" data-cmd-change="settings:toggle-wakelock" aria-labelledby="wakelock-label">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -345,7 +315,7 @@
                     <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="setting_oled_desc">Tema hitam pekat (#000000)</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="toggle-oled" onchange="toggleOledMode(this.checked)" aria-labelledby="oled-label">
+                    <input type="checkbox" id="toggle-oled" data-cmd-change="settings:toggle-oled" aria-labelledby="oled-label">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -356,7 +326,7 @@
                     <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="setting_sound_desc">Efek suara ketukan mekanis</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="toggle-sound" onchange="toggleSoundMode(this.checked)" aria-labelledby="sound-label">
+                    <input type="checkbox" id="toggle-sound" data-cmd-change="settings:toggle-sound" aria-labelledby="sound-label">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -368,7 +338,7 @@
                     <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="setting_vibration_desc">Getar halus pada setiap tap</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="toggle-vibration" onchange="toggleVibrationMode(this.checked)" aria-labelledby="vibration-label">
+                    <input type="checkbox" id="toggle-vibration" data-cmd-change="settings:toggle-vibration" aria-labelledby="vibration-label">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -378,7 +348,7 @@
                     <span id="vibration-interval-label" style="font-weight: 800; color: var(--md-sys-color-on-background);" data-i18n="setting_vibration_interval">Interval Getar</span>
                     <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="setting_vibration_interval_desc">Getar lebih kuat setiap kelipatan</span>
                 </div>
-                <select id="select-vibration-interval" onchange="window.updateVibrationInterval(this.value)" style="padding: 8px 12px; font-family: inherit; font-size: 0.95rem; text-align-last: right;">
+                <select id="select-vibration-interval" data-cmd-change="settings:set-vibration-interval" style="padding: 8px 12px; font-family: inherit; font-size: 0.95rem; text-align-last: right;">
                     <option value="0" data-i18n="vib_off">Mati (Off)</option>
                     <option value="33" data-i18n="vib_33">Setiap 33</option>
                     <option value="99" data-i18n="vib_99">Setiap 99</option>
@@ -391,11 +361,11 @@
                     <span style="font-weight: 800; color: var(--md-sys-color-on-background);" data-i18n="setting_arabic_size">Ukuran Teks Arab</span>
                     <span id="arabic-size-label" style="font-weight: 700; color: var(--md-sys-color-primary);">2.5rem</span>
                 </div>
-                <input type="range" id="slider-arabic-size" min="1.5" max="4.5" step="0.1" value="2.5" style="margin: 12px 0 0 0;" oninput="updateArabicFontSize(this.value)">
+                <input type="range" id="slider-arabic-size" min="1.5" max="4.5" step="0.1" value="2.5" style="margin: 12px 0 0 0;" data-cmd-input="settings:set-arabic-size">
                 <span class="body-small" style="opacity: 0.6; margin-top: 8px;" data-i18n="setting_arabic_size_desc">Sesuaikan kenyamanan membaca teks Arab</span>
             </div>
 
-            <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;" onclick="showPage('page-stats')">
+            <div class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;" data-cmd="settings:show-page" data-arg="page-stats">
                 <div style="display: flex; flex-direction: column;">
                     <span style="font-weight: 800; color: var(--md-sys-color-on-background);" data-i18n="setting_stats">Statistik & Riwayat</span>
                     <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="setting_stats_desc">Lihat grafik aktivitas harian Anda</span>
@@ -414,9 +384,9 @@
                         <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="reminder_pagi_desc">Ingatkan dzikir pagi hari</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <input type="time" id="input-pagi-reminder-time" style="width: 100px; display: none; padding: 8px 12px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; box-sizing: border-box;" onchange="updatePagiReminderTime(this.value)">
+                        <input type="time" id="input-pagi-reminder-time" style="width: 100px; display: none; padding: 8px 12px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; box-sizing: border-box;" data-cmd-change="settings:set-pagi-time">
                         <label class="switch">
-                            <input type="checkbox" id="toggle-pagi-reminder" onchange="togglePagiReminder(this.checked)" aria-labelledby="pagi-reminder-label">
+                            <input type="checkbox" id="toggle-pagi-reminder" data-cmd-change="settings:toggle-pagi-reminder" aria-labelledby="pagi-reminder-label">
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -428,9 +398,9 @@
                         <span class="body-small" style="opacity: 0.6; margin-top: 4px;" data-i18n="reminder_petang_desc">Ingatkan dzikir petang hari</span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <input type="time" id="input-petang-reminder-time" style="width: 100px; display: none; padding: 8px 12px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; box-sizing: border-box;" onchange="updatePetangReminderTime(this.value)">
+                        <input type="time" id="input-petang-reminder-time" style="width: 100px; display: none; padding: 8px 12px; font-family: inherit; font-size: 0.95rem; margin-bottom: 0; box-sizing: border-box;" data-cmd-change="settings:set-petang-time">
                         <label class="switch">
-                            <input type="checkbox" id="toggle-petang-reminder" onchange="togglePetangReminder(this.checked)" aria-labelledby="petang-reminder-label">
+                            <input type="checkbox" id="toggle-petang-reminder" data-cmd-change="settings:toggle-petang-reminder" aria-labelledby="petang-reminder-label">
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -442,16 +412,16 @@
             <span class="label-large text-sub" style="margin-bottom: 12px; display: block;" data-i18n="section_data">Manajemen Data</span>
             
             <div style="display: flex; gap: 12px;">
-                <button class="btn btn-list-item" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: auto; min-height: 80px;" onclick="exportData()">
+                <button class="btn btn-list-item" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: auto; min-height: 80px;" data-cmd="settings:export-data">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--md-sys-color-primary)" style="margin-bottom: 8px;"><use href="#icon-13"></use></svg>
                     <span class="label-medium" data-i18n="btn_backup">Backup</span>
                 </button>
                 
-                <button class="btn btn-list-item" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: auto; min-height: 80px;" onclick="triggerImport()">
+                <button class="btn btn-list-item" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; height: auto; min-height: 80px;" data-cmd="settings:trigger-import">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--md-sys-color-primary)" style="margin-bottom: 8px;"><use href="#icon-14"></use></svg>
                     <span class="label-medium" data-i18n="btn_restore">Restore</span>
                 </button>
-                <input type="file" id="import-file" style="display:none" accept=".json">
+                <input type="file" id="import-file" style="display:none" accept=".json" data-cmd-change="settings:import-data">
             </div>
             
             <!-- Landing Page Link Section -->
@@ -474,14 +444,14 @@
         <!-- UNIFIED PLAYER PAGE -->
         <div id="page-player" class="page">
             <div class="top-bar">
-                <button class="btn btn-icon" onclick="goBack(window.playerSourcePage || 'page-menu')" aria-label="Kembali" data-i18n-aria="btn_back">
+                <button class="btn btn-icon" data-cmd="dzikir:player-back" aria-label="Kembali" data-i18n-aria="btn_back">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-10"></use></svg>
                 </button>
                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; overflow: hidden; padding: 0 10px;">
                     <span id="player-title" class="title-medium" style="max-width: 100%; text-align: center; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" data-i18n="player_title_default">Dzikir</span>
                     <span id="player-reading-info" class="label-small text-sub" style="font-size: 0.75rem; letter-spacing: 0.5px; opacity: 0.85;">1 / 1</span>
                 </div>
-                <button class="btn btn-icon" style="background:transparent; color: var(--md-sys-color-error);" onclick="confirmResetPlayer()" aria-label="Ulangi dzikir dari awal" data-i18n-aria="restart_dzikir_aria">
+                <button class="btn btn-icon" style="background:transparent; color: var(--md-sys-color-error);" data-cmd="dzikir:player-reset" aria-label="Ulangi dzikir dari awal" data-i18n-aria="restart_dzikir_aria">
                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-18"></use></svg>
                 </button>
             </div>
@@ -508,7 +478,7 @@
 
                 <div class="player-controls-deck">
                     <!-- Undo Button -->
-                    <button id="player-undo-btn" class="btn player-deck-btn-undo" onclick="playerUndo()" aria-label="Undo hitungan terakhir" data-i18n-aria="undo_aria">
+                    <button id="player-undo-btn" class="btn player-deck-btn-undo" data-cmd="dzikir:player-undo" aria-label="Undo hitungan terakhir" data-i18n-aria="undo_aria">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-19"></use></svg>
                     </button>
 
@@ -520,7 +490,7 @@
 
                     <!-- Main Ergonomic Tap Button -->
                     <div class="fab-container player-deck-fab-container">
-                        <button id="player-main-btn" class="btn fab-large player-deck-tap-btn" onclick="incrementPlayer()" aria-label="Tap untuk menambah hitungan dzikir">
+                        <button id="player-main-btn" class="btn fab-large player-deck-tap-btn" data-cmd="dzikir:player-increment" aria-label="Tap untuk menambah hitungan dzikir">
                             <span class="fab-emoji player-deck-emoji" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-8"></use></svg>
                             </span>
@@ -534,12 +504,12 @@
         <!-- UNIFIED EDITOR PAGE -->
         <div id="page-editor" class="page">
             <div class="top-bar">
-                <button class="btn btn-icon" onclick="goBack('page-menu')" aria-label="Kembali ke menu" data-i18n-aria="menu_title">
+                <button class="btn btn-icon" data-cmd="settings:go-back" data-arg="page-menu" aria-label="Kembali ke menu" data-i18n-aria="menu_title">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-10"></use></svg>
                 </button>
                 <h2 class="title-medium" id="editor-page-title" data-i18n="editor_title">Edit Dzikir</h2>
                 <!-- Restore Default info button for guided -->
-                <button class="btn btn-icon" id="editor-btn-restore" style="display:none; color: var(--md-sys-color-error);" onclick="confirmRestoreGuided()" aria-label="Kembalikan ke setelan default" data-i18n-aria="editor_btn_restore">
+                <button class="btn btn-icon" id="editor-btn-restore" style="display:none; color: var(--md-sys-color-error);" data-cmd="dzikir:editor-restore" aria-label="Kembalikan ke setelan default" data-i18n-aria="editor_btn_restore">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-20"></use></svg>
                 </button>
                 <div style="width: 48px;" id="editor-spacer"></div>
@@ -552,8 +522,8 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 8px;">
                     <span class="label-large text-sub" data-i18n="editor_pages_label">Daftar Bacaan (Halaman)</span>
                     <div>
-                        <button class="btn btn-text" onclick="window.showLibraryModal()" style="margin-right: 8px;" data-i18n="editor_btn_library">Pustaka</button>
-                        <button class="btn btn-text" onclick="addEditorPage()" data-i18n="editor_btn_add">+ Tambah</button>
+                        <button class="btn btn-text" data-cmd="dzikir:open-library" style="margin-right: 8px;" data-i18n="editor_btn_library">Pustaka</button>
+                        <button class="btn btn-text" data-cmd="dzikir:editor-add-page" data-i18n="editor_btn_add">+ Tambah</button>
                     </div>
                 </div>
 
@@ -562,7 +532,7 @@
                 </div>
 
                 <div style="margin-top: 40px; margin-bottom: 40px;">
-                    <button class="btn btn-filled" onclick="saveEditorSession()" style="width: 100%;" data-i18n="editor_btn_save">Simpan Dzikir</button>
+                    <button class="btn btn-filled" data-cmd="dzikir:editor-save" style="width: 100%;" data-i18n="editor_btn_save">Simpan Dzikir</button>
                 </div>
             </div>
         </div>
@@ -570,7 +540,7 @@
         <!-- STATS PAGE -->
         <div id="page-stats" class="page">
             <div class="top-bar">
-                <button class="btn btn-icon" onclick="goBack('page-menu')" aria-label="Kembali ke menu" data-i18n-aria="menu_title">
+                <button class="btn btn-icon" data-cmd="settings:go-back" data-arg="page-menu" aria-label="Kembali ke menu" data-i18n-aria="menu_title">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-10"></use></svg>
                 </button>
                 <h2 class="title-medium" data-i18n="stats_title">Statistik Aktivitas</h2>
@@ -627,7 +597,7 @@
                 </p>
 
                 <div class="about-hero-actions">
-                    <button onclick="showPage('page-dashboard')" class="about-btn-cta">
+                    <button data-cmd="settings:show-page" data-arg="page-dashboard" class="about-btn-cta">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-22"></use></svg>
                         <span data-i18n="about_open_app">Buka Aplikasi</span>
                     </button>
@@ -823,7 +793,7 @@
             <h3 class="modal-title" id="modal-title" data-i18n="modal_confirm_title">Konfirmasi</h3>
             <p class="modal-text" id="modal-message" data-i18n="modal_confirm_msg">Apakah Anda yakin?</p>
             <div class="modal-actions">
-                <button class="btn btn-text" onclick="closeModal()" data-i18n="btn_cancel">Batal</button>
+                <button class="btn btn-text" data-cmd="ui:close-modal" data-i18n="btn_cancel">Batal</button>
                 <button class="btn btn-filled" id="modal-btn-yes" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);">Ya</button>
             </div>
         </div>
@@ -837,8 +807,8 @@
                 <input type="number" id="number-input-value" style="width: 100%; text-align: center; font-size: 1.5rem; padding: 12px 8px; margin-bottom: 0;">
             </div>
             <div class="modal-actions">
-                <button class="btn btn-text" onclick="closeNumberInputModal()" data-i18n="btn_cancel">Batal</button>
-                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="applyNumberInputModal()" data-i18n="btn_save">Simpan</button>
+                <button class="btn btn-text" data-cmd="tasbih:number-close" data-i18n="btn_cancel">Batal</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="tasbih:number-apply" data-i18n="btn_save">Simpan</button>
             </div>
         </div>
     </div>
@@ -859,8 +829,8 @@
                 </div>
             </div>
             <div class="modal-actions">
-                <button class="btn btn-text" onclick="closeTimeInputModal()" data-i18n="btn_cancel">Batal</button>
-                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="applyTimeInputModal()" data-i18n="btn_save">Simpan</button>
+                <button class="btn btn-text" data-cmd="tasbih:timer-modal-close" data-i18n="btn_cancel">Batal</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="tasbih:timer-modal-apply" data-i18n="btn_save">Simpan</button>
             </div>
         </div>
     </div>
@@ -921,7 +891,7 @@
                     <span class="body-small" style="opacity: 0.6; margin-top: 2px;" data-i18n="habit_gunakan_target">Gunakan target angka (bukan sekadar ya/tidak)</span>
                 </div>
                 <label class="switch">
-                    <input type="checkbox" id="habit-input-numerical" onchange="toggleHabitNumericalFields(this.checked)">
+                    <input type="checkbox" id="habit-input-numerical" data-cmd-change="habits:toggle-numerical">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -938,7 +908,7 @@
             </div>
             
             <label class="label-large" style="display: block; margin-bottom: 8px;" data-i18n="habit_jadwal_kebiasaan">Jadwal Kebiasaan</label>
-            <select id="habit-schedule-type" onchange="toggleScheduleDaysView(this.value)">
+            <select id="habit-schedule-type" data-cmd-change="habits:toggle-schedule-days">
                 <option value="daily" data-i18n="habit_setiap_hari">Setiap Hari</option>
                 <option value="specific" data-i18n="habit_hari_tertentu">Hari Tertentu</option>
                 <option value="weekly" data-i18n="habit_frekuensi_mingguan">Frekuensi Mingguan</option>
@@ -982,7 +952,7 @@
             <div id="habit-schedule-weekly-container" style="display: none; flex-direction: column; margin-bottom: 16px;">
                 <label class="label-medium text-sub" style="margin-bottom: 8px; display: block;" data-i18n="habit_target_per_minggu">Target Per Minggu</label>
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <input type="range" id="habit-input-weekly-target" min="1" max="6" value="3" style="margin: 0; flex-grow: 1;" oninput="document.getElementById('weekly-target-label').innerText = this.value + ' ' + (window.i18n.t('habit_kali') || 'Kali')">
+                    <input type="range" id="habit-input-weekly-target" min="1" max="6" value="3" style="margin: 0; flex-grow: 1;" data-cmd-input="habits:update-weekly-label">
                     <span id="weekly-target-label" style="font-weight: 700; color: var(--md-sys-color-primary); min-width: 50px; text-align: right;">3 Kali</span>
                 </div>
             </div>
@@ -1025,12 +995,12 @@
             
             <div class="modal-actions" style="justify-content: space-between; display: flex;">
                 <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-text" id="habit-btn-delete" style="color: var(--md-sys-color-error); display: none; padding: 8px 0;" onclick="deleteHabitFromModal()" data-i18n="btn_delete">Hapus</button>
-                    <button class="btn btn-text" id="habit-btn-archive" style="color: var(--md-sys-color-tertiary); display: none; padding: 8px 0;" onclick="archiveHabitFromModal()" data-i18n="btn_archive">Arsipkan</button>
+                    <button class="btn btn-text" id="habit-btn-delete" style="color: var(--md-sys-color-error); display: none; padding: 8px 0;" data-cmd="habits:delete-modal" data-i18n="btn_delete">Hapus</button>
+                    <button class="btn btn-text" id="habit-btn-archive" style="color: var(--md-sys-color-tertiary); display: none; padding: 8px 0;" data-cmd="habits:archive-modal" data-i18n="btn_archive">Arsipkan</button>
                 </div>
                 <div style="display: flex; gap: 8px; margin-left: auto;">
-                    <button class="btn btn-text" onclick="closeHabitModal()" data-i18n="btn_cancel">Batal</button>
-                    <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="saveHabitFromModal()" data-i18n="btn_save">Simpan</button>
+                    <button class="btn btn-text" data-cmd="habits:close-modal" data-i18n="btn_cancel">Batal</button>
+                    <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="habits:save-modal" data-i18n="btn_save">Simpan</button>
                 </div>
             </div>
         </div>
@@ -1042,7 +1012,7 @@
             <!-- Header (Sticky App Bar) -->
             <div class="habit-detail-header">
                 <div class="habit-detail-header-left">
-                    <button class="btn btn-icon" onclick="closeHabitDetailModal()" aria-label="Kembali" data-i18n-aria="btn_back" style="background: transparent; color: var(--md-sys-color-on-surface);">
+                    <button class="btn btn-icon" data-cmd="habits:close-detail" aria-label="Kembali" data-i18n-aria="btn_back" style="background: transparent; color: var(--md-sys-color-on-surface);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-31"></use></svg>
                     </button>
                     <div>
@@ -1089,11 +1059,11 @@
                         <label class="label-large" style="display: block; margin-bottom: 8px;" data-i18n="habit_kalender_penyelesaian">Kalender Penyelesaian</label>
                         <div class="calendar-picker-wrapper" style="margin-bottom: 20px; background: var(--md-sys-color-surface-container); padding: 12px; border-radius: var(--shape-corner-md); border: 1px solid var(--md-sys-color-outline-variant);">
                             <div class="calendar-picker-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                                <button class="btn calendar-nav-btn" onclick="navigateCalendarMonth(-1)" aria-label="Bulan Sebelumnya" data-i18n-aria="btn_prev_month">
+                                <button class="btn calendar-nav-btn" data-cmd="habits:calendar-prev" aria-label="Bulan Sebelumnya" data-i18n-aria="btn_prev_month">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-32"></use></svg>
                                 </button>
                                 <span id="calendar-picker-month-year" style="font-weight: 700; font-size: 0.95rem;">Juni 2026</span>
-                                <button class="btn calendar-nav-btn" onclick="navigateCalendarMonth(1)" aria-label="Bulan Berikutnya" data-i18n-aria="btn_next_month">
+                                <button class="btn calendar-nav-btn" data-cmd="habits:calendar-next" aria-label="Bulan Berikutnya" data-i18n-aria="btn_next_month">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-33"></use></svg>
                                 </button>
                             </div>
@@ -1154,10 +1124,10 @@
             <textarea id="habit-log-note" placeholder="Tulis catatan kecil untuk hari ini..." data-i18n-placeholder="habit_log_note_placeholder" style="margin-bottom: 24px; min-height: 80px; width: 100%; padding: 12px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box; resize: vertical;"></textarea>
             
             <div class="modal-actions" style="display: flex; gap: 12px; justify-content: flex-end; align-items: center; flex-wrap: wrap;">
-                <button class="btn btn-text" onclick="closeHabitLogModal()" data-i18n="btn_cancel">Batal</button>
+                <button class="btn btn-text" data-cmd="habits:close-log" data-i18n="btn_cancel">Batal</button>
                 <div style="flex-grow: 1;"></div>
-                <button class="btn btn-text" style="color: var(--md-sys-color-error);" onclick="skipHabitLogFromModal()" data-i18n="btn_skip">Lewati</button>
-                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="saveHabitLogFromModal()" data-i18n="btn_save">Simpan</button>
+                <button class="btn btn-text" style="color: var(--md-sys-color-error);" data-cmd="habits:skip-log" data-i18n="btn_skip">Lewati</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="habits:save-log" data-i18n="btn_save">Simpan</button>
             </div>
         </div>
     </div>
@@ -1165,13 +1135,13 @@
     <div id="library-modal" class="m3-modal-overlay" role="dialog" aria-modal="true">
         <div class="modal-box" style="max-width: 400px; width: 90%; max-height: 80vh; display: flex; flex-direction: column;">
             <h3 class="modal-title" style="text-align: center; margin-bottom: 16px;" data-i18n="library_title">Pustaka Azkar</h3>
-            <button class="btn btn-filled" style="width: 100%; margin-bottom: 16px; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container);" onclick="window.openCustomAzkarModal()" data-i18n="library_btn_new">+ Buat Azkar Baru</button>
-            <input type="text" id="library-search-input" placeholder="Cari dzikir..." data-i18n-placeholder="library_search_placeholder" style="width: 100%; margin-bottom: 12px; padding: 10px 12px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box;" oninput="window.filterLibrary(this.value)">
+            <button class="btn btn-filled" style="width: 100%; margin-bottom: 16px; background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container);" data-cmd="dzikir:open-custom-azkar" data-i18n="library_btn_new">+ Buat Azkar Baru</button>
+            <input type="text" id="library-search-input" placeholder="Cari dzikir..." data-i18n-placeholder="library_search_placeholder" style="width: 100%; margin-bottom: 12px; padding: 10px 12px; font-family: inherit; font-size: 0.95rem; box-sizing: border-box;" data-cmd-input="dzikir:filter-library">
             <div id="library-list" style="overflow-y: auto; flex-grow: 1; padding-right: 4px; display: flex; flex-direction: column; gap: 8px;">
                 <!-- Dynamically populated -->
             </div>
             <div class="modal-actions" style="margin-top: 16px;">
-                <button class="btn btn-text" style="width: 100%;" onclick="window.closeLibraryModal()" data-i18n="btn_close">Tutup</button>
+                <button class="btn btn-text" style="width: 100%;" data-cmd="dzikir:close-library" data-i18n="btn_close">Tutup</button>
             </div>
         </div>
     </div>
@@ -1203,8 +1173,8 @@
             <input type="number" id="custom-azkar-target" value="33" min="1" style="width: 100%; padding: 12px; margin-bottom: 24px; font-family: inherit;">
 
             <div class="modal-actions">
-                <button class="btn btn-text" onclick="window.closeCustomAzkarModal()" data-i18n="btn_cancel">Batal</button>
-                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="window.saveCustomAzkar()" data-i18n="btn_save">Simpan</button>
+                <button class="btn btn-text" data-cmd="dzikir:close-custom-azkar" data-i18n="btn_cancel">Batal</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="dzikir:save-custom-azkar" data-i18n="btn_save">Simpan</button>
             </div>
         </div>
     </div>
@@ -1214,7 +1184,7 @@
         <div class="modal-box" style="max-width: 420px; width: 92%;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                 <h3 class="modal-title" id="share-dzikir-modal-title" data-i18n="share_dzikir_title" style="margin: 0; font-size: 1.25rem;">Bagikan Rangkaian Dzikir</h3>
-                <button class="btn btn-icon" onclick="window.closeShareDzikirModal()" aria-label="Tutup" style="background: transparent;">
+                <button class="btn btn-icon" data-cmd="dzikir:close-share" aria-label="Tutup" style="background: transparent;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 </button>
             </div>
@@ -1222,16 +1192,16 @@
             
             <label class="label-large" style="display: block; margin-bottom: 6px;" data-i18n="share_link_label">Tautan Berbagi</label>
             <div style="display: flex; gap: 8px; margin-bottom: 16px;">
-                <input type="text" id="share-link-input" readonly style="flex-grow: 1; padding: 10px 12px; font-family: inherit; font-size: 0.85rem; border-radius: 8px; box-sizing: border-box;" onclick="this.select()">
-                <button class="btn btn-filled" style="width: auto; padding: 0 16px; font-size: 0.85rem; white-space: nowrap;" onclick="window.copyShareLink()" data-i18n="btn_copy_link">Salin Tautan</button>
+                <input type="text" id="share-link-input" readonly style="flex-grow: 1; padding: 10px 12px; font-family: inherit; font-size: 0.85rem; border-radius: 8px; box-sizing: border-box;" data-cmd="ui:select-self">
+                <button class="btn btn-filled" style="width: auto; padding: 0 16px; font-size: 0.85rem; white-space: nowrap;" data-cmd="dzikir:copy-share-link" data-i18n="btn_copy_link">Salin Tautan</button>
             </div>
 
             <label class="label-large" style="display: block; margin-bottom: 6px;" data-i18n="share_code_label">Kode Dzikir</label>
-            <textarea id="share-code-input" readonly rows="3" style="width: 100%; padding: 10px 12px; font-family: monospace; font-size: 0.8rem; margin-bottom: 16px; border-radius: 8px; resize: none; box-sizing: border-box;" onclick="this.select()"></textarea>
+            <textarea id="share-code-input" readonly rows="3" style="width: 100%; padding: 10px 12px; font-family: monospace; font-size: 0.8rem; margin-bottom: 16px; border-radius: 8px; resize: none; box-sizing: border-box;" data-cmd="ui:select-self"></textarea>
             
             <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 8px;">
-                <button class="btn btn-filled" style="width: auto; padding: 0 20px; font-size: 0.9rem;" onclick="window.copyShareCode()" data-i18n="btn_copy_code">Salin Kode</button>
-                <button class="btn btn-text" onclick="window.closeShareDzikirModal()" data-i18n="btn_close">Tutup</button>
+                <button class="btn btn-filled" style="width: auto; padding: 0 20px; font-size: 0.9rem;" data-cmd="dzikir:copy-share-code" data-i18n="btn_copy_code">Salin Kode</button>
+                <button class="btn btn-text" data-cmd="dzikir:close-share" data-i18n="btn_close">Tutup</button>
             </div>
         </div>
     </div>
@@ -1241,7 +1211,7 @@
         <div class="modal-box" style="max-width: 440px; width: 92%; max-height: 85vh; display: flex; flex-direction: column;">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                 <h3 class="modal-title" data-i18n="receive_dzikir_title" style="margin: 0; font-size: 1.25rem;">Terima Dzikir</h3>
-                <button class="btn btn-icon" onclick="window.closeReceiveDzikirModal()" aria-label="Tutup" style="background: transparent;">
+                <button class="btn btn-icon" data-cmd="dzikir:close-receive" aria-label="Tutup" style="background: transparent;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
                 </button>
             </div>
@@ -1252,8 +1222,8 @@
                 <textarea id="receive-dzikir-input" placeholder="Tempel tautan atau kode dzikir di sini..." data-i18n-placeholder="receive_input_placeholder" rows="4" style="width: 100%; padding: 12px; font-family: inherit; font-size: 0.9rem; margin-bottom: 16px; border-radius: 8px; box-sizing: border-box; resize: vertical;"></textarea>
                 
                 <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 8px;">
-                    <button class="btn btn-text" onclick="window.closeReceiveDzikirModal()" data-i18n="btn_cancel">Batal</button>
-                    <button class="btn btn-filled" style="width: auto; padding: 0 24px;" onclick="window.previewDzikirFromInput()" data-i18n="btn_preview_dzikir">Pratinjau</button>
+                    <button class="btn btn-text" data-cmd="dzikir:close-receive" data-i18n="btn_cancel">Batal</button>
+                    <button class="btn btn-filled" style="width: auto; padding: 0 24px;" data-cmd="dzikir:receive-preview" data-i18n="btn_preview_dzikir">Pratinjau</button>
                 </div>
             </div>
 
@@ -1270,8 +1240,8 @@
                 </div>
 
                 <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 8px; margin-top: auto;">
-                    <button class="btn btn-text" onclick="window.backToReceiveInput()" data-i18n="btn_cancel">Batal</button>
-                    <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" onclick="window.confirmSaveReceivedDzikir()" data-i18n="btn_save_received_dzikir">Simpan ke Koleksi</button>
+                    <button class="btn btn-text" data-cmd="dzikir:receive-back" data-i18n="btn_cancel">Batal</button>
+                    <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="dzikir:receive-save" data-i18n="btn_save_received_dzikir">Simpan ke Koleksi</button>
                 </div>
             </div>
         </div>

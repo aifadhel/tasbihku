@@ -1,0 +1,5 @@
+{
+  "shellJsMaxGzBytes": 20480,
+  "shellCssMaxGzBytes": 90112,
+  "lazyChunkMaxGzBytes": 40960
+}

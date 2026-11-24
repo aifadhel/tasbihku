@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PACKAGE_JSON_PATH = path.join(__dirname, '..', 'package.json');
-const ROUTER_JS_PATH = path.join(__dirname, '..', 'src', 'ui', 'router.js');
+const ROUTER_JS_PATH = path.join(__dirname, '..', 'src', 'app', 'version.js');
 const SW_PATH = path.join(__dirname, '..', 'public', 'sw.js');
 const CHANGELOG_PATH = path.join(__dirname, '..', 'CHANGELOG.md');
 
@@ -75,7 +75,7 @@ function preflightCheck() {
       issues.push(`APP_VERSION pattern not matched in ${ROUTER_JS_PATH}`);
     }
   } else {
-    issues.push(`src/ui/router.js not found at ${ROUTER_JS_PATH}`);
+    issues.push(`src/app/version.js not found at ${ROUTER_JS_PATH}`);
   }
 
   if (fs.existsSync(SW_PATH)) {
@@ -124,7 +124,7 @@ function run() {
   pkg.version = newVersion;
   const newPkgContent = JSON.stringify(pkg, null, 2) + '\n';
 
-  // src/ui/router.js
+  // src/app/version.js
   let routerContent = fs.readFileSync(ROUTER_JS_PATH, 'utf-8');
   routerContent = routerContent.replace(
     /export const APP_VERSION = ['"][^'"]+['"];/,
@@ -175,7 +175,7 @@ function run() {
   if (isDryRun) {
     console.log(`[DRY RUN] Pre-flight checks PASSED for all targets:`);
     console.log(`  [✓] package.json -> version "${newVersion}"`);
-    console.log(`  [✓] src/ui/router.js -> APP_VERSION "${newVersion}"`);
+    console.log(`  [✓] src/app/version.js -> APP_VERSION "${newVersion}"`);
     console.log(`  [✓] public/sw.js -> CACHE_NAME "tasbihku-v${newVersion}"`);
     console.log(`  [✓] CHANGELOG.md -> Prepend release block [${formattedTag}] - ${today}`);
   } else {
@@ -184,7 +184,7 @@ function run() {
     console.log(`[✓] Updated package.json version to ${newVersion}`);
 
     fs.writeFileSync(ROUTER_JS_PATH, routerContent, 'utf-8');
-    console.log(`[✓] Updated src/ui/router.js APP_VERSION to ${newVersion}`);
+    console.log(`[✓] Updated src/app/version.js APP_VERSION to ${newVersion}`);
 
     fs.writeFileSync(SW_PATH, swContent, 'utf-8');
     console.log(`[✓] Updated public/sw.js cache name to tasbihku-v${newVersion}`);

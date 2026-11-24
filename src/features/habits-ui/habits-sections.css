@@ -1,0 +1,168 @@
+@layer features {
+  /* --- ROUTINE SECTIONS --- */
+  .routine-section {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--spacing-lg);
+      background: var(--md-sys-color-surface-container-low);
+      border-radius: var(--shape-corner-md);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      padding: var(--spacing-xs);
+      container-type: inline-size;
+      container-name: dzikir-panel;
+  }
+
+  .routine-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--spacing-md) var(--spacing-lg);
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      border-radius: var(--shape-corner-sm);
+      transition: background-color var(--md-sys-motion-duration-short) ease, transform 0.1s ease;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .routine-section-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.15px;
+  }
+
+  .routine-section-count {
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: var(--shape-corner-full);
+      background: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .routine-section-chevron {
+      transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-spring-standard);
+      color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .routine-section-chevron.expanded {
+      transform: rotate(180deg);
+  }
+
+  .routine-section-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      padding: var(--spacing-sm) var(--spacing-xs);
+  }
+
+  .routine-section-content.collapsed {
+      display: none;
+  }
+
+  /* Preset buttons styling */
+  .habit-preset-container {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+  }
+
+  .preset-btn {
+      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background: transparent;
+      color: var(--md-sys-color-on-surface);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+  }
+
+  .preset-btn svg {
+      flex-shrink: 0;
+  }
+
+  .preset-btn:hover {
+      background-color: var(--md-sys-color-primary-container) !important;
+      color: var(--md-sys-color-on-primary-container) !important;
+      border-color: var(--md-sys-color-primary) !important;
+      transform: translateY(-1px);
+  }
+  .preset-btn:active {
+      transform: translateY(0);
+  }
+
+  /* Archived Habits styling */
+  .archived-habits-section {
+      margin-top: 32px;
+      border-top: 1px solid var(--md-sys-color-outline-variant);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+  }
+
+  .archived-habit-card {
+      opacity: 0.6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--shape-corner-md);
+      padding: 12px 16px;
+      margin-bottom: 8px;
+      transition: opacity 0.2s, background-color 0.2s;
+  }
+
+  .archived-habit-card:hover {
+      opacity: 0.95;
+      background: rgba(255, 255, 255, 0.02);
+  }
+
+  .archived-habit-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex-grow: 1;
+  }
+
+  .archived-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+  }
+
+  .archived-btn {
+      font-size: 0.75rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.2s;
+  }
+
+  .archived-btn.restore {
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+  }
+  .archived-btn.restore:hover {
+      background: var(--md-sys-color-primary);
+      color: var(--md-sys-color-on-primary);
+  }
+
+  .archived-btn.delete {
+      background: rgba(255, 75, 75, 0.15);
+      color: #ff5252;
+  }
+  .archived-btn.delete:hover {
+      background: #ff5252;
+      color: #ffffff;
+  }
+
+}
