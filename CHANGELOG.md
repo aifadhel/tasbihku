@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.15.2] - 2026-11-27
+
+- **Highlight:** Fixed the Settings language segmented switcher (`ID` / `EN`) failing silently on click due to empty `HTMLButtonElement.value` shadowing `data-arg` in `dom-bridge.js`, enabled immediate language persistence, synced `aria-pressed`, and preserved active mode labels after `languageChanged`.
+
+### Specific UI & Component Changes
+- **Language Segmented Switcher & Mode Labels (`src/shared/i18n.js`, `src/features/settings-shell/shell-modes.js`, `settings-shell.feature.js`):** Added `aria-pressed` synchronization alongside `.active` on `#lang-btn-id` and `#lang-btn-en`, and added `syncLocalizedModeLabels()` on `languageChanged` so Habit Settings (`#menu-page-title`), Stopwatch, and Timer labels (`#dashboard-mode-title`, `#dashboard-main-label`, `#dashboard-reset-btn`) stay localized for the active mode instead of resetting to Tasbih/Counting defaults.
+
+### Core Logic & Workflows
+- **DOM Bridge Argument Extraction (`src/app/dom-bridge.js`):** Scoped `payload.value` capture in `extractArg()` to value-bearing form controls (`INPUT`, `SELECT`, `TEXTAREA`) excluding button types (`button`, `submit`, `reset`, `checkbox`) so `<button data-cmd="..." data-arg="...">` elements no longer emit `value: ""` to shadow `arg`.
+- **Language Command & Immediate Persistence (`src/features/settings-shell/settings-shell.feature.js`, `src/shared/i18n.js`):** Updated `settings:set-language` handler resolution to `p?.arg ?? (p?.value || undefined) ?? p?.language ?? p`, and switched `setLanguage()` to `updateState({ language: lang }, true)` so `tasbihKuBootPrefs` and IndexedDB persist immediately on switch.
+
+### Dzikir & Habits Engine
+- No changes to guided/custom dzikir payloads or habits core metrics; `languageChanged` continues re-rendering custom dzikir lists, habits, stats, streaks, and active player view.
+
+### Test & Verification
+- Added unit and integration regression coverage in `tests/unit/dom-bridge.test.js` and `src/features/settings-shell/settings-smoke.test.js`.
+- Verified `npm run check`, `npm test` (`12` test files, `52` tests), `npm run build`, and `npm run size` (`exit 0`).
+
 ## [tasbihku-v1.15.1] - 2026-11-27
 
 - **Highlight:** Repository cleanup, dead code/CSS pruning, `.geminiignore` FinOps filtering, CI structural/size enforcement, and durable AI-context optimization (`AGENTS.md`, `.agents/PROJECT_MAP.md`, `.agents/rules/context-optimization.md`).

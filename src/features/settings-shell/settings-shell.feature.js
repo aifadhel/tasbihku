@@ -15,6 +15,7 @@ import {
 import {
   switchAppMode,
   switchDashboardMode,
+  syncLocalizedModeLabels,
   updateResetButtonState
 } from './shell-modes.js';
 import {
@@ -81,7 +82,7 @@ export function initFeature() {
   registerCommand('settings:go-back', (p) => goBack(p?.fallback ?? p?.arg ?? (typeof p === 'string' ? p : 'page-dashboard')));
   registerCommand('settings:switch-app-mode', (p) => switchAppMode(p?.mode ?? p?.arg ?? p, p?.save ?? true));
   registerCommand('settings:switch-dashboard-mode', (p) => switchDashboardMode(p?.mode ?? p?.arg ?? p));
-  registerCommand('settings:set-language', (p) => setLanguage(p?.value ?? p?.arg ?? p));
+  registerCommand('settings:set-language', (p) => setLanguage(p?.arg ?? (p?.value || undefined) ?? p?.language ?? p));
   registerCommand('settings:toggle-wakelock', (p) => toggleWakeLock(Boolean(p?.checked ?? p)));
   registerCommand('settings:toggle-oled', (p) => toggleOledMode(Boolean(p?.checked ?? p)));
   registerCommand('settings:toggle-sound', (p) => toggleSoundMode(Boolean(p?.checked ?? p)));
@@ -152,6 +153,7 @@ export function initFeature() {
   if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
     window.addEventListener('languageChanged', () => {
       applyTranslations();
+      syncLocalizedModeLabels();
       dispatch('dzikir:render-custom-list').catch(() => {});
       dispatch('habits:render').catch(() => {});
       dispatch('habits:render-stats').catch(() => {});

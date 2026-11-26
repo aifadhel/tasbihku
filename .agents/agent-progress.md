@@ -2,9 +2,16 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Active milestone**: tasbihku-v1.15.1 cleanup & AI-context optimization (uncommitted; verified exit 0)
+- **Active milestone**: tasbihku-v1.15.2 language switcher fix & mode label sync (uncommitted; verified exit 0)
 - **Open issues**: 3 legacy E2E probes invoke removed `window.*` globals (`habits-ui.spec.js:274`, `tasbih-modes.spec.js:136,150`); 2 E2E clicks hit pre-existing `TAP_DEBOUNCE_MS = 60` (`tasbih-modes.spec.js:205,222`); 8 npm devDependency advisories (`tinypool` in `vitest@1.x`; 0 prod vulnerabilities via `npm audit --omit=dev`)
 - **Do-not-touch**: `public/{sound.ogg,config.json,*.png,favicon.ico,manifest.json,404.html}`, `src/data/azkar.json`, `firebase.json`, `playwright.config.js`, `tests/e2e/*.spec.js`
+
+## Session: 2026-11-27 (v1.15.2 Language Switcher Fix)
+- **Touched Files**: `src/app/dom-bridge.js`, `src/shared/i18n.js`, `src/features/settings-shell/{settings-shell.feature.js,shell-modes.js,settings-smoke.test.js}`, `tests/unit/dom-bridge.test.js`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.
+- **Milestones Completed**:
+  - [✓] Root Cause & RED Tests: Identified `<button>` default `.value === ""` shadowing `data-arg` in `dom-bridge.js:extractArg()` + `p?.value ?? p?.arg` in `settings:set-language`; added failing regression tests in `tests/unit/dom-bridge.test.js` and `src/features/settings-shell/settings-smoke.test.js`.
+  - [✓] Fix & Mode Sync: Restricted `extractArg` `.value` capture to non-button form controls (`INPUT`, `SELECT`, `TEXTAREA`), guarded `settings:set-language` payload precedence, enabled immediate persistence (`updateState({ language: lang }, true)`) + `aria-pressed` sync in `i18n.js`, and added `syncLocalizedModeLabels()` in `shell-modes.js` on `languageChanged`.
+  - [✓] Release & Gates: Bumped version via `node scripts/bump-version.js patch` (`1.15.1` -> `1.15.2`), enriched `CHANGELOG.md`, and verified `npm run check`, `npm test` (`12/12` files, `52/52` tests), `npm run build`, and `npm run size` (`exit 0`).
 
 ## Session: 2026-11-27 (v1.15.1 Repository Cleanup & AI-Context Optimization)
 - **Touched Files**: Deleted `.agents/harness-snapshot/auto/20261018T052317_archive_agent-progress.md`, `docs/CONTEXT_OPTIMIZATION.md`; modified `src/app/{command-bus,feature-registry,slots}.js`, `src/features/habits-core/habits-dates.js`, `src/features/habits-ui/{habits-progress.js,habits-sections.css}`, `src/features/tasbih-counter/tasbih-counter.{logic,timers}.js`, `.gitignore`, `.github/workflows/ci.yml`, `CONTRIBUTING.md`, `AGENTS.md`, `public/sw.js`, `package.json`, `src/app/version.js`, `CHANGELOG.md`, `.agents/{agent-progress.md,archive/agent-progress.202610.md}`; created `.geminiignore`, `.env.example`, `.agents/PROJECT_MAP.md`, `.agents/rules/context-optimization.md`.

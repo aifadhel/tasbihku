@@ -53,18 +53,38 @@ describe('settings-shell dashboard modes & tablist keyboard', () => {
   let els = {};
   let modes;
   let handleTablistKeyboard;
+  let dispatch;
   let state;
+  let storageMock;
+  const winListeners = {};
 
   beforeAll(async () => {
-    global.window = { addEventListener: vi.fn(), location: { pathname: '/', search: '', hash: '' } };
+    global.window = {
+      addEventListener: vi.fn((evt, cb) => {
+        winListeners[evt] = winListeners[evt] || [];
+        winListeners[evt].push(cb);
+      }),
+      dispatchEvent: vi.fn((evt) => {
+        (winListeners[evt.type] || []).forEach((cb) => cb(evt));
+        return true;
+      }),
+      location: { pathname: '/', search: '', hash: '' }
+    };
     global.history = { pushState: vi.fn(), replaceState: vi.fn(), back: vi.fn() };
     global.document = {
       activeElement: null,
+      documentElement: { lang: 'id' },
       getElementById: (id) => els[id] || null,
-      querySelectorAll: (sel) => (sel.includes('.segment-btn') ? [els['tab-counting'], els['tab-stopwatch'], els['tab-timer']].filter(Boolean) : []),
+      querySelectorAll: (sel) => {
+        if (sel.includes('.segment-btn')) return [els['tab-counting'], els['tab-stopwatch'], els['tab-timer']].filter(Boolean);
+        if (sel === '[data-i18n]') return [els['menu-page-title'], els['dashboard-mode-title'], els['dashboard-main-label']].filter(Boolean);
+        return [];
+      },
       querySelector: () => null
     };
+    storageMock = await import('../../shared/storage.js');
     ({ state } = await import('../../shared/store.js'));
+    ({ dispatch } = await import('../../app/command-bus.js'));
     const { initFeature } = await import('./settings-shell.feature.js');
     initFeature();
     modes = await import('./shell-modes.js');
@@ -72,6 +92,11 @@ describe('settings-shell dashboard modes & tablist keyboard', () => {
   });
 
   beforeEach(() => {
+    vi.clearAllMocks();
+    state.language = 'id';
+    state.appMode = 'tasbih';
+    state.dashboardMode = 'counting';
+    global.document.documentElement.lang = 'id';
     els = {
       'dashboard-mode-switcher': makeEl('dashboard-mode-switcher', { role: 'tablist', 'data-active-index': '0' }),
       'tab-counting': makeEl('tab-counting', { class: 'segment-btn active', 'data-mode': 'counting', 'aria-selected': 'true', role: 'tab', tabindex: '0' }),
@@ -80,11 +105,15 @@ describe('settings-shell dashboard modes & tablist keyboard', () => {
       'counting-display-area': makeEl('counting-display-area'),
       'stopwatch-display-area': makeEl('stopwatch-display-area'),
       'timer-display-area': makeEl('timer-display-area'),
-      'dashboard-mode-title': makeEl('dashboard-mode-title'),
+      'dashboard-mode-title': makeEl('dashboard-mode-title', { 'data-i18n': 'title_free_count' }),
       'dashboard-main-emoji': makeEl('dashboard-main-emoji'),
-      'dashboard-main-label': makeEl('dashboard-main-label'),
+      'dashboard-main-label': makeEl('dashboard-main-label', { 'data-i18n': 'btn_tap' }),
       'dashboard-main-btn': makeEl('dashboard-main-btn'),
-      'dashboard-reset-btn': makeEl('dashboard-reset-btn', { class: 'btn btn-reset-tonal is-disabled', disabled: true, 'aria-disabled': 'true' })
+      'dashboard-reset-btn': makeEl('dashboard-reset-btn', { class: 'btn btn-reset-tonal is-disabled', disabled: true, 'aria-disabled': 'true' }),
+      'menu-page-title': makeEl('menu-page-title', { 'data-i18n': 'menu_title' }),
+      'lang-btn-id': makeEl('lang-btn-id', { class: 'm3-segment-pill active' }),
+      'lang-btn-en': makeEl('lang-btn-en', { class: 'm3-segment-pill' }),
+      'select-language': { id: 'select-language', value: 'id' }
     };
     els['dashboard-mode-switcher'].querySelectorAll = () => [els['tab-counting'], els['tab-stopwatch'], els['tab-timer']];
   });
@@ -117,5 +146,29 @@ describe('settings-shell dashboard modes & tablist keyboard', () => {
     expect(els['tab-timer'].focus).toHaveBeenCalledTimes(2);
     expect(handleTablistKeyboard({ key: 'Home', preventDefault: vi.fn() })).toBe(true);
     expect(els['tab-counting'].focus).toHaveBeenCalled();
+  });
+
+  it('switches language via button payload even with empty button value and persists immediately', async () => {
+    await dispatch('settings:set-language', { arg: 'en', value: '' });
+    expect(state.language).toBe('en');
+    expect(global.document.documentElement.lang).toBe('en');
+    expect(els['lang-btn-en'].classList.contains('active')).toBe(true);
+    expect(els['lang-btn-id'].classList.contains('active')).toBe(false);
+    expect(els['lang-btn-en'].getAttribute('aria-pressed')).toBe('true');
+    expect(els['lang-btn-id'].getAttribute('aria-pressed')).toBe('false');
+    expect(els['select-language'].value).toBe('en');
+    expect(storageMock.savePersistedState).toHaveBeenCalled();
+
+    await dispatch('settings:set-language', { value: 'id' });
+    expect(state.language).toBe('id');
+    expect(els['lang-btn-id'].classList.contains('active')).toBe(true);
+  });
+
+  it('preserves active habit/stopwatch mode labels after languageChanged', async () => {
+    state.appMode = 'habit';
+    state.dashboardMode = 'stopwatch';
+    await dispatch('settings:set-language', { arg: 'en' });
+    expect(els['menu-page-title'].innerText).toBe('Settings');
+    expect(els['dashboard-mode-title'].innerText).toBe('Stopwatch');
   });
 });

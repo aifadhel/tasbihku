@@ -127,3 +127,24 @@ export function switchDashboardMode(mode) {
   updateResetButtonState();
 }
 
+export function syncLocalizedModeLabels() {
+  if (typeof document === 'undefined') return;
+  const menuTitle = document.getElementById('menu-page-title');
+  if (menuTitle) menuTitle.innerText = t((state.appMode || 'tasbih') === 'tasbih' ? 'menu_title' : 'section_settings');
+
+  const titleEl = document.getElementById('dashboard-mode-title');
+  const mode = state.dashboardMode || 'counting';
+  if (mode === 'counting') {
+    if (titleEl) titleEl.innerText = t('title_free_count');
+    const labelEl = document.getElementById('dashboard-main-label');
+    if (labelEl) labelEl.innerText = t('btn_tap');
+  } else if (mode === 'stopwatch') {
+    if (titleEl) titleEl.innerText = t('mode_stopwatch');
+    dispatch('tasbih:stopwatch-ui').catch(() => {});
+  } else if (mode === 'timer') {
+    if (titleEl) titleEl.innerText = t('mode_timer');
+    dispatch('tasbih:timer-ui').catch(() => {});
+  }
+  updateResetButtonState();
+}
+

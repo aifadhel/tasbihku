@@ -22,7 +22,11 @@ function extractArg(el, event) {
   if (el.dataset.arg !== undefined) payload.arg = el.dataset.arg;
   if (el.dataset.arg2 !== undefined) payload.arg2 = el.dataset.arg2;
   if ('checked' in el && el.type === 'checkbox') payload.checked = el.checked;
-  if ('value' in el && el.type !== 'checkbox') payload.value = el.value;
+  const tag = el.tagName ? el.tagName.toUpperCase() : '';
+  const isValueControl = !tag || tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA';
+  if (isValueControl && 'value' in el && !['checkbox', 'button', 'submit', 'reset'].includes(el.type)) {
+    payload.value = el.value;
+  }
   if (el.files && el.files[0]) payload.file = el.files[0];
   payload.event = event;
   payload.target = el;

@@ -1,4 +1,4 @@
-import { state, saveState, updateState } from './store.js';
+import { state, updateState } from './store.js';
 import coreDict from './i18n-core.json';
 
 export const translations = {
@@ -41,8 +41,7 @@ export function t(key, params = {}) {
  */
 export function setLanguage(lang) {
   if (lang !== 'id' && lang !== 'en') return;
-  updateState({ language: lang });
-  saveState();
+  updateState({ language: lang }, true);
   applyTranslations();
   if (typeof document !== 'undefined') document.documentElement.lang = lang;
   if (typeof window !== 'undefined') {
@@ -101,5 +100,7 @@ export function applyTranslations() {
   if (btnId && btnEn) {
     btnId.classList.toggle('active', lang === 'id');
     btnEn.classList.toggle('active', lang !== 'id');
+    btnId.setAttribute('aria-pressed', lang === 'id' ? 'true' : 'false');
+    btnEn.setAttribute('aria-pressed', lang !== 'id' ? 'true' : 'false');
   }
 }
