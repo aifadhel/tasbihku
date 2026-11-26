@@ -2,10 +2,17 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Current Version**: tasbihku-v1.15.0
-- **Unit Tests**: 48/48 passing across 11 files (`npm test`)
-- **Production Build**: Clean (79 modules transformed; JS shell `19.50 kB` gz, CSS shell `82.72 kB` gz, HTML `17.55 kB` gz)
-- **Structural & Size Gates**: `npm run codemap` (12L), `npm run check` (`CHECK PASS scope=full`), `npm run size` (`CHECK PASS scope=--size`)
+- **Active milestone**: tasbihku-v1.15.0 pushed (`e06855e` on `origin/main`)
+- **Open issues**: 3 legacy E2E probes invoke removed `window.*` globals (`habits-ui.spec.js:274`, `tasbih-modes.spec.js:136,150`); 2 E2E clicks hit pre-existing `TAP_DEBOUNCE_MS = 60` (`tasbih-modes.spec.js:205,222`)
+- **Do-not-touch**: `public/{sound.ogg,config.json,*.png,favicon.ico,manifest.json,404.html}`, `src/data/azkar.json`, `firebase.json`, `playwright.config.js`, `tests/e2e/*.spec.js`
+
+## Session: 2026-11-24 (README Update via antislop-copywriting, Commit & Push)
+- **Touched Files**: `README.md`, `.agents/agent-progress.md`
+- **Milestones Completed**:
+  - [✓] Rewrote `README.md` with `/antislop-copywriting` (`0` em/en dashes, plain sentence-case features matching `v1.15.0`, accurate `src/{app,shared,styles,features}/` structure and `check`/`codemap`/`size` scripts).
+  - [✓] Verified via `npm run check`, `npm run size`, `npm test` (`48/48`), and `npm run build` (`79` modules, exit `0`).
+  - [✓] Committed `137` changed files (`e06855e`) and pushed `0efcc06..e06855e main -> main`.
+- **Closing Report Status**: Complete (`Step 5.5` audited earlier; post-edit `README.md` & `.agents/agent-progress.md` verified by direct re-read + plan verification pipeline).
 
 ## Session: 2026-11-21 (v1.15.0 Hybrid Feature-Sliced Vanilla JS Alignment)
 - **Planning & Executing Model**: Gemini 3.1 Pro (High) / Antigravity Harness
