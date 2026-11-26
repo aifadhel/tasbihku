@@ -13,6 +13,7 @@
 @import './src/features/dzikir-guided/dzikir-rows.css';
 @import './src/features/dzikir-custom/dzikir-custom.css';
 @import './src/features/dzikir-custom/dzikir-editor.css';
+@import './src/features/dzikir-custom/dzikir-ai.css';
 @import './src/features/habits-ui/habits-ui.css';
 @import './src/features/habits-ui/habits-controls.css';
 @import './src/features/habits-ui/habits-sections.css';

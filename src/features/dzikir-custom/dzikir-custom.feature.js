@@ -4,6 +4,8 @@ import { renderCustomList } from './dzikir-list.js';
 const loadEditor = () => import('./dzikir-editor.js');
 const loadLibrary = () => import('./dzikir-library.js');
 const loadShare = () => import('./dzikir-share-ui.js');
+let aiMod = null;
+const withAi = (fn) => (aiMod ? fn(aiMod) : import('./dzikir-ai.js').then((m) => fn((aiMod = m))));
 
 export function initFeature() {
   registerCommand('dzikir:render-custom-list', renderCustomList);
@@ -27,4 +29,9 @@ export function initFeature() {
   registerCommand('dzikir:receive-preview', async () => (await loadShare()).previewDzikirFromInput());
   registerCommand('dzikir:receive-save', async () => (await loadShare()).confirmSaveReceivedDzikir());
   registerCommand('dzikir:handle-deeplink', async (p) => (await loadShare()).handleSharedDzikirDeepLink(p?.token ?? p));
+  registerCommand('dzikir:open-ai', () => withAi((m) => m.openAiDzikirModal()));
+  registerCommand('dzikir:close-ai', () => withAi((m) => m.closeAiDzikirModal(false)));
+  registerCommand('dzikir:ai-update-prompt', () => withAi((m) => m.updateAiPromptPreview()));
+  registerCommand('dzikir:ai-copy-prompt', () => withAi((m) => m.copyAiPrompt()));
+  registerCommand('dzikir:ai-accept', () => withAi((m) => m.acceptAiResponse()));
 }

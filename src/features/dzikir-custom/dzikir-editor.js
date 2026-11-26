@@ -20,6 +20,8 @@ export async function openEditor(type, id = null) {
     if (restoreBtn) restoreBtn.style.display = (type !== 'custom' && type !== 'new') ? 'block' : 'none';
     const nameInput = document.getElementById('editor-input-name');
     if (nameInput) nameInput.disabled = (type !== 'custom' && type !== 'new');
+    const aiCard = document.getElementById('editor-ai-card');
+    if (aiCard) aiCard.style.display = (type === 'new' || type === 'custom') ? 'flex' : 'none';
   }
 
   if (type === 'new') {

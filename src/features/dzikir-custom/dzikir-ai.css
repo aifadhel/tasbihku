@@ -1,0 +1,197 @@
+@layer features {
+  .editor-ai-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border-radius: var(--shape-corner-lg);
+    background: var(--md-sys-color-surface-container);
+    border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .editor-ai-card-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1 1 220px;
+    min-width: 0;
+  }
+
+  .editor-ai-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--shape-corner-md);
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .editor-ai-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .editor-ai-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--md-sys-color-on-background);
+  }
+
+  .editor-ai-desc {
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .editor-ai-card .m3-btn-action {
+    min-height: 44px;
+    padding: 8px 16px;
+    white-space: nowrap;
+  }
+
+  #ai-dzikir-modal {
+    z-index: 1150;
+  }
+
+  .ai-modal-box {
+    max-width: 460px;
+    width: 92%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .ai-modal-header .modal-title {
+    margin: 0;
+  }
+
+  .ai-modal-close {
+    background: transparent;
+  }
+
+  .ai-modal-desc {
+    margin: 0 0 12px 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--md-sys-color-on-surface-variant);
+  }
+
+  .ai-modal-body {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 4px;
+  }
+
+  .ai-row-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .ai-lang-select {
+    font-size: 0.8rem;
+    min-height: 44px;
+    padding: 4px 10px !important;
+  }
+
+  .ai-modal-body input,
+  .ai-modal-body textarea {
+    width: 100%;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  .ai-prompt-preview {
+    font-family: var(--font-family-mono) !important;
+    font-size: 0.78rem !important;
+    line-height: 1.4;
+    min-height: 104px;
+    resize: vertical;
+  }
+
+  .ai-response-input {
+    min-height: 92px;
+    resize: vertical;
+  }
+
+  .ai-copy-btn {
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: var(--shape-corner-full);
+    align-self: flex-end;
+  }
+
+  .ai-divider {
+    height: 1px;
+    background: var(--md-sys-color-outline-variant);
+    opacity: 0.5;
+    margin: 4px 0;
+  }
+
+  .ai-feedback-banner {
+    padding: 10px 12px;
+    border-radius: var(--shape-corner-sm);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .ai-feedback-banner.is-error {
+    background: color-mix(in srgb, var(--md-sys-color-error) 12%, transparent);
+    border-color: var(--md-sys-color-error);
+    color: var(--md-sys-color-error);
+  }
+
+  .ai-feedback-banner.is-success {
+    background: color-mix(in srgb, var(--md-sys-color-primary) 12%, transparent);
+    border-color: var(--md-sys-color-primary);
+    color: var(--md-sys-color-primary);
+  }
+
+  .ai-modal-actions {
+    margin-top: 14px;
+  }
+
+  .ai-modal-actions .btn-text,
+  .ai-modal-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .ai-accept-btn {
+    width: auto;
+    min-width: 112px;
+    min-height: 44px;
+    padding: 0 24px;
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+  }
+
+  .editor-ai-card button:focus-visible,
+  #ai-dzikir-modal button:focus-visible,
+  #ai-dzikir-modal input:focus-visible,
+  #ai-dzikir-modal textarea:focus-visible,
+  #ai-dzikir-modal select:focus-visible {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+  }
+}

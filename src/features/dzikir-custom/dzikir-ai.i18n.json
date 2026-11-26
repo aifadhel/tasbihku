@@ -1,0 +1,36 @@
+{
+  "id": {
+    "ai_editor_card_title": "Susun via Chat AI",
+    "ai_editor_card_desc": "Buat prompt sumber sahih untuk disalin ke chatbot AI, lalu tempel hasilnya.",
+    "ai_editor_btn_open": "Prompt AI",
+    "ai_modal_title": "Susun Dzikir via AI",
+    "ai_modal_desc": "Prompt membatasi jawaban hanya pada Al-Qur'an, Hadits shahih/hasan, Atsar shahih, dan Ijma' Salaf.",
+    "ai_request_label": "1. Permintaan Doa / Dzikir",
+    "ai_request_placeholder": "Contoh: Doa agar dimudahkan melunasi utang",
+    "ai_prompt_lang_id": "Prompt: ID",
+    "ai_prompt_lang_en": "Prompt: EN",
+    "ai_prompt_label": "Prompt Siap Salin",
+    "ai_prompt_placeholder": "Ketik permintaan Anda di atas untuk menghasilkan prompt...",
+    "ai_btn_copy_prompt": "Salin Prompt",
+    "ai_response_label": "2. Tempel Jawaban AI di Sini",
+    "ai_response_placeholder": "Tempel teks atau blok JSON dari chat AI...",
+    "ai_btn_accept": "Terima"
+  },
+  "en": {
+    "ai_editor_card_title": "Draft via AI Chat",
+    "ai_editor_card_desc": "Build an authentic-source prompt for an AI chat, then paste the result back.",
+    "ai_editor_btn_open": "AI Prompt",
+    "ai_modal_title": "Draft Dhikr via AI",
+    "ai_modal_desc": "Prompt restricts answers exclusively to the Quran, authentic Hadith, authentic Athar, and Salaf Ijma'.",
+    "ai_request_label": "1. Dhikr / Supplication Request",
+    "ai_request_placeholder": "Example: Supplication for relief from debt",
+    "ai_prompt_lang_id": "Prompt: ID",
+    "ai_prompt_lang_en": "Prompt: EN",
+    "ai_prompt_label": "Ready-to-Copy Prompt",
+    "ai_prompt_placeholder": "Enter your request above to generate the prompt...",
+    "ai_btn_copy_prompt": "Copy Prompt",
+    "ai_response_label": "2. Paste AI Response Here",
+    "ai_response_placeholder": "Paste the JSON block or reply from your AI chat...",
+    "ai_btn_accept": "Accept"
+  }
+}

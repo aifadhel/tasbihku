@@ -516,6 +516,19 @@
             </div>
 
             <div style="margin-top: 20px;">
+                <div id="editor-ai-card" class="editor-ai-card">
+                    <div class="editor-ai-card-main">
+                        <div class="editor-ai-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-27"></use></svg>
+                        </div>
+                        <div class="editor-ai-text">
+                            <span class="editor-ai-title" data-i18n="ai_editor_card_title">Susun via Chat AI</span>
+                            <span class="editor-ai-desc" data-i18n="ai_editor_card_desc">Buat prompt sumber sahih untuk disalin ke chatbot AI, lalu tempel hasilnya.</span>
+                        </div>
+                    </div>
+                    <button type="button" class="m3-btn-action" data-cmd="dzikir:open-ai" data-i18n="ai_editor_btn_open">Prompt AI</button>
+                </div>
+
                 <label class="label-large" style="margin-left: 8px; display: block; margin-bottom: 8px;" data-i18n="editor_session_name_label">Nama Dzikir (Sesi)</label>
                 <input type="text" id="editor-input-name" placeholder="Contoh: Istighfar Harian" data-i18n-placeholder="editor_session_placeholder" autocomplete="off" style="width: 100%; background: var(--md-sys-color-surface-container); border: none; color: var(--md-sys-color-on-background); padding: 12px; border-radius: 8px; margin-bottom: 24px; font-family: inherit; font-size: 1rem;">
 
@@ -1243,6 +1256,40 @@
                     <button class="btn btn-text" data-cmd="dzikir:receive-back" data-i18n="btn_cancel">Batal</button>
                     <button class="btn btn-filled" style="width: auto; padding: 0 24px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);" data-cmd="dzikir:receive-save" data-i18n="btn_save_received_dzikir">Simpan ke Koleksi</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI DHIKR PROMPT & ACCEPT MODAL -->
+    <div id="ai-dzikir-modal" class="m3-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ai-dzikir-modal-title">
+        <div class="modal-box ai-modal-box">
+            <div class="ai-modal-header">
+                <h3 class="modal-title" id="ai-dzikir-modal-title" data-i18n="ai_modal_title">Susun Dzikir via AI</h3>
+                <button type="button" class="btn btn-icon ai-modal-close" data-cmd="dzikir:close-ai" data-i18n-aria="btn_close" aria-label="Tutup">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <p class="ai-modal-desc" data-i18n="ai_modal_desc">Prompt membatasi jawaban hanya pada Al-Qur'an, Hadits shahih/hasan, Atsar shahih, dan Ijma' Salaf.</p>
+            <div class="ai-modal-body">
+                <div class="ai-row-between">
+                    <label for="ai-dhikr-request" class="label-large" data-i18n="ai_request_label">1. Permintaan Doa / Dzikir</label>
+                    <select id="ai-dhikr-lang" class="ai-lang-select" aria-label="Prompt language" data-cmd-change="dzikir:ai-update-prompt">
+                        <option value="id" data-i18n="ai_prompt_lang_id">Prompt: ID</option>
+                        <option value="en" data-i18n="ai_prompt_lang_en">Prompt: EN</option>
+                    </select>
+                </div>
+                <input type="text" id="ai-dhikr-request" placeholder="Contoh: Doa agar dimudahkan melunasi utang" data-i18n-placeholder="ai_request_placeholder" autocomplete="off" data-cmd-input="dzikir:ai-update-prompt">
+                <label for="ai-dhikr-prompt-preview" class="label-medium text-sub" data-i18n="ai_prompt_label">Prompt Siap Salin</label>
+                <textarea id="ai-dhikr-prompt-preview" class="ai-prompt-preview" readonly rows="5" placeholder="Ketik permintaan Anda di atas untuk menghasilkan prompt..." data-i18n-placeholder="ai_prompt_placeholder" data-cmd="ui:select-self"></textarea>
+                <button type="button" id="ai-copy-prompt-btn" class="btn btn-tonal ai-copy-btn" data-cmd="dzikir:ai-copy-prompt" data-i18n="ai_btn_copy_prompt">Salin Prompt</button>
+                <div class="ai-divider"></div>
+                <label for="ai-dhikr-response-input" class="label-large" data-i18n="ai_response_label">2. Tempel Jawaban AI di Sini</label>
+                <textarea id="ai-dhikr-response-input" class="ai-response-input" rows="4" placeholder="Tempel teks atau blok JSON dari chat AI..." data-i18n-placeholder="ai_response_placeholder"></textarea>
+                <div id="ai-dhikr-feedback" class="ai-feedback-banner" role="alert" hidden></div>
+            </div>
+            <div class="modal-actions ai-modal-actions">
+                <button type="button" class="btn btn-text" data-cmd="dzikir:close-ai" data-i18n="btn_cancel">Batal</button>
+                <button type="button" id="ai-accept-btn" class="btn btn-filled ai-accept-btn" data-cmd="dzikir:ai-accept" data-i18n="ai_btn_accept">Terima</button>
             </div>
         </div>
     </div>

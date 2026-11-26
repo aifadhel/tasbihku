@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.16.0] - 2026-11-27
+
+- **Highlight:** Added an AI Dhikr Prompt & Accept assistant inside Custom Dhikr ("Create New" / custom editor) so users can generate a strict, copy-ready prompt for any AI chatbot and paste the verified result back into TasbihKu.
+
+### Specific UI & Component Changes
+- **Create New AI Card & Modal (`index.html`, `src/features/dzikir-custom/dzikir-ai.css`, `dzikir-ai.i18n.json`, `dzikir-editor.js`):** Added `#editor-ai-card` inside `#page-editor` (shown when creating new or editing custom dhikr, hidden for guided presets) and `#ai-dzikir-modal` featuring a request input, prompt language selector (`ID`/`EN`), readonly copyable prompt preview, paste area, inline alert banner (`#ai-dhikr-feedback`), keyboard `Escape` support, focus-visible rings, and `>= 44px` touch targets in `@layer features`.
+
+### Core Logic & Workflows
+- **Lazy Command Wiring & Module Caching (`src/features/dzikir-custom/dzikir-custom.contract.js`, `dzikir-custom.feature.js`, `CODEMAP.md`):** Registered `dzikir:open-ai`, `dzikir:close-ai`, `dzikir:ai-update-prompt`, `dzikir:ai-copy-prompt`, and `dzikir:ai-accept` with cached lazy module loading (`withAi`) and lazy `registerTranslations()` inside `dzikir-ai.js` so `assets/index.js` remains under the `20 KB` gzipped shell budget.
+- **Accept Flow (`src/features/dzikir-custom/dzikir-ai.js`):** Validates pasted AI responses, displays clear inline/toast errors for unverified or incomplete outputs without closing the modal, replaces the blank initial scaffold when creating a new dhikr (or appends pages to populated sessions), and re-renders the editor for user review and saving.
+
+### Dzikir & Habits Engine
+- **Authentic-Source Guardrailed Prompt & Validator (`src/features/dzikir-custom/dzikir-ai-prompt.js`):** Built bilingual (`id`/`en`) prompts with `<user_request>` delimiters requiring exclusive reliance on the Quran, authentic Hadith (`Sahih`/`Hasan`), authentic *athar*, and *ijma'* of the *Salaf* scholars while banning weak/fabricated narrations, invented supplications, or ungrounded counts, plus fail-closed `{"status":"unverified"}` handling and mandatory per-page `reference` validation in `parseAndValidateAiResponse()`.
+
+### Test & Verification
+- Added 6 unit & DOM workflow tests in `src/features/dzikir-custom/dzikir-ai.test.js`.
+- Verified `npm run check`, `npm test` (`13` test files, `58` tests), `npm run build`, `npm run size` (`assets/index.js` `20.19 kB` gz, `assets/index.css` `83.09 kB` gz, `assets/dzikir-ai.js` `4.29 kB` gz), and headless Playwright verification across Emerald and OLED mobile viewports (`390x844`, `0` console/page errors).
+
 ## [tasbihku-v1.15.2] - 2026-11-27
 
 - **Highlight:** Fixed the Settings language segmented switcher (`ID` / `EN`) failing silently on click due to empty `HTMLButtonElement.value` shadowing `data-arg` in `dom-bridge.js`, enabled immediate language persistence, synced `aria-pressed`, and preserved active mode labels after `languageChanged`.

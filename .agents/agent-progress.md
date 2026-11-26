@@ -2,9 +2,19 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Active milestone**: tasbihku-v1.15.2 language switcher fix & mode label sync (uncommitted; verified exit 0)
+- **Active milestone**: tasbihku-v1.16.0 Custom Dhikr AI Prompt & Accept workflow (uncommitted; verified exit 0)
 - **Open issues**: 3 legacy E2E probes invoke removed `window.*` globals (`habits-ui.spec.js:274`, `tasbih-modes.spec.js:136,150`); 2 E2E clicks hit pre-existing `TAP_DEBOUNCE_MS = 60` (`tasbih-modes.spec.js:205,222`); 8 npm devDependency advisories (`tinypool` in `vitest@1.x`; 0 prod vulnerabilities via `npm audit --omit=dev`)
 - **Do-not-touch**: `public/{sound.ogg,config.json,*.png,favicon.ico,manifest.json,404.html}`, `src/data/azkar.json`, `firebase.json`, `playwright.config.js`, `tests/e2e/*.spec.js`
+
+## Session: 2026-11-27 (v1.16.0 Custom Dhikr AI Prompt & Accept Workflow)
+- **Touched Files**: `src/features/dzikir-custom/{dzikir-ai-prompt.js,dzikir-ai.js,dzikir-ai.i18n.json,dzikir-ai.css,dzikir-ai.test.js,dzikir-custom.contract.js,dzikir-custom.feature.js,dzikir-editor.js}`, `index.html`, `style.css`, `CODEMAP.md`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.
+- **Milestones Completed**:
+  - [✓] Pure Prompt & Parser (`dzikir-ai-prompt.js`): Built bilingual (`id`/`en`) prompts delimited with `<user_request>` enforcing exclusive use of Al-Qur'an, authentic Hadith (`Sahih`/`Hasan`), authentic *athar*, and *ijma'* of the *Salaf* scholars, fail-closed `unverified` fallback, markdown/prose JSON extraction, and mandatory per-page `reference` validation.
+  - [✓] Modal, Editor Integration & Budget Hygiene (`dzikir-ai.js`, `dzikir-editor.js`, `dzikir-ai.css`, `dzikir-ai.i18n.json`, `index.html`, `style.css`, `dzikir-custom.{contract,feature}.js`): Added `#editor-ai-card` (visible for `new`/`custom`, hidden on guided presets) and `#ai-dzikir-modal` (`>=44px` tap targets, `Escape` close, inline `#ai-dhikr-feedback` errors, blank-scaffold replace or append-into-editor Accept flow), caching lazy `dzikir-ai.js` + lazy `registerTranslations()` to keep `index.js` under `20 KB` gz.
+  - [✓] Verification & Release: Added 6 unit/DOM tests in `dzikir-ai.test.js`, passed `harness-verifier` (`596a40fc`, resolved `WARN` on `.ai-lang-select`/`.btn-text` `<44px` tap targets), passed Playwright verification across Emerald & OLED mobile viewports (`390x844`, 0 console/page errors), bumped `1.15.2` -> `1.16.0`, and verified `npm run check`, `npm test` (`13/13` files, `58/58` tests), `npm run build`, and `npm run size` (`exit 0`).
+- **Double-Check & Lessons**:
+  - `[LESSON]` Because `src/shared/i18n.js` eagerly globs `*.i18n.json` into `index.js` (`<=20 KB` gz ceiling), keep runtime-only modal toast/error copy inside lazy feature chunks via `registerTranslations()`, leaving only static `[data-i18n*]` DOM keys in eager `*.i18n.json`.
+  - `[LESSON]` Cache lazy feature module references in `*.feature.js` (`withAi`) so repeat UI input/change/click commands execute synchronously without an extra `import()` microtask race.
 
 ## Session: 2026-11-27 (v1.15.2 Language Switcher Fix)
 - **Touched Files**: `src/app/dom-bridge.js`, `src/shared/i18n.js`, `src/features/settings-shell/{settings-shell.feature.js,shell-modes.js,settings-smoke.test.js}`, `tests/unit/dom-bridge.test.js`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.
