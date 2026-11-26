@@ -34,17 +34,21 @@ Thank you for your interest in contributing to TasbihKu! 🙏
 
 3. **Make your changes** following the guidelines below.
 
-4. **Run all tests** before submitting:
+4. **Run all checks and tests** before submitting:
    ```bash
-   # Unit tests
+   # Structural, isolation, and i18n parity checks
+   npm run check
+
+   # Unit and feature tests
    npm run test
 
    # E2E tests (requires Chromium)
    npx playwright install chromium
    npm run test:e2e
 
-   # Build verification
+   # Build and bundle budget verification
    npm run build
+   npm run size
    ```
 
 5. **Commit** with a clear message:
@@ -59,8 +63,9 @@ Thank you for your interest in contributing to TasbihKu! 🙏
 ### Architecture
 
 - **No frameworks** — This project uses Vanilla JavaScript with ES Modules. Do not introduce React, Vue, Angular, or similar.
-- **No build-step CSS** — Use plain CSS with CSS custom properties (design tokens). Do not introduce Tailwind, Sass, or similar.
-- **Material 3 Expressive** — All UI must follow the existing Material 3 design token system in `style.css`.
+- **No build-step CSS** — Use plain CSS with `@layer` cascade rules and custom properties in `src/styles/tokens.css` (imported via `style.css`). Do not introduce Tailwind, Sass, or similar.
+- **Material 3 Expressive** — All UI must follow the Material 3 design token system in `src/styles/tokens.css`.
+- **Feature isolation** — Place feature code under depth-1 `src/features/<name>/` slices with `*.contract.js` manifests (`<=200L` per `.js`/`.css` file).
 
 ### Code Style
 
@@ -72,7 +77,7 @@ Thank you for your interest in contributing to TasbihKu! 🙏
 
 ### Testing
 
-- **Unit tests** go in `tests/unit/` and use [Vitest](https://vitest.dev/).
+- **Unit & feature tests** go in `tests/unit/` or co-located `src/features/<name>/*.test.js` and use [Vitest](https://vitest.dev/).
 - **E2E tests** go in `tests/e2e/` and use [Playwright](https://playwright.dev/).
 - All PRs must pass the existing test suite. New features should include tests.
 

@@ -8,10 +8,6 @@ export function getActiveHabitFilter() {
   return activeHabitFilter;
 }
 
-export function setActiveHabitFilter(val) {
-  activeHabitFilter = val;
-}
-
 export function triggerCelebrationHeartbeat() {
   if (typeof document === 'undefined') return;
   const card = document.querySelector('#habit-dashboard-view .card');
@@ -49,7 +45,7 @@ export function renderStats() {
   for (let i = 90; i >= 0; i--) {
     const d = new Date();
     d.setDate(today.getDate() - i);
-    const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const dateStr = core.getLocalDateString(d);
     const tile = document.createElement('div');
     tile.className = 'heatmap-tile';
     if (uniqueDates.includes(dateStr)) {

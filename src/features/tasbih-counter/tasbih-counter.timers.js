@@ -3,13 +3,10 @@ import { registerModalOpen, registerModalClose } from '../../app/slots.js';
 import { t } from '../../shared/i18n.js';
 import { vibrate } from '../../shared/media.js';
 import { saveState, saveStateImmediate, state } from '../../shared/store.js';
+import { notifyShowModal } from './tasbih-counter.logic.js';
 import { setMainButtonState } from './tasbih-counter.stopwatch.js';
 
 let timerIntervalId = null;
-
-function notifyShowModal(title, message, onYes = null, isAlert = false) {
-  return dispatch('ui:show-modal', { title, message, onYes, isAlert }).catch(() => {});
-}
 
 export function formatDuration(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600);

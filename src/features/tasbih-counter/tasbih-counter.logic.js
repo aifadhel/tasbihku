@@ -9,7 +9,7 @@ let lastIncrementTime = 0;
 const TAP_DEBOUNCE_MS = 60;
 let numberInputCallback = null;
 
-function notifyShowModal(title, message, onYes = null, isAlert = false) {
+export function notifyShowModal(title, message, onYes = null, isAlert = false) {
   return dispatch('ui:show-modal', { title, message, onYes, isAlert }).catch(() => {});
 }
 

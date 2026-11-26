@@ -82,14 +82,6 @@ export async function ensureCommandLoaded(cmdId) {
 }
 
 /**
- * Return registered feature manifests.
- * @returns {object[]}
- */
-export function getRegisteredFeatures() {
-  return Array.from(manifests.values());
-}
-
-/**
  * Initialize lazy loader hook and handle Vite chunk preload errors gracefully.
  */
 export function initFeatureRegistry() {

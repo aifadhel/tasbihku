@@ -1,0 +1,69 @@
+# ==============================================================================
+# .geminiignore - TasbihKu Context & FinOps Filter
+# Excludes generated artifacts, lockfiles, caches, and binary media while
+# keeping manifests, !.env.example, source code, tests, scripts, and active
+# AI context/navigation files visible.
+# ==============================================================================
+
+# 1. OS & Editor Noise
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# 2. Dependencies, Lockfiles & Secrets
+node_modules/
+package-lock.json
+.npm/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+credentials.json
+serviceAccountKey.json
+
+# 3. Build, Hosting & Test Outputs
+dist/
+build/
+.firebase/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# 4. Tooling Caches & Logs
+.vite/
+.eslintcache
+logs/
+*.log
+*.tmp
+*.temp
+*.cache
+*.bak
+
+# 5. Binary Fonts, Audio & Image Assets
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.ogg
+*.mp3
+*.wav
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.ico
+
+# 6. Historical Archives & Large Unloaded Skill References
+.agents/archive/
+.agents/skills/*/references/
+.agents/skills/*/*.py
+.agents/skills/*/LICENSE*
+docs/archive/

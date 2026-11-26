@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.15.1] - 2026-11-27
+
+- **Highlight:** Repository cleanup, dead code/CSS pruning, `.geminiignore` FinOps filtering, CI structural/size enforcement, and durable AI-context optimization (`AGENTS.md`, `.agents/PROJECT_MAP.md`, `.agents/rules/context-optimization.md`).
+
+### Specific UI & Component Changes
+- **Dead CSS Removal (`src/features/habits-ui/habits-sections.css`):** Removed 69 lines of orphaned legacy archived-habit rules (`.archived-habits-section`, `.archived-habit-card`, `.archived-habit-info`, `.archived-btn`, and duplicate `.archived-actions`) superseded by `habits-archived-toast.css`.
+
+### Core Logic & Audio/Haptic Workflows
+- **Shell Pruning (`src/app/command-bus.js`, `src/app/feature-registry.js`, `src/app/slots.js`):** Removed zero-caller exports and hooks (`interceptCommand`, `getRegisteredFeatures`, `getTopModal`).
+- **Tasbih Modal Helper Deduplication (`src/features/tasbih-counter/tasbih-counter.logic.js`, `tasbih-counter.timers.js`):** Exported shared `notifyShowModal` from `.logic.js` and removed duplicate definition in `.timers.js`.
+- **Service Worker Header (`public/sw.js`):** Updated stale `app.js` version-note comment to reference `src/app/version.js` and `scripts/bump-version.js`.
+
+### Dzikir & Habits Engine
+- **Habits Cleanup (`src/features/habits-core/habits-dates.js`, `src/features/habits-ui/habits-progress.js`):** Removed dead `isHabitSkippedOn` and unused `setActiveHabitFilter`; replaced duplicate local date string formatting in `renderStats()` with `core.getLocalDateString(d)`.
+
+### Repository Hygiene & AI Context
+- **Cleanup & Config Reconciliation:** Removed redundant `.agents/harness-snapshot/` (`305L`) and stale `docs/CONTEXT_OPTIMIZATION.md` (`56L`), pruned obsolete generator ignores in `.gitignore`, added `.env.example`, updated `CONTRIBUTING.md`, and wired `npm run check` + `npm run size` into `.github/workflows/ci.yml`.
+- **AI Navigation & Token Rules:** Added `.geminiignore`, `.agents/PROJECT_MAP.md` (JIT index), `.agents/rules/context-optimization.md` (KV-cache prefix stability, 70–80% compaction handoff, scratchpad offloading, token-lean density, and preservation boundaries), consolidated pre-v1.15.0 logs into `.agents/archive/agent-progress.202610.md`, and streamlined root `AGENTS.md`.
+
+### Test & Verification
+- `npm run check`, `npm test` (`11` test files, `48` tests), `npm run build`, and `npm run size` verified passing (`exit 0`).
+
 ## [tasbihku-v1.15.0] - 2026-11-21
 
 - **Highlight:** Hybrid Feature-Sliced Vanilla JS Architecture alignment: decomposed legacy monolithic modules and styles into depth-1 isolated feature slices (`<=200L`/file), declarative `[data-cmd]` delegation over `command-bus.js`, `@layer` CSS cascade with `oklch()`/`color-mix()` seed tokens, split boot/IndexedDB persistence, automated structural/bundle budget gates, and service worker chunk precache injection.

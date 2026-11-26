@@ -102,11 +102,6 @@ export function getHabitCompletionStatus(habit, entry) {
   return { completed, partial, skipped: false, value };
 }
 
-export function isHabitSkippedOn(habitId, dateStr) {
-  const entry = (state.habitRepetitions[habitId] || {})[dateStr];
-  return Boolean(entry && entry.skipped);
-}
-
 export function isHabitCompletedOn(habitId, dateStr) {
   const entry = (state.habitRepetitions[habitId] || {})[dateStr];
   if (!entry) return false;

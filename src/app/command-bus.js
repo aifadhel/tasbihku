@@ -3,7 +3,6 @@
  */
 const commandHandlers = new Map();
 const eventListeners = new Map();
-const interceptors = new Set();
 let lazyCommandLoader = null;
 
 /**
@@ -39,26 +38,12 @@ export function hasCommand(id) {
 }
 
 /**
- * Register a command interceptor invoked before handler execution.
- * Returning false cancels dispatch.
- * @param {(id: string, payload?: any) => boolean|void} fn
- * @returns {() => void}
- */
-export function interceptCommand(fn) {
-  interceptors.add(fn);
-  return () => interceptors.delete(fn);
-}
-
-/**
  * Dispatch a command to its registered handler (loading lazy feature if needed).
  * @param {string} id
  * @param {any} [payload]
  * @returns {Promise<any>}
  */
 export async function dispatch(id, payload) {
-  for (const fn of interceptors) {
-    if (fn(id, payload) === false) return undefined;
-  }
   if (!commandHandlers.has(id) && typeof lazyCommandLoader === 'function') {
     await lazyCommandLoader(id);
   }

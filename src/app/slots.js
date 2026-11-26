@@ -76,8 +76,3 @@ export function registerModalClose(modalId, fromPopstate = false) {
 export function hasActiveModals() {
   return activeModalStack.length > 0;
 }
-
-export function getTopModal() {
-  if (activeModalStack.length === 0) return null;
-  return activeModalStack[activeModalStack.length - 1];
-}
