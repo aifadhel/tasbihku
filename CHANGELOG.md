@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.16.1] - 2026-11-27
+
+- **Highlight:** Fixed AI dhikr modal initial auto-scroll hiding the top request label/language selector and eliminated clipped double focus borders inside `.ai-modal-body`.
+
+### Specific UI & Component Changes
+- **AI Modal Layout & Focus Spacing (`src/features/dzikir-custom/dzikir-ai.css`):** Added `flex: 1 1 auto; min-height: 0; padding: 6px 10px 6px 6px` and `> * { flex-shrink: 0; }` on `.ai-modal-body`, scoped `.ai-lang-select` to `width: auto; margin-bottom: 0`, cleared inherited `24px` bottom margins from `primitives-layout.css` on `.ai-modal-body` inputs/textareas, and kept `:focus-visible` border at `--md-sys-color-outline-variant` so `reset.css`'s `3px` primary focus ring renders cleanly without a double green border.
+
+### Core Logic & Workflows
+- **Modal Scroll Preservation (`src/features/dzikir-custom/dzikir-ai.js`):** Reset `.ai-modal-body` `scrollTop = 0` on open and switched `#ai-dhikr-request` focus to `reqEl.focus({ preventScroll: true })` so the top label and prompt language selector remain visible when the dialog opens.
+
+### Dzikir & Habits Engine
+- No changes to prompt guardrails, JSON parsing, or custom dhikr persistence.
+
+### Test & Verification
+- Added `preventScroll: true` assertion in `src/features/dzikir-custom/dzikir-ai.test.js`.
+- Verified `npm run check`, `npm test` (`13` files, `58` tests), `npm run build`, `npm run size`, and Playwright mobile screenshot inspection across Emerald and OLED themes (`exit 0`).
+
 ## [tasbihku-v1.16.0] - 2026-11-27
 
 - **Highlight:** Added an AI Dhikr Prompt & Accept assistant inside Custom Dhikr ("Create New" / custom editor) so users can generate a strict, copy-ready prompt for any AI chatbot and paste the verified result back into TasbihKu.

@@ -2,9 +2,16 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Active milestone**: tasbihku-v1.16.0 Custom Dhikr AI Prompt & Accept workflow (uncommitted; verified exit 0)
+- **Active milestone**: tasbihku-v1.16.1 AI modal scroll-clip & focus-ring UI fix (uncommitted; verified exit 0)
 - **Open issues**: 3 legacy E2E probes invoke removed `window.*` globals (`habits-ui.spec.js:274`, `tasbih-modes.spec.js:136,150`); 2 E2E clicks hit pre-existing `TAP_DEBOUNCE_MS = 60` (`tasbih-modes.spec.js:205,222`); 8 npm devDependency advisories (`tinypool` in `vitest@1.x`; 0 prod vulnerabilities via `npm audit --omit=dev`)
 - **Do-not-touch**: `public/{sound.ogg,config.json,*.png,favicon.ico,manifest.json,404.html}`, `src/data/azkar.json`, `firebase.json`, `playwright.config.js`, `tests/e2e/*.spec.js`
+
+## Session: 2026-11-27 (v1.16.1 AI Modal Scroll & Focus Ring Fix)
+- **Touched Files**: `src/features/dzikir-custom/{dzikir-ai.js,dzikir-ai.css,dzikir-ai.test.js}`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.
+- **Milestones Completed**:
+  - [✓] Fixed initial modal auto-scroll clipping (`scrollTop = 0` + `focus({ preventScroll: true })` in `dzikir-ai.js`) so `"1. Permintaan Doa / Dzikir"` and `"Prompt: ID"` stay visible on open.
+  - [✓] Fixed `.ai-modal-body` padding (`6px 10px 6px 6px`), `width: auto` / `margin-bottom: 0` on `.ai-lang-select` and modal fields (overriding `primitives-layout.css` `100%` / `24px`), and removed double green `:focus-visible` border in `dzikir-ai.css`.
+  - [✓] Verified via `npm run check`, `npm test` (`13/13` files, `58/58` tests), `npm run build`, `npm run size`, and Playwright screenshot inspection (`emerald` & `oled` `390x844`, `0` errors).
 
 ## Session: 2026-11-27 (v1.16.0 Custom Dhikr AI Prompt & Accept Workflow)
 - **Touched Files**: `src/features/dzikir-custom/{dzikir-ai-prompt.js,dzikir-ai.js,dzikir-ai.i18n.json,dzikir-ai.css,dzikir-ai.test.js,dzikir-custom.contract.js,dzikir-custom.feature.js,dzikir-editor.js}`, `index.html`, `style.css`, `CODEMAP.md`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.

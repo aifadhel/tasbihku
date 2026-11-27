@@ -144,6 +144,7 @@ describe('dzikir-ai modal & editor Accept workflow', () => {
 
   it('requires non-empty request on copy and copies prompt when provided', async () => {
     openAiDzikirModal();
+    expect(els['ai-dhikr-request'].focus).toHaveBeenCalledWith({ preventScroll: true });
     await copyAiPrompt();
     expect(clipboardWrite).not.toHaveBeenCalled();
     expect(els['ai-dhikr-feedback'].hidden).toBe(false);

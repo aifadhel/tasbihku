@@ -74,9 +74,13 @@ export function openAiDzikirModal() {
 
   if (modal) {
     modal.classList.add('active');
+    const bodyEl = typeof modal.querySelector === 'function' ? modal.querySelector('.ai-modal-body') : null;
+    if (bodyEl) bodyEl.scrollTop = 0;
     registerModalOpen('ai-dzikir-modal', closeAiDzikirModal);
   }
-  if (reqEl && typeof reqEl.focus === 'function') reqEl.focus();
+  if (reqEl && typeof reqEl.focus === 'function') {
+    try { reqEl.focus({ preventScroll: true }); } catch (_) { reqEl.focus(); }
+  }
 }
 
 export function closeAiDzikirModal(fromPopstate = false) {

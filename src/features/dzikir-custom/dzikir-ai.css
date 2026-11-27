@@ -1,88 +1,27 @@
 @layer features {
   .editor-ai-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 14px 16px;
-    margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; padding: 14px 16px; margin-bottom: 18px;
     border-radius: var(--shape-corner-lg);
     background: var(--md-sys-color-surface-container);
     border: 1px solid var(--md-sys-color-outline-variant);
   }
-
-  .editor-ai-card-main {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    flex: 1 1 220px;
-    min-width: 0;
-  }
-
+  .editor-ai-card-main { display: flex; align-items: flex-start; gap: 12px; flex: 1 1 220px; min-width: 0; }
   .editor-ai-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--shape-corner-md);
+    width: 40px; height: 40px; border-radius: var(--shape-corner-md);
     background: var(--md-sys-color-secondary-container);
     color: var(--md-sys-color-on-secondary-container);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
-
-  .editor-ai-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .editor-ai-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--md-sys-color-on-background);
-  }
-
-  .editor-ai-desc {
-    font-size: 0.82rem;
-    line-height: 1.35;
-    color: var(--md-sys-color-on-surface-variant);
-  }
-
-  .editor-ai-card .m3-btn-action {
-    min-height: 44px;
-    padding: 8px 16px;
-    white-space: nowrap;
-  }
-
-  #ai-dzikir-modal {
-    z-index: 1150;
-  }
-
-  .ai-modal-box {
-    max-width: 460px;
-    width: 92%;
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ai-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .ai-modal-header .modal-title {
-    margin: 0;
-  }
-
-  .ai-modal-close {
-    background: transparent;
-  }
+  .editor-ai-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .editor-ai-title { font-size: 0.95rem; font-weight: 700; color: var(--md-sys-color-on-background); }
+  .editor-ai-desc { font-size: 0.82rem; line-height: 1.35; color: var(--md-sys-color-on-surface-variant); }
+  .editor-ai-card .m3-btn-action { min-height: 44px; padding: 8px 16px; white-space: nowrap; }
+  #ai-dzikir-modal { z-index: 1150; }
+  .ai-modal-box { max-width: 460px; width: 92%; max-height: 85vh; display: flex; flex-direction: column; }
+  .ai-modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .ai-modal-header .modal-title { margin: 0; }
+  .ai-modal-close { background: transparent; }
 
   .ai-modal-desc {
     margin: 0 0 12px 0;
@@ -92,11 +31,17 @@
   }
 
   .ai-modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding-right: 4px;
+    padding: 6px 10px 6px 6px;
+  }
+
+  .ai-modal-body > * {
+    flex-shrink: 0;
   }
 
   .ai-row-between {
@@ -107,17 +52,32 @@
     flex-wrap: wrap;
   }
 
+  .ai-row-between label {
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
   .ai-lang-select {
+    width: auto;
+    flex-shrink: 0;
     font-size: 0.8rem;
     min-height: 44px;
-    padding: 4px 10px !important;
+    margin-bottom: 0;
+    padding: 4px 8px !important;
   }
 
   .ai-modal-body input,
   .ai-modal-body textarea {
     width: 100%;
     font-size: 0.9rem;
+    margin-bottom: 0;
     box-sizing: border-box;
+  }
+
+  #ai-dzikir-modal input:focus-visible,
+  #ai-dzikir-modal textarea:focus-visible,
+  #ai-dzikir-modal select:focus-visible {
+    border-color: var(--md-sys-color-outline-variant) !important;
   }
 
   .ai-prompt-preview {
@@ -184,14 +144,5 @@
     padding: 0 24px;
     background: var(--md-sys-color-primary-container);
     color: var(--md-sys-color-on-primary-container);
-  }
-
-  .editor-ai-card button:focus-visible,
-  #ai-dzikir-modal button:focus-visible,
-  #ai-dzikir-modal input:focus-visible,
-  #ai-dzikir-modal textarea:focus-visible,
-  #ai-dzikir-modal select:focus-visible {
-    outline: 2px solid var(--md-sys-color-primary);
-    outline-offset: 2px;
   }
 }
