@@ -1,0 +1,90 @@
+@layer features {
+  .footer-version-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 18px;
+      border-radius: var(--shape-corner-full);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      background-color: var(--md-sys-color-surface-container-high);
+      color: var(--md-sys-color-on-surface-variant);
+      font-family: var(--font-family-mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: background-color var(--md-sys-motion-duration-short) ease,
+                  border-color var(--md-sys-motion-duration-short) ease,
+                  color var(--md-sys-motion-duration-short) ease,
+                  transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-spring-standard);
+  }
+
+  .footer-version-btn:hover:not(:disabled) {
+      background-color: var(--md-sys-color-surface-container-highest);
+      border-color: var(--md-sys-color-primary);
+      color: var(--md-sys-color-primary);
+  }
+
+  .footer-version-btn:active:not(:disabled) {
+      transform: scale(0.97);
+  }
+
+  .footer-version-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+  }
+
+  .footer-version-btn:focus-visible {
+      outline: 3px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+  }
+
+  .footer-version-btn.has-update {
+      background-color: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      border-color: var(--md-sys-color-primary);
+  }
+
+  .footer-version-icon {
+      flex-shrink: 0;
+  }
+
+  @keyframes footerVersionSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+  }
+
+  .footer-version-btn.is-checking .footer-version-icon {
+      animation: footerVersionSpin 0.9s linear infinite;
+  }
+
+  .footer-version-status {
+      margin-top: 6px;
+      min-height: 1.25em;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--md-sys-color-on-surface-variant);
+      letter-spacing: 0.2px;
+  }
+
+  .footer-version-status.has-update {
+      color: var(--md-sys-color-primary);
+      font-weight: 700;
+  }
+
+  .footer-version-status.is-error {
+      color: var(--md-sys-color-error);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+      .footer-version-btn.is-checking .footer-version-icon {
+          animation: none;
+      }
+      .footer-version-btn {
+          transition: none;
+      }
+  }
+}

@@ -2,9 +2,18 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Active milestone**: tasbihku-v1.16.1 AI modal scroll-clip & focus-ring UI fix (uncommitted; verified exit 0)
+- **Active milestone**: tasbihku-v1.16.2 Clickable Settings Version & App Update Check (uncommitted; verified exit 0)
 - **Open issues**: 3 legacy E2E probes invoke removed `window.*` globals (`habits-ui.spec.js:274`, `tasbih-modes.spec.js:136,150`); 2 E2E clicks hit pre-existing `TAP_DEBOUNCE_MS = 60` (`tasbih-modes.spec.js:205,222`); 8 npm devDependency advisories (`tinypool` in `vitest@1.x`; 0 prod vulnerabilities via `npm audit --omit=dev`)
 - **Do-not-touch**: `public/{sound.ogg,config.json,*.png,favicon.ico,manifest.json,404.html}`, `src/data/azkar.json`, `firebase.json`, `playwright.config.js`, `tests/e2e/*.spec.js`
+
+## Session: 2026-11-27 (v1.16.2 Clickable Settings Version & App Update Check)
+- **Touched Files**: `index.html`, `src/styles/primitives-core.css`, `style.css`, `src/features/settings-shell/{app-updater.js,sw-probe.js,app-updater.test.js,settings-shell.css,settings-update.css,settings-shell.contract.js,settings-shell.feature.js}`, `src/shared/system.js`, `public/sw.js`, `CODEMAP.md`, `package.json`, `src/app/version.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.
+- **Milestones Completed**:
+  - [✓] Interactive Footer Version Button & Settings Layout (`index.html`, `src/styles/primitives-core.css`, `src/features/settings-shell/{settings-shell.css,settings-update.css}`, `style.css`): Replaced `<span id="app-version">` with `<button type="button" id="app-version" class="footer-version-btn" data-cmd="settings:check-update">`, `#icon-18`, `#app-version-text`, and `#app-version-status` (`aria-live="polite"`), moved watermark dimming to `.footer-made-with`, prevented `#page-menu > *` flex-shrink collapse (restoring `30px` gap above `"Settings"`), and fixed `#vibration-interval-row` / `.btn-list-item select` (`width: auto`, `margin-bottom: 0`, `min-height: 44px`, `gap: 12px`) across mobile (`390x844`) and desktop (`900x800`).
+  - [✓] Update Checker & SW Hardening (`app-updater.js`, `sw-probe.js`, `settings-shell.{contract,feature}.js`, `src/shared/system.js`, `public/sw.js`, `CODEMAP.md`): Added `settings:check-update` with lazy `registerTranslations()` (`index.js` `20.24 kB` gz <= `20 KB`), semver comparison, Cache Storage + `GET_VERSION` probing, initial-SW activation disambiguation, `SKIP_WAITING` + reload modal, `updateViaCache: 'none'`, `cache: 'reload'` precaching, and `/sw.js` fetch bypass.
+  - [✓] Verification & Release: Added 9 unit tests in `app-updater.test.js`, verified mobile `390x844` browser flows (ID/EN + Emerald/OLED, 0 uncaught JS errors), bumped `1.16.1` -> `1.16.2`, passed `harness-verifier` (`58085bba`), and passed `npm run check`, `npm test` (`14/14` files, `67/67` tests), `npm run build`, and `npm run size` (`exit 0`).
+- **Double-Check & Lessons**:
+  - `[LESSON]` On first visit before a Service Worker controls the page (`navigator.serviceWorker.controller === null`), `reg.installing` / `controllerchange` triggers for initial same-version SW installation; guard with `hadController` + `GET_VERSION`/semver check so manual checks do not false-positive on initial install.
 
 ## Session: 2026-11-27 (v1.16.1 AI Modal Scroll & Focus Ring Fix)
 - **Touched Files**: `src/features/dzikir-custom/{dzikir-ai.js,dzikir-ai.css,dzikir-ai.test.js}`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.

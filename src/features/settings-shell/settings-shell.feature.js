@@ -5,6 +5,7 @@ import { applyTranslations, setLanguage } from '../../shared/i18n.js';
 import { applyVibrationCapability } from '../../shared/media.js';
 import { saveState, state, subscribe } from '../../shared/store.js';
 import { releaseWakeLock, requestWakeLock, toggleWakeLock } from '../../shared/system.js';
+import { checkForAppUpdate, syncVersionUI } from './app-updater.js';
 import { closeModal, goBack, initRouterListeners, showModal, showPage } from './router-nav.js';
 import {
   exportData,
@@ -66,8 +67,7 @@ function initShellUI() {
   switchAppMode(state.appMode || 'tasbih', false);
   handleHashRouting();
 
-  const verEl = document.getElementById('app-version');
-  if (verEl) verEl.textContent = `tasbihku-v${APP_VERSION}`;
+  syncVersionUI();
   const aboutVerEl = document.getElementById('about-app-version');
   if (aboutVerEl) aboutVerEl.textContent = `TasbihKu v${APP_VERSION}`;
 }
@@ -99,6 +99,7 @@ export function initFeature() {
   registerCommand('settings:update-username', (p) => { state.userName = p?.value ?? ''; saveState(); });
   registerCommand('settings:init-ui', initShellUI);
   registerCommand('settings:handle-routing', handleHashRouting);
+  registerCommand('settings:check-update', () => checkForAppUpdate());
 
   if (initialized) return;
   initialized = true;
@@ -154,6 +155,7 @@ export function initFeature() {
     window.addEventListener('languageChanged', () => {
       applyTranslations();
       syncLocalizedModeLabels();
+      syncVersionUI();
       dispatch('dzikir:render-custom-list').catch(() => {});
       dispatch('habits:render').catch(() => {});
       dispatch('habits:render-stats').catch(() => {});

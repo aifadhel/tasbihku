@@ -63,6 +63,12 @@
       border: 1px solid var(--md-sys-color-outline-variant) !important;
       color: var(--md-sys-color-on-background) !important;
       border-radius: var(--shape-corner-md) !important;
+      width: auto !important;
+      max-width: 48%;
+      min-height: 44px;
+      margin-bottom: 0 !important;
+      flex-shrink: 0;
+      cursor: pointer;
   }
 
   .m3-card-tile,
@@ -174,5 +180,10 @@
       font-weight: 800;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   }
+
+  #page-menu > * { flex-shrink: 0; }
+  #page-menu > span[data-i18n="section_settings"] { margin-top: 6px; }
+  #vibration-interval-row { height: auto; gap: 12px; }
+  #vibration-interval-row > div { flex: 1 1 auto; min-width: 0; }
 
 }

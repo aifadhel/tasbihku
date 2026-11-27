@@ -123,12 +123,16 @@
   .footer-watermark {
       text-align: center;
       font-size: 0.75rem;
-      opacity: 0.5;
       margin-top: 32px;
       margin-bottom: 16px;
       font-weight: 500;
       color: var(--md-sys-color-outline);
       letter-spacing: 0.5px;
+  }
+
+  .footer-made-with {
+      margin: 8px 0 0 0;
+      opacity: 0.65;
   }
 
   /* --- MATERIAL 3 EXPRESSIVE UPGRADES --- */

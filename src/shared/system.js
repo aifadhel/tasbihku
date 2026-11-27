@@ -4,6 +4,11 @@ import { state, saveState } from './store.js';
 
 let wakeLock = null;
 let deferredPrompt = null;
+let manualUpdateCheck = false;
+
+export function setManualUpdateCheck(active) {
+  manualUpdateCheck = Boolean(active);
+}
 
 export async function requestWakeLock() {
   try {
@@ -42,12 +47,12 @@ export function initWakeLockVisibility() {
 export function initServiceWorker() {
   if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return;
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then((reg) => {
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then((reg) => {
       reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
         if (!newWorker) return;
         newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          if (!manualUpdateCheck && newWorker.state === 'installed' && navigator.serviceWorker.controller) {
             dispatch('ui:show-modal', {
               title: t('modal_update_avail_title'),
               message: t('modal_update_avail_msg'),

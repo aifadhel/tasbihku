@@ -1,5 +1,5 @@
 // NOTE: Update APP_VERSION in src/app/version.js (or run node scripts/bump-version.js) when changing version
-const CACHE_NAME = 'tasbihku-v1.16.1';
+const CACHE_NAME = 'tasbihku-v1.16.2';
 
 // File utama yang WAJIB ada saat offline
 const urlsToCache = [
@@ -23,7 +23,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
     .then(cache => {
       console.info('Opened cache');
-      return cache.addAll(urlsToCache);
+      return cache.addAll(urlsToCache.map((url) => new Request(url, { cache: 'reload' })));
     })
   );
 });
@@ -47,6 +47,7 @@ self.addEventListener('activate', event => {
 // Event: Fetch (Cegat request network)
 self.addEventListener('fetch', event => {
   const requestUrl = new URL(event.request.url);
+  if (requestUrl.pathname.endsWith('/sw.js') || event.request.cache === 'no-store') return;
 
   // Strategi khusus untuk Google Fonts (Cache First, Network Fallback)
   if (requestUrl.origin.includes('fonts.googleapis.com') ||
@@ -109,4 +110,12 @@ self.addEventListener('notificationclick', event => {
       return self.clients.openWindow(targetUrl);
     })
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  } else if (event.data && event.data.type === 'GET_VERSION' && event.ports && event.ports[0]) {
+    event.ports[0].postMessage({ cacheName: CACHE_NAME });
+  }
 });

@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.16.2] - 2026-11-27
+
+- **Highlight:** Made `#app-version` in the Settings footer an interactive button that checks for Service Worker and cached app updates and lets users apply and reload into the latest version.
+
+### Specific UI & Component Changes
+- **Interactive Version Button (`index.html`, `src/styles/primitives-core.css`, `src/features/settings-shell/settings-update.css`, `style.css`):** Replaced `<span id="app-version">` in `.footer-watermark` with `<button type="button" id="app-version" class="footer-version-btn" data-cmd="settings:check-update">` featuring `#icon-18`, `#app-version-text`, and `#app-version-status` (`aria-live="polite"`). Scoped watermark dimming onto `.footer-made-with` so the interactive button and status retain full WCAG AA contrast across Emerald and OLED themes with `>= 44px` touch target and `prefers-reduced-motion` support.
+- **Settings Layout & Spacing (`src/features/settings-shell/settings-shell.css`):** Added `flex-shrink: 0` on `#page-menu > *` to preserve section spacer heights above `"Settings"` and prevent row clipping, added `margin-top: 6px` above the `"Settings"` section heading, and constrained `.btn-list-item select` (`width: auto`, `max-width: 48%`, `min-height: 44px`, `margin-bottom: 0`) plus `#vibration-interval-row` flex gap/wrapping so `#select-vibration-interval` aligns cleanly without overlapping text.
+
+### Core Logic & Workflows
+- **App Update Checker (`src/features/settings-shell/app-updater.js`, `sw-probe.js`, `settings-shell.{contract,feature}.js`, `CODEMAP.md`):** Registered `settings:check-update` with lazy runtime bilingual copy (`registerTranslations`) to keep `assets/index.js` within its 20 KB gzipped shell budget. Handles unsupported environments, offline detection, re-entrant click guarding, Cache Storage / Service Worker `GET_VERSION` probing, initial-install vs true-update disambiguation, `SKIP_WAITING` + reload prompt modal, and `languageChanged` status synchronization.
+- **Service Worker Lifecycle Hardening (`public/sw.js`, `src/shared/system.js`):** Configured `install` precaching with `{ cache: 'reload' }` for unhashed `/assets/*`, bypassed `/sw.js` and `no-store` fetches in `sw.js`, added `SKIP_WAITING` and `GET_VERSION` message handlers, set `{ updateViaCache: 'none' }` on registration, and added `setManualUpdateCheck()` to prevent duplicate update modals during manual checks.
+
+### Dzikir & Habits Engine
+- No changes to Tasbih counter, Dzikir datasets, or Habit tracking behavior.
+
+### Test & Verification
+- Added 9 unit tests in `src/features/settings-shell/app-updater.test.js` covering semver comparison, ID/EN status sync, unsupported/offline/error states, up-to-date toast, initial SW activation guard, update detection, cancel-then-retry, and `SKIP_WAITING` reload flow.
+- Verified `npm run check`, `npm test` (`14` test files, `67` tests), `npm run build`, `npm run size`, and mobile browser verification (`390x844`) across Indonesian, English, Emerald, and OLED modes.
+
 ## [tasbihku-v1.16.1] - 2026-11-27
 
 - **Highlight:** Fixed AI dhikr modal initial auto-scroll hiding the top request label/language selector and eliminated clipped double focus borders inside `.ai-modal-body`.

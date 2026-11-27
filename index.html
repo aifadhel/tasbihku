@@ -435,8 +435,12 @@
             </a>
 
              <div class="footer-watermark">
-                 <span id="app-version">tasbihku</span><br>
-                 Made with ❤️ for the Ummah
+                 <button type="button" id="app-version" class="footer-version-btn" data-cmd="settings:check-update" aria-label="Periksa pembaruan aplikasi">
+                     <svg class="footer-version-icon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#icon-18"></use></svg>
+                     <span id="app-version-text">tasbihku</span>
+                 </button>
+                 <div id="app-version-status" class="footer-version-status" aria-live="polite"></div>
+                 <p class="footer-made-with">Made with ❤️ for the Ummah</p>
              </div>
         </div>
 
