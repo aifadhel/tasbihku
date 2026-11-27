@@ -2,9 +2,18 @@
 
 ## STATE
 - **Active plan**: None (Completed)
-- **Active milestone**: tasbihku-v1.16.2 Clickable Settings Version & App Update Check (uncommitted; verified exit 0)
+- **Active milestone**: tasbihku-v1.16.3 PWA Install Prompt Capture & Fallback Install Modal (uncommitted; verified exit 0)
 - **Open issues**: 3 legacy E2E probes invoke removed `window.*` globals (`habits-ui.spec.js:274`, `tasbih-modes.spec.js:136,150`); 2 E2E clicks hit pre-existing `TAP_DEBOUNCE_MS = 60` (`tasbih-modes.spec.js:205,222`); 8 npm devDependency advisories (`tinypool` in `vitest@1.x`; 0 prod vulnerabilities via `npm audit --omit=dev`)
 - **Do-not-touch**: `public/{sound.ogg,config.json,*.png,favicon.ico,manifest.json,404.html}`, `src/data/azkar.json`, `firebase.json`, `playwright.config.js`, `tests/e2e/*.spec.js`
+
+## Session: 2026-11-27 (v1.16.3 PWA Install Prompt & Fallback Modal Fix)
+- **Touched Files**: `src/main.js`, `src/shared/system.js`, `index.html`, `src/features/settings-shell/{app-installer.js,app-installer.test.js,settings-shell.css,settings-update.css,settings-shell.contract.js,settings-shell.feature.js}`, `CODEMAP.md`, `package.json`, `src/app/version.js`, `public/sw.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.
+- **Milestones Completed**:
+  - [✓] Boot Timing & Early Capture (`src/main.js`, `src/shared/system.js`): Moved `captureInstallPrompt()` to synchronous startup before `DOMContentLoaded` async awaits, invoked `initServiceWorker()` + `initInstallPrompt()` before `loadState()`, fixed `initServiceWorker()` when `document.readyState === 'complete'`, and added `appinstalled` + standalone display-mode helpers (`isAppInstalled()`, `getDeferredInstallPrompt()`, `clearDeferredInstallPrompt()`, `dismissInstallBanner()`).
+  - [✓] Install UI & Fallback Modal (`index.html`, `app-installer.js`, `settings-shell.{contract,feature,css}`, `settings-update.css`, `CODEMAP.md`): Added `#btn-install-dismiss` and `>=44px` actions on `#install-prompt`, added `#install-app-row` in `#page-menu` Settings (hidden when standalone), and registered `settings:install-app` / `settings:dismiss-install` with lazy `registerTranslations()` copy (`index.js` `20.46 kB` gz <= `20 KB`), launching native `deferredPrompt.prompt()` or an M3 platform guide modal when `beforeinstallprompt` is absent.
+  - [✓] Verification & Release: Added 5 unit tests in `app-installer.test.js`, verified mobile `390x844` browser flows (ID/EN, Emerald/OLED, 0 uncaught JS errors), bumped `1.16.2` -> `1.16.3`, passed `harness-verifier` (`d6723ad1`), and passed `npm run check`, `npm test` (`15/15` files, `72/72` tests), `npm run build`, and `npm run size` (`exit 0`).
+- **Double-Check & Lessons**:
+  - `[LESSON]` Never bind `window.addEventListener('load', ...)` or `beforeinstallprompt` after `await`ed IndexedDB or dynamic `import()` chains inside `DOMContentLoaded`; fast loads complete `window.load` and fire `beforeinstallprompt` before deferred listeners attach.
 
 ## Session: 2026-11-27 (v1.16.2 Clickable Settings Version & App Update Check)
 - **Touched Files**: `index.html`, `src/styles/primitives-core.css`, `style.css`, `src/features/settings-shell/{app-updater.js,sw-probe.js,app-updater.test.js,settings-shell.css,settings-update.css,settings-shell.contract.js,settings-shell.feature.js}`, `src/shared/system.js`, `public/sw.js`, `CODEMAP.md`, `package.json`, `src/app/version.js`, `CHANGELOG.md`, `.agents/agent-progress.md`.

@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [tasbihku-v1.16.3] - 2026-11-27
+
+- **Highlight:** Fixed missed `beforeinstallprompt` and Service Worker `load` registration races at startup, added an accessible `"Install Application"` entry in Settings (`#install-app-row`), and added a platform-aware fallback install instructions pop-up modal.
+
+### Specific UI & Component Changes
+- **Install Banner & Settings Install Entry (`index.html`, `src/features/settings-shell/{settings-shell.css,settings-update.css}`):** Added `#btn-install-dismiss` alongside `>= 44px` action targets inside `#install-prompt` and added `#install-app-row` (`data-cmd="settings:install-app"`, hidden automatically in standalone mode) in `#page-menu` above `"About & Landing Page"`.
+
+### Core Logic & Workflows
+- **Synchronous Install Capture & SW Timing (`src/main.js`, `src/shared/system.js`):** Bound `captureInstallPrompt()` synchronously at module boot before `DOMContentLoaded` async initialization (`loadState()` and lazy feature imports), updated `initServiceWorker()` to register `./sw.js` immediately when `document.readyState === 'complete'`, and added `appinstalled` / standalone detection helpers (`isAppInstalled()`, `getDeferredInstallPrompt()`, `clearDeferredInstallPrompt()`, `dismissInstallBanner()`).
+- **Unified Install Flow & Fallback Modal (`src/features/settings-shell/{app-installer.js,settings-shell.contract.js,settings-shell.feature.js}`, `CODEMAP.md`):** Registered `settings:install-app` and `settings:dismiss-install` with lazy bilingual `registerTranslations()` copy to keep `assets/index.js` within its 20 KB gzipped shell budget. Launches native `deferredPrompt.prompt()` when available and displays an M3 pop-up modal with iOS Safari or browser menu instructions when `beforeinstallprompt` is absent.
+
+### Dzikir & Habits Engine
+- No changes to Tasbih counter, Dzikir datasets, or Habit tracking behavior.
+
+### Test & Verification
+- Added 5 unit tests in `src/features/settings-shell/app-installer.test.js` covering SW registration when `readyState === 'complete'`, early `beforeinstallprompt`/`appinstalled` capture, native prompt accept/dismiss handling, browser/iOS fallback modal copy, and standalone hiding.
+- Verified `npm run check`, `npm test` (`15` test files, `72` tests), `npm run build`, `npm run size`, and mobile browser inspection (`390x844`, ID/EN, Emerald/OLED, 0 uncaught JS errors).
+
 ## [tasbihku-v1.16.2] - 2026-11-27
 
 - **Highlight:** Made `#app-version` in the Settings footer an interactive button that checks for Service Worker and cached app updates and lets users apply and reload into the latest version.

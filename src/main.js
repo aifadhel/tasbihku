@@ -15,7 +15,7 @@ import { featureManifest as tasbihCounterManifest } from './features/tasbih-coun
 import { applyTranslations } from './shared/i18n.js';
 import { initAudioUnlock } from './shared/media.js';
 import { loadState } from './shared/store.js';
-import { initInstallPrompt, initServiceWorker, initWakeLockVisibility } from './shared/system.js';
+import { captureInstallPrompt, initInstallPrompt, initServiceWorker, initWakeLockVisibility } from './shared/system.js';
 
 registerFeature(tasbihCounterManifest);
 registerFeature(dzikirGuidedManifest);
@@ -25,9 +25,12 @@ registerFeature(habitsUiManifest);
 registerFeature(settingsShellManifest);
 initFeatureRegistry();
 initDomBridge();
+captureInstallPrompt();
 
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', async () => {
+    initServiceWorker();
+    initInstallPrompt();
     await loadState();
 
     const staleQuoteCard = document.getElementById('quote-card') || document.querySelector('.quote-toggle-wrapper');
@@ -51,7 +54,5 @@ if (typeof document !== 'undefined') {
 
     initAudioUnlock();
     initWakeLockVisibility();
-    initServiceWorker();
-    initInstallPrompt();
   });
 }

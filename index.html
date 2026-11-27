@@ -91,7 +91,10 @@
             <div id="install-prompt">
                 <span class="label-large" style="display:block; margin-bottom:8px;" data-i18n="install_app">Install Aplikasi</span>
                 <p class="body-medium" style="margin-bottom:12px;" data-i18n="install_desc">Pasang TasbihKu agar bisa digunakan offline.</p>
-                <button class="btn btn-filled label-medium" id="btn-install" style="height: 36px;" data-i18n="install_now">Install Sekarang</button>
+                <div class="install-prompt-actions">
+                    <button type="button" class="btn btn-filled label-medium install-prompt-btn" id="btn-install" data-cmd="settings:install-app" data-i18n="install_now">Install Sekarang</button>
+                    <button type="button" class="btn btn-text label-medium install-prompt-dismiss" id="btn-install-dismiss" data-cmd="settings:dismiss-install" data-i18n="btn_close">Tutup</button>
+                </div>
             </div>
 
             <!-- TASBIH DASHBOARD VIEW -->
@@ -424,8 +427,15 @@
                 <input type="file" id="import-file" style="display:none" accept=".json" data-cmd-change="settings:import-data">
             </div>
             
-            <!-- Landing Page Link Section -->
+            <!-- Install & Landing Page Link Section -->
             <div style="height: 24px;"></div>
+            <button type="button" id="install-app-row" class="btn btn-list-item install-app-row" data-cmd="settings:install-app">
+                <div class="install-app-copy">
+                    <span class="m3-setting-title" data-i18n="install_app">Install Aplikasi</span>
+                    <span class="m3-setting-desc" data-i18n="install_desc">Pasang TasbihKu agar bisa digunakan offline.</span>
+                </div>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--md-sys-color-primary)" aria-hidden="true"><use href="#icon-13"></use></svg>
+            </button>
             <a href="/about" target="_blank" rel="noopener noreferrer" class="btn-list-item" style="display: flex; align-items: center; justify-content: space-between; text-decoration: none; margin-top: 8px;">
                 <div style="display: flex; flex-direction: column;">
                     <span style="font-weight: 800; color: var(--md-sys-color-on-background);" data-i18n="about_landing_title">Tentang & Landing Page</span>

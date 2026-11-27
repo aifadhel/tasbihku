@@ -5,6 +5,7 @@ import { applyTranslations, setLanguage } from '../../shared/i18n.js';
 import { applyVibrationCapability } from '../../shared/media.js';
 import { saveState, state, subscribe } from '../../shared/store.js';
 import { releaseWakeLock, requestWakeLock, toggleWakeLock } from '../../shared/system.js';
+import { dismissInstallPrompt, promptAppInstall, syncInstallUI } from './app-installer.js';
 import { checkForAppUpdate, syncVersionUI } from './app-updater.js';
 import { closeModal, goBack, initRouterListeners, showModal, showPage } from './router-nav.js';
 import {
@@ -68,6 +69,7 @@ function initShellUI() {
   handleHashRouting();
 
   syncVersionUI();
+  syncInstallUI();
   const aboutVerEl = document.getElementById('about-app-version');
   if (aboutVerEl) aboutVerEl.textContent = `TasbihKu v${APP_VERSION}`;
 }
@@ -100,6 +102,8 @@ export function initFeature() {
   registerCommand('settings:init-ui', initShellUI);
   registerCommand('settings:handle-routing', handleHashRouting);
   registerCommand('settings:check-update', () => checkForAppUpdate());
+  registerCommand('settings:install-app', () => promptAppInstall());
+  registerCommand('settings:dismiss-install', () => dismissInstallPrompt());
 
   if (initialized) return;
   initialized = true;
@@ -166,5 +170,6 @@ export function initFeature() {
       }
     });
     window.addEventListener('hashchange', handleHashRouting);
+    window.addEventListener('installPromptChanged', syncInstallUI);
   }
 }

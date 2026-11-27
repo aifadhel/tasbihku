@@ -87,4 +87,51 @@
           transition: none;
       }
   }
+
+  #install-prompt {
+      display: none;
+      margin: 0 0 16px 0;
+      background: var(--md-sys-color-primary-container);
+      color: var(--md-sys-color-on-primary-container);
+      padding: 16px;
+      border-radius: var(--shape-corner-lg);
+      text-align: center;
+      border: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .install-prompt-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+  }
+
+  .install-prompt-btn {
+      width: auto;
+      min-height: 44px;
+      padding: 0 20px;
+  }
+
+  .install-prompt-dismiss {
+      min-height: 44px;
+      padding: 0 16px;
+      color: var(--md-sys-color-on-primary-container);
+  }
+
+  .install-app-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      height: auto;
+      margin-top: 8px;
+  }
+
+  .install-app-copy {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-width: 0;
+  }
 }

@@ -5,10 +5,29 @@ import { state, saveState } from './store.js';
 let wakeLock = null;
 let deferredPrompt = null;
 let manualUpdateCheck = false;
+let installBound = false;
+let installDismissed = false;
 
 export function setManualUpdateCheck(active) {
   manualUpdateCheck = Boolean(active);
 }
+
+const setInstallBox = (show) => {
+  const b = typeof document !== 'undefined' && document.getElementById('install-prompt');
+  if (b) b.style.display = show ? 'block' : 'none';
+};
+const notifyInstall = () => typeof CustomEvent !== 'undefined' && window.dispatchEvent(new CustomEvent('installPromptChanged'));
+
+export function isAppInstalled() {
+  return Boolean(
+    (typeof window !== 'undefined' && window.matchMedia?.('(display-mode: standalone)')?.matches) ||
+    (typeof navigator !== 'undefined' && navigator.standalone === true)
+  );
+}
+
+export function getDeferredInstallPrompt() { return deferredPrompt; }
+export function clearDeferredInstallPrompt() { deferredPrompt = null; }
+export function dismissInstallBanner() { installDismissed = true; setInstallBox(false); }
 
 export async function requestWakeLock() {
   try {
@@ -46,7 +65,7 @@ export function initWakeLockVisibility() {
 
 export function initServiceWorker() {
   if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return;
-  window.addEventListener('load', () => {
+  const registerSw = () => {
     navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then((reg) => {
       reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
@@ -62,27 +81,28 @@ export function initServiceWorker() {
         });
       });
     }).catch((err) => console.error('SW registration failed', err));
+  };
+  if (typeof document !== 'undefined' && document.readyState === 'complete') registerSw();
+  else if (typeof window !== 'undefined') window.addEventListener('load', registerSw, { once: true });
+}
+
+export function captureInstallPrompt() {
+  if (installBound || typeof window === 'undefined') return;
+  installBound = true;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!installDismissed && !isAppInstalled()) setInstallBox(true);
+    notifyInstall();
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    setInstallBox(false);
+    notifyInstall();
   });
 }
 
 export function initInstallPrompt() {
-  if (typeof document === 'undefined') return;
-  const installBox = document.getElementById('install-prompt');
-  const installBtn = document.getElementById('btn-install');
-  if (!installBox || !installBtn) return;
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    installBox.style.display = 'block';
-  });
-
-  installBtn.addEventListener('click', () => {
-    installBox.style.display = 'none';
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => {
-      deferredPrompt = null;
-    });
-  });
+  captureInstallPrompt();
+  if (deferredPrompt && !installDismissed && !isAppInstalled()) setInstallBox(true);
 }
